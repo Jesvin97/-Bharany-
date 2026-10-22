@@ -10,7 +10,7 @@
   --veg:#3f9b3a; --nonveg:#b3361b; --error:#ff8a65;
   --brand:'Antonio','Bebas Neue',Impact,sans-serif;   /* the BHARANY logotype only */
   --display:'Fraunces',Georgia,'Times New Roman',serif; /* section headings */
-  --body:'Inter',system-ui,sans-serif;
+  --body:'Anek Malayalam',system-ui,sans-serif; /* one face for English and Malayalam, by Ek Type (India) */
   --ease:cubic-bezier(.2,.7,.2,1);
   /* five sizes do the work */
   --t-display:clamp(88px,22vw,300px); --t-h2:clamp(44px,7vw,96px); --t-h3:clamp(24px,2.4vw,32px); --t-body:17px; --t-small:14px;

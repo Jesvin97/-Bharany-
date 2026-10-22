@@ -7,30 +7,8 @@
 <meta name="description" content="Spicy & home made Kerala pickles, naturally preserved. Order on WhatsApp.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;700&family=Inter:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
 <style>
-/* Tokens from the Hungry Tiger reference (variables.css). Salmond/Graphikx are licensed: Antonio/Inter are the DESIGN.md substitutes. */
-:root{
-  /* Palette lifted from the product film: black, label mustard, chilli orange, curry-leaf green */
-  --accent:#f5a524; --ink:#0c0907; --chili:#e8561e; --card:#1a120d; --deep:#050302; --leaf:#5aa646;
-  --display:'Antonio','Bebas Neue',Impact,sans-serif;
-  --body:'Inter',system-ui,sans-serif;
-}
-*{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth}
-body{background:var(--ink);color:var(--accent);font:500 13px/1.4 var(--body);letter-spacing:.01em}
-a{color:inherit;text-decoration:none}
-.btn{display:inline-block;font:500 13px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;
-  padding:8px 17px;border:1px solid var(--accent);border-radius:9999px;color:var(--accent);transition:background .15s,color .15s}
-.btn:hover,.btn.fill{background:var(--accent);color:var(--deep)}
-.btn.fill:hover{background:transparent;color:var(--accent)}
-.btn.fill{padding:10px 20px}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-hr{border:0;border-top:1px dotted var(--accent);margin:0}
-nav{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:20px 24px;flex-wrap:wrap}
-nav div{display:flex;gap:10px;flex-wrap:wrap}
-.brand{font:700 22px/1 var(--display);letter-spacing:.04em}
-h1,h2{font-family:var(--display);font-weight:700;text-transform:uppercase}
-nav{position:fixed;inset:0 0 auto 0;z-index:10}
 .stage{height:400vh;position:relative}
 .sticky{position:sticky;top:0;height:100vh;overflow:hidden}
 .sticky>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform,opacity;
@@ -40,52 +18,83 @@ nav{position:fixed;inset:0 0 auto 0;z-index:10}
 #jar{object-position:50% 0}
 .hero-copy{position:absolute;inset:14vh 0 auto;text-align:center;z-index:2;pointer-events:none}
 .hero-copy h1{font-size:clamp(88px,22vw,300px);line-height:.85;letter-spacing:-.02em}
-.hero-copy .eyebrow{font:500 13px var(--display);letter-spacing:.12em;margin-bottom:12px;color:var(--leaf)}
+.hero-copy h1 span{display:inline-block}
 .hero-out{position:absolute;inset:auto 24px 8vh;text-align:center;z-index:3;opacity:0}
 .hero-out p{font:700 clamp(28px,5vw,64px)/1 var(--display);text-transform:uppercase;margin-bottom:20px}
 @media(max-aspect-ratio:1/1){.hero-out{inset:34vh 24px auto}}
 .bit{position:absolute;top:0;left:0;z-index:2;pointer-events:none;will-change:transform,opacity}
 .bit svg{display:block;width:100%;height:100%}
-.hint{position:absolute;inset:auto 0 4vh;text-align:center;z-index:3;font:500 12px var(--display);letter-spacing:.2em;animation:bob 1.6s ease-in-out infinite}
-@keyframes bob{50%{transform:translateY(8px)}}
-.marquee{overflow:hidden;padding:20px 0;border-block:1px dotted var(--accent)}
-.track{display:flex;gap:32px;width:max-content;animation:slide 28s linear infinite;font:700 clamp(28px,4vw,48px)/1 var(--display);text-transform:uppercase;align-items:center}
-.track span{display:flex;align-items:center;gap:32px;white-space:nowrap}
-.track svg{height:1em;width:auto}
-@keyframes slide{to{transform:translateX(-50%)}}
-.rv{opacity:0;transform:translateY(40px);transition:opacity .7s,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
-.rv.in{opacity:1;transform:none}
-.ph{overflow:hidden;border-radius:6px;transition:transform .15s ease-out}
-.ph img{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.hint{position:absolute;inset:auto 0 4vh;text-align:center;z-index:3;font:500 12px var(--display);letter-spacing:.2em}
+
+/* storyboard: pinned, scrubbed sideways through five panels */
+.story{max-width:none;padding:0;overflow:hidden;position:relative}
+.story-head{position:absolute;top:96px;left:24px;z-index:2}
+.story-head h2{font-size:clamp(28px,4vw,48px);margin:0}
+.story-track{display:flex;height:100vh;width:max-content;will-change:transform}
+.panel{width:min(100vw,1100px);height:100%;flex:none;display:grid;grid-template-columns:1fr;align-content:center;gap:24px;padding:150px 24px 40px;position:relative;overflow:hidden}
+.panel+.panel{border-left:1px dotted #f5a52466}
+.panel>div{position:relative;z-index:1}
+.panel .num{font:700 clamp(120px,20vw,260px)/.8 var(--display);color:transparent;-webkit-text-stroke:1px var(--accent);position:absolute;right:24px;bottom:24px;opacity:.35}
+.panel h3{font-size:clamp(40px,6vw,80px);line-height:.9}
+.panel p{color:var(--cream);font-size:17px;line-height:1.5;max-width:40ch}
+.panel figure{border-radius:8px;overflow:hidden;aspect-ratio:4/3;max-height:42vh;background:var(--card);display:grid;place-items:center}
+.panel figure img{width:100%;height:100%;object-fit:cover}
+.panel figure svg{width:60%;height:80%}
+.panel .draw path,.panel .draw circle,.panel .draw rect,.panel .draw line{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+@media(min-width:900px){.panel figure{order:-1}.panel{padding-inline:48px;grid-template-columns:1fr 1fr;align-items:center;gap:48px;padding-top:120px}.panel figure{max-height:60vh}}
+.story-bar{position:absolute;left:24px;right:24px;bottom:20px;height:2px;background:#f5a52433}
+.story-bar i{display:block;height:100%;background:var(--accent);transform-origin:0;transform:scaleX(0)}
+@media(prefers-reduced-motion:reduce){.story-track{width:auto;height:auto;overflow-x:auto;scroll-snap-type:x mandatory}.panel{scroll-snap-align:start}}
+
+/* products */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.card{background:var(--card);border-radius:6px;padding:12px;display:flex;flex-direction:column;gap:10px;transition:background .2s}
+.card:hover{background:#26190f}
+.card[hidden]{display:none}
+.ph{overflow:hidden;border-radius:6px;transition:transform .15s ease-out;cursor:pointer}
+.ph img{width:100%;aspect-ratio:3/4;object-fit:cover;transition:transform .6s var(--ease)}
 .card:hover .ph img{transform:scale(1.08) rotate(-1deg)}
-.card{transition:background .2s,transform .2s}
-.card:hover{background:#26190f;transform:translateY(-4px)}
-.wm{position:relative;overflow:hidden}
-.wm>svg{position:absolute;width:clamp(90px,14vw,220px);opacity:.1;pointer-events:none;animation:drift 9s ease-in-out infinite alternate}
-@keyframes drift{from{transform:translateY(-14px) rotate(-8deg)}to{transform:translateY(14px) rotate(10deg)}}
-@media(prefers-reduced-motion:reduce){.track,.hint,.wm>svg{animation:none}.rv{opacity:1;transform:none;transition:none}}
-section{max-width:1440px;margin:auto;padding:80px 24px}
-h2{font-size:clamp(48px,9vw,101px);line-height:.9;letter-spacing:-.016em;margin-bottom:42px}
-.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
-.card{background:var(--card);border-radius:6px;padding:12px;display:flex;flex-direction:column;gap:12px}
-.card img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:6px}
-.card h3{font:700 29px/1.1 var(--display);text-transform:uppercase}
-.card .btn{align-self:flex-start;margin-top:auto}
-.tag{font:500 11px var(--display);letter-spacing:.12em;color:var(--deep);background:var(--accent);padding:4px 12px;border-radius:9999px;width:fit-content}
-.about{display:grid;gap:32px;grid-template-columns:1fr}
-.about p{font-size:18px;line-height:1.4;max-width:46ch}
+.card h3{font:700 27px/1.05 var(--display);text-transform:uppercase}
+.card p{color:var(--cream);opacity:.85;font-size:14px}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.heat{display:flex;gap:2px;align-items:center;font:500 11px var(--display);letter-spacing:.1em}
+.heat svg{width:12px;height:18px}
+.heat svg.off{opacity:.2;filter:grayscale(1)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-size:11px;border:1px solid #f5a52466;border-radius:9999px;padding:3px 9px;color:var(--cream)}
+.card .row{display:flex;gap:8px;margin-top:auto}
+.dot{width:12px;height:12px;border:1.5px solid currentColor;display:inline-grid;place-items:center;margin-right:6px;vertical-align:-1px}
+.dot::after{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.veg{color:var(--leaf)}.nonveg{color:var(--chili)}
+
+/* product detail sheet */
+dialog{margin:auto;border:0;padding:0;background:none;color:var(--accent);border-radius:10px;width:min(920px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto}
+dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
+.sheet{display:grid;grid-template-columns:1fr;background:var(--card);border-radius:10px;overflow:hidden;position:relative}
+.sheet img{width:100%;height:100%;max-height:50vh;object-fit:cover}
+.sheet .body{padding:24px;display:flex;flex-direction:column;gap:14px}
+.sheet h3{font-size:clamp(36px,5vw,56px);line-height:.9}
+.sheet p,.sheet li{color:var(--cream);font-size:15px;line-height:1.5}
+.sheet h4{font:700 15px var(--display);letter-spacing:.1em;text-transform:uppercase}
+.sheet ul{padding-left:18px}
+.sheet .x{position:absolute;top:12px;right:12px;background:var(--deep)}
+.sheet small{color:var(--cream);opacity:.6}
+@media(min-width:760px){.sheet{grid-template-columns:5fr 6fr}.sheet img{max-height:none}}
+
+.about{display:grid;gap:32px;grid-template-columns:1fr;align-items:end}
+.about .lede{color:var(--cream)}
 @media(min-width:800px){.about{grid-template-columns:1fr 1fr}}
-.cta{text-align:center}
-.cta h2{margin-bottom:24px}
-footer{padding:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 </style>
 </head>
 <body>
+<div class="progress"></div>
 <nav>
   <a class="brand" href="#top">BHARANY</a>
   <div>
     <a class="btn" href="#products">Pickles</a>
-    <a class="btn" href="#about">About</a>
+    <a class="btn" href="#story">Our process</a>
+    <a class="btn" href="about.html">About</a>
     <a class="btn fill" href="https://wa.me/919846020348" target="_blank" rel="noopener">Order now</a>
   </div>
 </nav>
@@ -95,7 +104,7 @@ footer{padding:24px;display:flex;justify-content:space-between;flex-wrap:wrap;ga
     <img id="jar" src="img/14.jpg" alt="Open Bharany prawns pickle jar" style="opacity:0">
     <div class="hero-copy">
       <p class="eyebrow">SPICY &amp; HOME MADE · KERALA</p>
-      <h1>Bharany</h1>
+      <h1 id="title">Bharany</h1>
     </div>
     <div class="hero-out">
       <p>Into the jar. Naturally preserved.</p>
@@ -105,51 +114,198 @@ footer{padding:24px;display:flex;justify-content:space-between;flex-wrap:wrap;ga
   </div>
 </header>
 <div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
+
+<section>
+  <p class="eyebrow" data-rv>The Bharany promise</p>
+  <div class="promise">
+    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#f5a524" stroke-width="2.5"><path d="M6 22 24 8l18 14v18H6z"/><path d="M19 40V28h10v12"/></svg><b>Home made</b><p>Cooked in small batches in a Kerala kitchen, not a factory line.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#5aa646" stroke-width="2.5"><path d="M24 4c14 12 14 30 0 40C10 34 10 16 24 4z"/><path d="M24 12v30"/></svg><b>No artificial ingredients</b><p>Real spices, real oil, real produce. Nothing you'd need a chemistry degree to read.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#e8561e" stroke-width="2.5"><rect x="12" y="14" width="24" height="28" rx="4"/><path d="M10 8h28v6H10z"/></svg><b>Naturally preserved</b><p>Preserved the old way, with salt, spice, oil and vinegar, so the jar keeps.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#f5a524" stroke-width="2.5"><path d="M6 16h28v20H6zM34 22h6l4 6v8H34"/><circle cx="14" cy="38" r="4"/><circle cx="38" cy="38" r="4"/></svg><b>Order direct</b><p>Message us on WhatsApp. You talk to the people who made your jar.</p></div>
+  </div>
+</section>
 <hr>
+
+<section class="story" id="story" aria-label="How a Bharany jar is made">
+  <div class="story-head"><p class="eyebrow">Storyboard</p><h2>Kitchen to your table</h2></div>
+  <div class="story-track">
+    <article class="panel">
+      <div><p class="eyebrow">Step 01</p><h3>Picked fresh</h3><p>Prawns, fish, Kerala dates, garlic, curry leaf and chilli, bought fresh the morning we cook. If it isn't good enough to eat, it doesn't go in.</p></div>
+      <figure><img src="img/13.jpg" alt="Fresh prawn, garlic, curry leaf and chilli" loading="lazy" style="object-position:50% 40%"></figure>
+      <span class="num" aria-hidden="true">01</span>
+    </article>
+    <article class="panel">
+      <div><p class="eyebrow">Step 02</p><h3>Cleaned &amp; cut by hand</h3><p>Every piece is washed, cleaned and cut by hand, the way it's always been done at home.</p></div>
+      <figure><svg class="draw" viewBox="0 0 200 160" aria-hidden="true"><rect x="20" y="96" width="160" height="40" rx="8"/><path d="M40 90 150 30l14 10-104 66z"/><line x1="150" y1="30" x2="178" y2="14"/><circle cx="70" cy="116" r="6"/><circle cx="100" cy="112" r="5"/><circle cx="128" cy="118" r="6"/></svg></figure>
+      <span class="num" aria-hidden="true">02</span>
+    </article>
+    <article class="panel">
+      <div><p class="eyebrow">Step 03</p><h3>Slow-roasted in spice</h3><p>Chilli, pepper, mustard and curry leaf roasted in oil, then cooked low and slow in small batches until the masala clings.</p></div>
+      <figure><svg class="draw" viewBox="0 0 200 160" aria-hidden="true"><path d="M30 80h140v30a40 40 0 0 1-40 40H70a40 40 0 0 1-40-40z"/><line x1="14" y1="86" x2="30" y2="86"/><line x1="170" y1="86" x2="186" y2="86"/><path d="M70 60c-8-10 8-18 0-30M100 60c-8-10 8-18 0-30M130 60c-8-10 8-18 0-30"/></svg></figure>
+      <span class="num" aria-hidden="true">03</span>
+    </article>
+    <article class="panel">
+      <div><p class="eyebrow">Step 04</p><h3>Sealed &amp; hessian-topped</h3><p>Packed warm into clean glass jars, sealed, and finished with the hessian cap you'll recognise on your shelf.</p></div>
+      <figure><img src="img/14.jpg" alt="Open Bharany pickle jar" loading="lazy" style="object-position:50% 30%"></figure>
+      <span class="num" aria-hidden="true">04</span>
+    </article>
+    <article class="panel">
+      <div><p class="eyebrow">Step 05</p><h3>At your door</h3><p>Order on WhatsApp, confirm with a real person, and your jars are packed to travel safely to you.</p>
+        <p style="margin-top:20px"><a class="btn fill" href="https://wa.me/919846020348" target="_blank" rel="noopener">Start an order</a></p></div>
+      <figure><svg class="draw" viewBox="0 0 200 160" aria-hidden="true"><path d="M40 60 100 34l60 26v60l-60 26-60-26z"/><path d="M40 60l60 26 60-26M100 86v60"/><path d="M70 47l60 26"/></svg></figure>
+      <span class="num" aria-hidden="true">05</span>
+    </article>
+  </div>
+  <div class="story-bar"><i></i></div>
+</section>
+<hr>
+
 <section id="products">
-  <h2>The jars</h2>
+  <h2 data-split>The jars</h2>
+  <div class="filters" role="group" aria-label="Filter jars">
+    <button class="btn" aria-pressed="true" data-f="all">All</button>
+    <button class="btn" aria-pressed="false" data-f="Veg">Veg</button>
+    <button class="btn" aria-pressed="false" data-f="Non-veg">Non-veg</button>
+    <button class="btn" aria-pressed="false" data-f="Pantry">Pantry</button>
+  </div>
   <div class="grid" id="grid"></div>
 </section>
+<dialog id="sheet" aria-labelledby="sheet-title"></dialog>
 <hr>
-<section class="about wm" id="about" data-wm>
-  <h2>Pure Kerala goodness in every spoon</h2>
-  <p>Fresh, natural, premium quality. No artificial ingredients, no added sugar in our coconut range, and a hessian-topped jar that looks like it came from a Kerala kitchen, because it did.</p>
+
+<section class="about wm" data-wm>
+  <h2 data-split>Pure Kerala goodness in every spoon</h2>
+  <div>
+    <p class="lede" data-rv>Fresh, natural, premium quality. No artificial ingredients, no added sugar in our coconut range, and a hessian-topped jar that looks like it came from a Kerala kitchen, because it did.</p>
+    <p style="margin-top:20px" data-rv><a class="btn" href="about.html">Read our story →</a></p>
+  </div>
 </section>
 <hr>
+
+<section class="faq" id="faq">
+  <h2 data-split>Good questions</h2>
+  <details data-rv><summary>How do I order?</summary><div class="a"><p>Tap any "Order" button or message us on WhatsApp at +91 98460 20348 with the jars you'd like. We'll confirm price, availability and delivery with you directly before you pay.</p></div></details>
+  <details data-rv><summary>How long does a jar keep?</summary><div class="a"><p>Our pickles are naturally preserved. The best-before date is printed on every jar. Once open, keep it closed tightly, refrigerate non-veg pickles, and always use a clean, dry spoon.</p></div></details>
+  <details data-rv><summary>Do you deliver outside Kerala?</summary><div class="a"><p>Ask us on WhatsApp with your pin code and we'll tell you what's possible and what delivery will cost.</p></div></details>
+  <details data-rv><summary>What's in each pickle?</summary><div class="a"><p>Tap "Details" on any jar to see its key ingredients. The full ingredient list, including allergens like mustard, is printed on the label. Ask us if you have an allergy and we'll help.</p></div></details>
+  <details data-rv><summary>My jar arrived damaged. What now?</summary><div class="a"><p>Send us a photo on WhatsApp within 48 hours of delivery and we'll make it right. See our <a href="terms.html#returns" style="text-decoration:underline">terms</a> for details.</p></div></details>
+</section>
+<hr>
+
 <section class="cta wm" data-wm>
-  <h2>Hungry yet?</h2>
+  <h2 data-split>Hungry yet?</h2>
   <a class="btn fill" href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp +91 98460 20348</a>
 </section>
 <hr>
 <footer>
-  <span>© Bharany</span>
-  <span><a href="https://www.keralabharany.com">keralabharany.com</a> · <a href="https://www.instagram.com/bharany_kerala">@bharany_kerala</a></span>
+  <div><span class="brand">BHARANY</span><p style="margin-top:10px;color:var(--cream)">Spicy &amp; home made Kerala pickles.</p></div>
+  <div><h4>Shop</h4><ul><li><a href="#products">All jars</a></li><li><a href="#story">Our process</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+  <div><h4>Company</h4><ul><li><a href="about.html">About us</a></li><li><a href="terms.html">Terms &amp; conditions</a></li><li><a href="terms.html#privacy">Privacy</a></li></ul></div>
+  <div><h4>Say hello</h4><ul><li><a href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp +91 98460 20348</a></li><li><a href="https://www.instagram.com/bharany_kerala">@bharany_kerala</a></li><li><a href="https://www.keralabharany.com">keralabharany.com</a></li></ul></div>
+  <div class="legal"><span>© <span data-year></span> Bharany</span><span>Made in Kerala</span></div>
 </footer>
+<div class="curtain" aria-hidden="true">BHARANY</div>
+
 <script>
-// [name, tag, image, object-position-y%] — y-offsets hide the Instagram UI baked into the screenshots
+// [name, category, image, object-position-y%, heat 0-3, description, key ingredients, enjoy with]
+// y-offsets hide the Instagram UI baked into the screenshots. Ingredient lists are the headline ones; the label carries the full list.
 const P=[
- ["Dates & Lemon Pickle","Pickle",1,39],["Chicken Pickle","Non-veg",2,0],["Fish Pickle","Non-veg",4,36],
- ["Prawns Pickle","Non-veg",6,24],["Beef Pickle","Non-veg",11,47],["Garlic Pickle","Veg",5,44],
- ["Dates Pickle","Veg",8,39],["Dates & Lemon (Classic)","Veg",12,24],["Mango & Carrot Pickle","Veg",7,52],
- ["Pineapple Pickle","Veg",10,52],["Desiccated Kerala Coconut · 200g","Pantry",3,47],["Curry Leaf Coconut Chutney · 200g","Pantry",9,34]
+ ["Dates & Lemon Pickle","Veg",1,39,1,"Sweet Kerala dates and tangy lemon in a gently spiced masala. The one people who say they don't like pickle end up finishing.",["Dates","Lemon","Chilli","Ginger","Mustard"],"Curd rice, chapati, biryani"],
+ ["Chicken Pickle","Non-veg",2,0,3,"Tender pieces of chicken fried, then slow-cooked in a fiery roasted-chilli masala.",["Chicken","Chilli","Garlic","Ginger","Vinegar"],"Hot rice, porotta, appam"],
+ ["Fish Pickle","Non-veg",4,36,3,"Firm fish, fried crisp and folded into a deep red Kerala masala. A coastal classic.",["Fish","Chilli","Garlic","Ginger","Vinegar"],"Kanji, rice and curd, dosa"],
+ ["Prawns Pickle","Non-veg",6,24,3,"The jar from our film. Plump prawns roasted with garlic and curry leaf in a punchy chilli masala.",["Prawns","Chilli","Garlic","Curry leaf","Vinegar"],"Ghee rice, porotta, rice"],
+ ["Beef Pickle","Non-veg",11,47,3,"Slow-cooked beef in black pepper and roasted spice. Rich, dark and very Kerala.",["Beef","Black pepper","Chilli","Garlic","Vinegar"],"Porotta, appam, rice"],
+ ["Garlic Pickle","Veg",5,44,2,"Whole garlic cloves softened in tangy, spiced oil until mellow and sweet.",["Garlic","Chilli","Fenugreek","Mustard","Vinegar"],"Rice, dal, chapati"],
+ ["Dates Pickle","Veg",8,39,1,"Pure dates pickle: sweet, sticky and lightly spiced.",["Dates","Chilli","Ginger","Mustard"],"Curd rice, sandwiches, cheese"],
+ ["Dates & Lemon (Classic)","Veg",12,24,1,"Our original dates-and-lemon recipe, a little tangier than the new jar.",["Dates","Lemon","Chilli","Mustard"],"Curd rice, biryani"],
+ ["Mango & Carrot Pickle","Veg",7,52,2,"Raw mango and crunchy carrot in a bright, tangy chilli masala.",["Raw mango","Carrot","Chilli","Mustard","Fenugreek"],"Curd rice, thayir sadam, dosa"],
+ ["Pineapple Pickle","Veg",10,52,1,"Sweet-sour pineapple chunks with a slow chilli finish.",["Pineapple","Chilli","Ginger","Mustard"],"Biryani, fried rice, grills"],
+ ["Desiccated Kerala Coconut · 200g","Pantry",3,47,0,"Finely grated, dried Kerala coconut with no added sugar. Ready for baking, chutneys and curries.",["Coconut"],"Baking, chutney, curries"],
+ ["Curry Leaf Coconut Chutney · 200g","Pantry",9,34,1,"Dry coconut chutney powder roasted with curry leaves. Sprinkle, mix with oil, done.",["Coconut","Curry leaf","Chilli","Urad dal"],"Idli, dosa, hot rice with ghee"]
 ];
-document.getElementById("grid").innerHTML=P.map(([n,t,i,y])=>`
-<article class="card">
-  <div class="ph"><img src="img/${i}.jpg" alt="${n}" loading="lazy" style="object-position:50% ${y}%"></div>
-  <span class="tag">${t}</span>
+const CH='<svg viewBox="0 0 40 60"><path d="M8 4C32 2 40 28 30 58 24 40 14 24 8 4Z" fill="#e8561e"/></svg>';
+const heat=h=>`<span class="heat" aria-label="Heat ${h} of 3">${[1,2,3].map(i=>CH.replace('<svg',i>h?'<svg class="off"':'<svg')).join('')}</span>`;
+const dot=c=>c==="Pantry"?"":`<span class="dot ${c=="Veg"?"veg":"nonveg"}" aria-hidden="true"></span>`;
+const wa=n=>`https://wa.me/919846020348?text=${encodeURIComponent("Hi, I'd like to order: "+n)}`;
+document.getElementById("grid").innerHTML=P.map(([n,c,i,y,h,d,ing],k)=>`
+<article class="card" data-rv data-cat="${c}">
+  <div class="ph" data-k="${k}" role="button" tabindex="0" aria-label="Details for ${n}"><img src="img/${i}.jpg" alt="${n}" loading="lazy" style="object-position:50% ${y}%"></div>
+  <div class="meta"><span class="tag">${dot(c)}${c}</span>${h?heat(h):""}</div>
   <h3>${n}</h3>
-  <a class="btn" href="https://wa.me/919846020348?text=${encodeURIComponent("Hi, I'd like to order: "+n)}" target="_blank" rel="noopener">Order</a>
+  <p>${d}</p>
+  <div class="chips">${ing.slice(0,3).map(x=>`<span>${x}</span>`).join("")}</div>
+  <div class="row"><button class="btn" data-k="${k}">Details</button><a class="btn fill" href="${wa(n)}" target="_blank" rel="noopener">Order</a></div>
 </article>`).join("");
 </script>
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
+<script src="js/motion.js"></script>
 <script src="vendor/three.min.js"></script>
 <script>
-// Scroll-scrubbed hero: ingredients fall from the sky into the jar mouth (p = scroll progress through .stage, 0..1)
-const SVG={
- leaf:'<svg viewBox="0 0 40 60"><path d="M20 2C38 20 38 45 20 58 2 45 2 20 20 2Z" fill="#5aa646"/><path d="M20 10V56" stroke="#2f6b26" stroke-width="2"/></svg>',
- garlic:'<svg viewBox="0 0 40 50"><path d="M20 2C24 12 36 20 34 36 32 48 8 48 6 36 4 20 16 12 20 2Z" fill="#f3e6c8"/></svg>',
- chilli:'<svg viewBox="0 0 40 60"><path d="M8 4C32 2 40 28 30 58 24 40 14 24 8 4Z" fill="#c0301c"/><path d="M8 4l-4-3" stroke="#5aa646" stroke-width="3"/></svg>',
- pepper:'<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#1c1410" stroke="#3a2a20"/></svg>'
-};
+const {gsap:G,reduced,fine,SVG}=SITE;
+// ---------- product filter + detail sheet ----------
+const cards=[...document.querySelectorAll('.card')], sheet=document.getElementById('sheet');
+document.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  const f=b.dataset.f, show=cards.filter(c=>f=="all"||c.dataset.cat==f);
+  cards.forEach(c=>c.hidden=!show.includes(c));
+  if(G&&!reduced) G.fromTo(show,{opacity:0,y:30,scale:.96},{opacity:1,y:0,scale:1,duration:.5,stagger:.05,ease:'power3.out',overwrite:true});
+  else show.forEach(c=>c.style.opacity=1);
+  if(window.ScrollTrigger) ScrollTrigger.refresh();
+}));
+function openSheet(k){
+  const [n,c,i,y,h,d,ing,pair]=P[k];
+  sheet.innerHTML=`<div class="sheet"><img src="img/${i}.jpg" alt="${n}" style="object-position:50% ${y}%">
+    <div class="body"><button class="btn x" aria-label="Close">✕</button>
+      <div class="meta"><span class="tag">${dot(c)}${c}</span>${h?heat(h):""}</div>
+      <h3 id="sheet-title">${n}</h3><p>${d}</p>
+      <div><h4>Key ingredients</h4><div class="chips" style="margin-top:8px">${ing.map(x=>`<span>${x}</span>`).join("")}</div></div>
+      <div><h4>Enjoy it with</h4><p>${pair}</p></div>
+      <div><h4>Storage</h4><ul><li>Always use a clean, dry spoon.</li><li>Keep the lid tightly closed${c=="Non-veg"?"; refrigerate after opening":" in a cool, dry place"}.</li><li>Best before: printed on the jar.</li></ul></div>
+      <small>Full ingredients and allergen information (e.g. mustard) are printed on the jar label. Ask us on WhatsApp for sizes and current prices.</small>
+      <a class="btn fill" style="align-self:flex-start" href="${wa(n)}" target="_blank" rel="noopener">Order on WhatsApp</a>
+    </div></div>`;
+  sheet.querySelector('.x').onclick=closeSheet;
+  sheet.showModal(); SITE.lenis&&SITE.lenis.stop();
+  // animate the inner wrapper: GSAP reparents fixed elements when parsing transforms, which drops the dialog's modal state
+  if(G&&!reduced){ G.fromTo(sheet.firstChild,{opacity:0,y:60,scale:.96},{opacity:1,y:0,scale:1,duration:.5,ease:'power3.out'});
+    G.from(sheet.querySelectorAll('.body>*'),{opacity:0,y:20,stagger:.05,duration:.4,delay:.15}); }
+}
+function closeSheet(){
+  const done=()=>{sheet.close(); SITE.lenis&&SITE.lenis.start();};
+  G&&!reduced?G.to(sheet.firstChild,{opacity:0,y:40,duration:.25,ease:'power2.in',onComplete:done}):done();
+}
+sheet.addEventListener('cancel',e=>{e.preventDefault();closeSheet()});
+sheet.addEventListener('click',e=>{if(e.target===sheet)closeSheet()});
+document.getElementById('grid').addEventListener('click',e=>{const t=e.target.closest('[data-k]'); if(t)openSheet(+t.dataset.k)});
+document.getElementById('grid').addEventListener('keydown',e=>{const t=e.target.closest('.ph'); if(t&&(e.key=='Enter'||e.key==' ')){e.preventDefault();openSheet(+t.dataset.k)}});
+// card tilt: image plate follows the pointer in 3D
+if(fine&&!reduced) cards.forEach(c=>{
+  const ph=c.querySelector('.ph');
+  c.addEventListener('pointermove',e=>{const r=ph.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    ph.style.transform=`perspective(600px) rotateY(${x*14}deg) rotateX(${-y*14}deg)`});
+  c.addEventListener('pointerleave',()=>ph.style.transform='');
+});
+
+// ---------- storyboard: pin and scrub sideways; line drawings draw themselves as each panel arrives ----------
+const story=document.querySelector('.story'), strack=document.querySelector('.story-track');
+if(G&&!reduced){
+  const dist=()=>strack.scrollWidth-innerWidth;
+  const side=G.to(strack,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:story,start:'top top',end:()=>'+='+dist(),pin:true,scrub:1,invalidateOnRefresh:true}});
+  G.to('.story-bar i',{scaleX:1,ease:'none',scrollTrigger:{trigger:story,start:'top top',end:()=>'+='+dist(),scrub:true}});
+  document.querySelectorAll('.panel').forEach((p,i)=>{
+    const st={trigger:p,containerAnimation:side,start:'left 75%',toggleActions:'play none none reverse'};
+    if(i) G.from(p.querySelectorAll('h3,p,.eyebrow'),{opacity:0,x:40,stagger:.08,duration:.7,ease:'power3.out',scrollTrigger:st});
+    G.from(p.querySelector('figure'),{clipPath:'inset(0 100% 0 0)',duration:1,ease:'power4.inOut',scrollTrigger:{...st,start:'left 85%'}});
+    G.from(p.querySelector('.num'),{yPercent:60,opacity:0,duration:1,ease:'power3.out',scrollTrigger:st});
+    p.querySelectorAll('.draw *').forEach(s=>{const L=s.getTotalLength?s.getTotalLength():300;
+      G.fromTo(s,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.4,ease:'power2.inOut',scrollTrigger:{...st,start:'left 60%'}}); });
+    const img=p.querySelector('figure img'); if(img) G.fromTo(img,{scale:1.25},{scale:1,ease:'none',scrollTrigger:{trigger:p,containerAnimation:side,start:'left right',end:'right left',scrub:true}});
+  });
+}
+
+// ---------- hero: ingredients fall from the sky into the jar mouth (p = scroll progress through .stage, 0..1) ----------
 const kinds=Object.keys(SVG), sticky=document.querySelector('.sticky'), stage=document.querySelector('.stage');
 // 3D ingredients (three.js). If WebGL/three is unavailable we fall back to the flat SVG bits.
 let R=null,scene,cam,K=2*10*Math.tan(20*Math.PI/180); // K = world height visible at z=0
@@ -185,13 +341,6 @@ const bits=Array.from({length:28},(_,i)=>{
 });
 function fit(){ if(!R)return; R.setSize(sticky.clientWidth,sticky.clientHeight,false); cam.aspect=sticky.clientWidth/sticky.clientHeight; cam.updateProjectionMatrix(); }
 fit(); addEventListener('resize',fit);
-// card tilt: image plate follows the pointer in 3D
-document.querySelectorAll('.card').forEach(c=>{
-  const ph=c.querySelector('.ph');
-  c.addEventListener('pointermove',e=>{const r=ph.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
-    ph.style.transform=`perspective(600px) rotateY(${x*14}deg) rotateX(${-y*14}deg)`});
-  c.addEventListener('pointerleave',()=>ph.style.transform='');
-});
 const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)), ease=t=>t*t*(3-2*t);
 const burst=document.getElementById('burst'), jar=document.getElementById('jar'), out=document.querySelector('.hero-out'), hint=document.querySelector('.hint');
 // The jar frame is 1920x1080 with its open mouth (880px wide) centred at ~(955,150). Landscape: cover the stage.
@@ -201,8 +350,8 @@ function layout(){
   Object.assign(jar.style,{objectFit:'fill',top:0,right:'auto',bottom:'auto',width:1920*sc+'px',height:1080*sc+'px',left:(W-1920*sc)/2+'px'});
   return {mouthX:(W-1920*sc)/2+955*sc, mouth:150*sc+jt*H/100, jt};
 }
-function draw(){
-  const p=clamp(-stage.getBoundingClientRect().top/(stage.offsetHeight-innerHeight));
+let mouse=0; // gentle pointer parallax on the 3D bits
+function draw(p){
   const vh=innerHeight/100, vw=innerWidth/100;
   const {mouthX,mouth,jt}=layout(), m=clamp(innerWidth/1100,.45,1);
   burst.style.opacity=1-clamp((p-.25)/.3); burst.style.transform=`translateY(${p*14}vh) scale(${1+p*.12})`;
@@ -211,23 +360,27 @@ function draw(){
   bits.forEach(b=>{
     const t=clamp((p-.08-b.d)/.5), e=t*t, x=mouthX+(b.x0*vw-mouthX)*(1-.92*e), y=-80+(mouth+80)*e, f=t<=0?0:t>.92?(1-t)/.08:1;
     if(R){ const H=innerHeight, a=b.spin*t*Math.PI/180;
-      b.el.position.set((x-innerWidth/2)/H*K,(H/2-y)/H*K,0); b.el.rotation.set(a*.7,a,a*.5); b.el.scale.setScalar(b.s*f*m); }
+      b.el.position.set((x-innerWidth/2)/H*K+mouse*(1-e)*.6,(H/2-y)/H*K,0); b.el.rotation.set(a*.7,a,a*.5); b.el.scale.setScalar(b.s*f*m); }
     else{ b.el.style.opacity=f; b.el.style.transform=`translate(${x}px,${y}px) rotate(${b.spin*t}deg)`; }
   });
   if(R)R.render(scene,cam);
 }
-// ingredient ribbon (list doubled so the -50% slide loops seamlessly)
-const names=["Curry leaf","Garlic","Chilli","Black pepper","Dates","Lemon","Prawns"], icons=["leaf","garlic","chilli","pepper"];
-const run=names.map((n,i)=>`<span>${n} ${SVG[icons[i%4]]}</span>`).join('');
-document.getElementById('track').innerHTML=run+run+run+run;
-// floating graphics behind About / CTA
-document.querySelectorAll('[data-wm]').forEach((s,k)=>[["leaf",6,10],["chilli",78,50],["garlic",40,70]].forEach(([t,x,y],i)=>{
-  s.insertAdjacentHTML('afterbegin',SVG[t].replace('<svg','<svg style="left:'+x+'%;top:'+y+'%;animation-delay:-'+(i*3+k)+'s"')); }));
-// scroll reveals, staggered per row
-const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&(e.target.classList.add('in'),io.unobserve(e.target))),{threshold:.15});
-document.querySelectorAll('h2,.card,.about p,.cta a').forEach((el,i)=>{el.classList.add('rv');el.style.setProperty('--d',(i%4)*.08+'s');io.observe(el)});
-if(matchMedia('(prefers-reduced-motion:reduce)').matches){ jar.style.opacity=1; burst.style.opacity=0; out.style.opacity=1; jar.style.transform=`translateY(${layout().jt}vh)`; addEventListener('resize',()=>jar.style.transform=`translateY(${layout().jt}vh)`); if(R)R.domElement.remove(); else bits.forEach(b=>b.el.remove()); }
-else{ addEventListener('scroll',()=>requestAnimationFrame(draw),{passive:true}); addEventListener('resize',draw); draw(); }
+if(reduced||!G){ jar.style.opacity=1; burst.style.opacity=0; out.style.opacity=1; jar.style.transform=`translateY(${layout().jt}vh)`; addEventListener('resize',()=>jar.style.transform=`translateY(${layout().jt}vh)`); if(R)R.domElement.remove(); else bits.forEach(b=>b.el.remove()); }
+else{
+  const st=ScrollTrigger.create({trigger:stage,start:'top top',end:'bottom bottom',onUpdate:s=>draw(s.progress),onRefresh:s=>draw(s.progress)});
+  draw(0);
+  if(fine) addEventListener('pointermove',e=>{mouse=(e.clientX/innerWidth-.5); draw(st.progress)});
+  // intro: title letters drop in, eyebrow and hint follow
+  const t=document.getElementById('title'); t.innerHTML=[...t.textContent].map(c=>`<span>${c}</span>`).join('');
+  G.timeline({defaults:{ease:'power4.out'}})
+   .from('#title span',{yPercent:120,rotate:12,opacity:0,duration:1.1,stagger:.06})
+   .from('.hero-copy .eyebrow',{y:20,opacity:0,duration:.6},'-=.7')
+   .from(burst,{scale:1.25,duration:1.8,ease:'power2.out'},0)
+   .from('nav',{y:-40,opacity:0,duration:.6},'-=.8');
+  G.to('.hint',{y:8,duration:.8,ease:'sine.inOut',yoyo:true,repeat:-1});
+  // title drifts up and spreads as you leave the top
+  G.to('#title',{yPercent:-40,letterSpacing:'.04em',ease:'none',scrollTrigger:{trigger:stage,start:'top top',end:'25% top',scrub:true}});
+}
 </script>
 </body>
 </html>

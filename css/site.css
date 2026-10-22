@@ -8,7 +8,8 @@
 :root{
   --ground:#0c0907; --ink:#f3e6c8; --accent:#f5a524; --surface:#1a120d; --surface-2:#241911; --deep:#050302;
   --veg:#3f9b3a; --nonveg:#b3361b; --error:#ff8a65;
-  --display:'Antonio','Bebas Neue',Impact,sans-serif;
+  --brand:'Antonio','Bebas Neue',Impact,sans-serif;   /* the BHARANY logotype only */
+  --display:'Fraunces',Georgia,'Times New Roman',serif; /* section headings */
   --body:'Inter',system-ui,sans-serif;
   --ease:cubic-bezier(.2,.7,.2,1);
   /* five sizes do the work */
@@ -24,9 +25,9 @@ a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
 p{max-width:62ch}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-h1,h2,h3{font-family:var(--display);font-weight:700;text-transform:uppercase;color:var(--ink);letter-spacing:-.02em}
-h2{font-size:var(--t-h2);line-height:.92;margin-bottom:clamp(28px,4vw,48px)}
-h3{font-size:var(--t-h3);line-height:1.02}
+h1,h2,h3{font-family:var(--display);font-weight:500;color:var(--ink);letter-spacing:-.02em}
+h2{font-size:var(--t-h2);line-height:1;margin-bottom:clamp(28px,4vw,48px)}
+h3{font-size:var(--t-h3);line-height:1.12;letter-spacing:-.01em}
 .lede{font-size:clamp(18px,1.6vw,22px);line-height:1.5}
 .small{font-size:var(--t-small);line-height:1.5;color:var(--ink);opacity:.75}
 
@@ -44,7 +45,7 @@ h3{font-size:var(--t-h3);line-height:1.02}
 nav{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;gap:10px;align-items:center;padding:14px var(--margin);height:72px;transition:transform .4s var(--ease),background .3s}
 nav.solid{background:var(--ground)}
 nav.away{transform:translateY(-110%)}
-.brand{font:700 26px/1 var(--display);letter-spacing:.02em;color:var(--accent)}
+.brand{font:700 26px/1 var(--brand);letter-spacing:.02em;color:var(--accent)}
 .links{display:flex;gap:6px;margin-left:auto}
 .links .btn{background:none;padding:10px 14px}
 .links .btn:hover{background:var(--surface-2)}
@@ -67,7 +68,7 @@ section{max-width:1440px;margin:auto;padding:var(--gap) var(--margin) 0}
 .w>span{display:inline-block;will-change:transform}
 
 .marquee{overflow:hidden;padding:22px 0;background:var(--accent);color:var(--deep)}
-.track{display:flex;gap:32px;width:max-content;font:700 clamp(28px,4vw,48px)/1 var(--display);text-transform:uppercase;align-items:center;will-change:transform}
+.track{display:flex;gap:32px;width:max-content;font:700 clamp(28px,4vw,48px)/1 var(--brand);text-transform:uppercase;align-items:center;will-change:transform}
 .track span{display:flex;align-items:center;gap:32px;white-space:nowrap}
 .track svg{height:.8em;width:auto}
 
@@ -86,7 +87,7 @@ section{max-width:1440px;margin:auto;padding:var(--gap) var(--margin) 0}
 /* FAQ: each question is its own filled block, no rules between rows */
 .faq-list{display:grid;gap:8px}
 .faq details{background:var(--surface);padding:22px 24px}
-.faq summary{font:700 var(--t-h3)/1.1 var(--display);text-transform:uppercase;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary{font:500 var(--t-h3)/1.2 var(--display);cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";color:var(--accent);transition:transform .3s var(--ease)}
 .faq details[open] summary::after{transform:rotate(45deg)}
@@ -101,12 +102,12 @@ footer{background:var(--surface);padding:72px var(--margin) 28px}
 footer h4{font:600 var(--t-small) var(--body);opacity:.7;margin-bottom:10px}
 footer ul{list-style:none;padding:0;display:grid;gap:8px}
 footer a:hover{color:var(--accent)}
-.foot-name{max-width:1440px;margin:56px auto 0;font:700 clamp(80px,21vw,320px)/.8 var(--display);color:var(--accent);letter-spacing:-.02em}
+.foot-name{max-width:1440px;margin:56px auto 0;font:700 clamp(80px,21vw,320px)/.8 var(--brand);color:var(--accent);letter-spacing:-.02em}
 .legal{max-width:1440px;margin:24px auto 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:var(--t-small);opacity:.75}
 
 /* page-transition curtain */
 .curtain{position:fixed;inset:0;background:var(--accent);z-index:50;transform:scaleY(0);transform-origin:50% 100%;pointer-events:none;
-  display:grid;place-items:center;font:700 clamp(48px,10vw,120px)/1 var(--display);color:var(--deep)}
+  display:grid;place-items:center;font:700 clamp(48px,10vw,120px)/1 var(--brand);color:var(--deep)}
 @media(prefers-reduced-motion:reduce){.curtain{display:none}nav{transition:none}}
 
 /* phones: full-screen menu */
@@ -119,7 +120,7 @@ footer a:hover{color:var(--accent)}
   .links .m-only{display:inline-block}
   .links .wa{margin-top:28px;font-size:16px;text-decoration:underline}
   .nav-r{margin-left:auto}
-  .links .btn{padding:4px 0;font:700 clamp(44px,13vw,64px)/1.05 var(--display);text-transform:uppercase;background:none!important}
+  .links .btn{padding:4px 0;font:500 clamp(40px,11vw,56px)/1.15 var(--display);background:none!important}
   nav.menu-open{transform:none!important;background:transparent}
   .page-head{padding-top:120px}
   .band>section{padding-bottom:var(--gap)}
@@ -138,12 +139,12 @@ footer a:hover{color:var(--accent)}
 .drawer-items{flex:1;overflow:auto;padding:4px 20px;overscroll-behavior:contain;display:grid;gap:8px;align-content:start}
 .line{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:10px;background:var(--surface-2)}
 .line img{width:64px;height:80px;object-fit:cover}
-.line b{font:700 18px/1.1 var(--display);text-transform:uppercase;display:block}
+.line b{font:600 18px/1.2 var(--display);display:block}
 .line small{display:block;margin:4px 0 8px;font-size:var(--t-small);opacity:.8}
 .qty{display:inline-flex;align-items:center;background:var(--ground);border-radius:9999px}
 .qty button{background:none;border:0;color:var(--ink);font:700 18px var(--body);width:38px;height:36px;cursor:pointer}
 .qty span{min-width:22px;text-align:center}
-.sum{display:flex;justify-content:space-between;font:700 22px var(--display);text-transform:uppercase}
+.sum{display:flex;justify-content:space-between;font:600 22px var(--display)}
 .note{font-size:var(--t-small);line-height:1.5;opacity:.8}
 .empty{padding:40px 0;text-align:center}
 .toast{position:fixed;left:50%;top:84px;transform:translate(-50%,-30px);opacity:0;background:var(--accent);color:var(--deep);padding:12px 20px;border-radius:9999px;font:600 16px var(--body);z-index:45;transition:transform .4s var(--ease),opacity .4s,visibility 0s .4s;visibility:hidden;max-width:calc(100vw - 32px);text-align:center}
@@ -154,3 +155,27 @@ select,input,textarea{font:400 16px var(--body);color:var(--ink);background:var(
 select:focus,input:focus,textarea:focus{border-color:var(--accent);outline:none}
 label{display:flex;flex-direction:column;gap:6px;font:600 var(--t-small) var(--body)}
 .resize{width:auto;padding:3px 6px;font-size:14px;display:inline-block;margin-right:2px}
+
+/* sale bar: a real, time-limited offer switched on in the settings sheet */
+.salebar{position:fixed;inset:0 0 auto;z-index:25;height:48px;display:flex;align-items:center;justify-content:center;gap:16px;padding:0 var(--margin);background:var(--accent);color:var(--deep);font-size:var(--t-small)}
+.salebar b{font-weight:600}
+.salebar .cd{font-variant-numeric:tabular-nums;font-weight:600}
+.salebar .btn{background:var(--deep);color:var(--accent);padding:8px 14px}
+.has-sale nav{top:48px}
+.has-sale .page-head{padding-top:200px}
+@media(max-width:560px){.salebar{gap:10px;height:52px;justify-content:space-between}.salebar .cd>span:first-child{display:none}.salebar b{max-width:40%;line-height:1.2}}
+
+/* phone bottom bar: Shop, Boxes, Cart, WhatsApp */
+.tabbar{display:none}
+@media(max-width:760px){
+  .tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;inset:auto 0 0;z-index:22;background:var(--surface);padding:6px 16px calc(6px + env(safe-area-inset-bottom))}
+  .tabbar a,.tabbar button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;font:600 15px var(--body);color:var(--ink);background:none;border:0;border-radius:9999px;cursor:pointer}
+  .tabbar button{background:var(--accent);color:var(--deep)}
+  .tab-count{background:var(--deep);color:var(--accent);border-radius:11px;min-width:22px;height:22px;font-size:13px;line-height:22px}
+  .tab-count[hidden]{display:none}
+  body{padding-bottom:72px}
+  .nav-r .cart-btn{display:none}
+  .toast{top:auto;bottom:88px}
+}
+.has-sale .hero-copy{top:calc(13svh + 48px)}
+@media(max-width:560px){.has-sale .hero-copy{top:calc(13svh + 52px)}}

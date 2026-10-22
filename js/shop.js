@@ -6,7 +6,7 @@ const SHOP={
   payee:'Bharany',
   cod:false,                 // offer cash on delivery
   // Google Apps Script web-app URL that alerts you on WhatsApp in the background (see tools/order-alert.gs). Empty = off
-  orderHook:'',
+  orderHook:'',              // also serves the site settings from the Google Sheet (see SETTINGS below)
   // your own phone video of the cooking, e.g. 'img/cooking.mp4' (10-20s, muted, portrait or square). Empty = line drawing
   cookingVideo:'',
   currency:'₹',
@@ -164,10 +164,66 @@ function addBox(id){
   const G=SITE.gsap; if(G&&!SITE.reduced) G.fromTo('[data-cart-count]',{scale:1.8},{scale:1,duration:.5,ease:'back.out(3)'});
 }
 // ---- EDIT HERE: real customer reviews only, shared with the customer's permission ----
-// {name:'Anu', place:'Bengaluru', text:'Tastes exactly like home', img:'img/reviews/anu.jpg'}  (img optional: a WhatsApp/Instagram screenshot)
+// {name:'Anu', place:'Bengaluru', text:'Tastes exactly like home', img:'img/reviews/anu.jpg'}  (img: a WhatsApp/Instagram screenshot or photo,
+//  video: 'img/reviews/anu.mp4' for a short clip; both optional)
 // The reviews section stays hidden until at least one is added.
 const REVIEWS=[];
 // a box is in season when today falls inside one of its [from, to, label] month-day windows (windows may wrap past New Year)
 function season(b){const d=new Date(), md=String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
   return (b.season||[]).find(([f,t])=>f<=t?md>=f&&md<=t:md>=f||md<=t)?.[2]||'';}
-window.Shop={deliveryFor,SHOP,CATALOG,BOXES,REVIEWS,season,lineHTML,addBox,Cart,money,openCart,closeCart,addToCart,toast};
+// ---- EDIT HERE: cravings for the "Shop by craving" tabs. ids from CATALOG ----
+const CRAVINGS=[
+ {id:'spicy',name:'Spicy',test:p=>p.heat>=3},
+ {id:'sweet',name:'Sweet and sour',ids:['dates-lemon','dates','dates-lemon-classic','pineapple','mango-carrot']},
+ {id:'rice',name:'For hot rice',ids:['prawns','fish','chemmeen-podi','kozhuva','kakka','mango-red','lemon','garlic','chutney','beef']},
+ {id:'abroad',name:'Safe to send abroad',test:p=>p.cat!=='Non-veg'}
+];
+CRAVINGS.forEach(c=>c.items=CATALOG.filter(p=>c.test?c.test(p):c.ids.includes(p.id)));
+
+// ---- SETTINGS: what's switched on right now ----
+// These defaults apply until the Google Sheet is connected (tools/order-alert.gs, "Settings" tab). Once SHOP.orderHook is set,
+// the sheet wins, so the sale, best sellers and banner can be changed from a phone without touching code.
+const SETTINGS_DEFAULT={
+  sale:{on:false,title:'',ends:'',link:'#products'},   // ends: '2026-11-30T23:59' (India time)
+  bestsellers:[],                                      // product ids you know sell best, e.g. ['prawns','fish']
+  banner:{mode:'auto',title:'',text:'',image:'',link:'',box:''} // mode: auto (festival boxes in season) | on | off
+};
+// a Google Drive share link becomes a direct picture link; anything else must be a picture in this site's img/ folder
+const posterSrc=u=>{u=String(u||'').trim(); const m=u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)([\w-]{20,})/);
+  if(m) return 'https://lh3.googleusercontent.com/d/'+m[1]; if(/^https:\/\/lh3\.googleusercontent\.com\/[\w\/=-]+$/.test(u)) return u;
+  return /^img\/[\w\/.-]+\.(jpe?g|png|webp|gif)$/i.test(u)?u:'';};
+function loadSettings(){
+  const done=s=>({...SETTINGS_DEFAULT,...s,sale:{...SETTINGS_DEFAULT.sale,...(s&&s.sale)},banner:{...SETTINGS_DEFAULT.banner,...(s&&s.banner)},
+    bestsellers:((s&&s.bestsellers)||SETTINGS_DEFAULT.bestsellers).filter(id=>CATALOG.some(p=>p.id===id))});
+  if(!SHOP.orderHook) return Promise.resolve(done({}));
+  try{const c=JSON.parse(sessionStorage.getItem('bh-settings')||'null'); if(c&&Date.now()-c.t<5*60e3) return Promise.resolve(done(c.s));}catch(e){}
+  const ctl=new AbortController(); setTimeout(()=>ctl.abort(),3000);
+  return fetch(SHOP.orderHook+'?settings=1',{signal:ctl.signal}).then(r=>r.json()).then(s=>{try{sessionStorage.setItem('bh-settings',JSON.stringify({t:Date.now(),s}))}catch(e){} return done(s);})
+    .catch(()=>done({}));
+}
+const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// ---- phone bottom bar (every page) ----
+document.body.insertAdjacentHTML('beforeend',`<div class="tabbar" role="navigation" aria-label="Shortcuts">
+  <a href="${location.pathname.endsWith('index.html')||/\/$/.test(location.pathname)?'':'index.html'}#products">Shop</a>
+  <a href="${location.pathname.endsWith('index.html')||/\/$/.test(location.pathname)?'':'index.html'}#missing-home">Boxes</a>
+  <button type="button" data-open-cart>Cart <span class="tab-count" data-cart-count hidden>0</span></button>
+  <a href="https://wa.me/${SHOP.whatsapp}" target="_blank" rel="noopener">WhatsApp</a></div>`);
+Cart.on(()=>document.querySelectorAll('[data-cart-count]').forEach(e=>{e.textContent=Cart.count(); e.hidden=!Cart.count();}));
+
+// ---- sale bar with countdown (every page), only while a sale is switched on and not yet over ----
+function saleBar(st){
+  const s=st.sale, end=Date.parse(s.ends&&!/[zZ]|[+-]\d\d:?\d\d$/.test(s.ends)?s.ends+'+05:30':s.ends);
+  if(!s.on||!s.title||!(end>Date.now())) return;
+  const home=/(^|\/)(index\.html)?$/.test(location.pathname)?'':'index.html';
+  document.body.insertAdjacentHTML('afterbegin',`<div class="salebar" role="region" aria-label="Offer"><b>${esc(s.title)}</b>
+    <span class="cd" aria-live="off"><span>Ends in</span> <span data-cd></span></span><a class="btn fill" href="${home}${/^#[\w-]+$/.test(s.link)?esc(s.link):'#products'}">Shop now</a></div>`);
+  document.body.classList.add('has-sale');
+  const el=document.querySelector('[data-cd]'), pad=n=>String(n).padStart(2,'0');
+  const tick=()=>{const ms=end-Date.now(); if(ms<=0){document.querySelector('.salebar').remove(); document.body.classList.remove('has-sale'); return;}
+    const d=Math.floor(ms/864e5),h=Math.floor(ms/36e5)%24,m=Math.floor(ms/6e4)%60,x=Math.floor(ms/1e3)%60;
+    el.textContent=(d?d+'d ':'')+pad(h)+'h '+pad(m)+'m '+pad(x)+'s'; setTimeout(tick,1000);};
+  tick();
+}
+const settingsReady=loadSettings(); settingsReady.then(saleBar);
+window.Shop={settingsReady,posterSrc,esc,CRAVINGS,deliveryFor,SHOP,CATALOG,BOXES,REVIEWS,season,lineHTML,addBox,Cart,money,openCart,closeCart,addToCart,toast};

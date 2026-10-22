@@ -41,7 +41,8 @@ const CATALOG=[
 const BOXES=[
  {id:'first-month',name:'The first-month box',line:'All veg and easy to keep on a shelf. For the week the homesickness hits.',items:[['mango-red','250g'],['dates-lemon','250g'],['chutney','250g']]},
  {id:'sunday',name:'The Sunday lunch box',line:'Prawns, fish and mango. Plain rice does the rest.',items:[['prawns','250g'],['fish','250g'],['mango-red','250g']]},
- {id:'feast',name:'The Christmas & Easter feast box',line:'Beef, prawns and clam for the appam-and-stew table, the way Kerala Christian homes lay it out.',items:[['beef','500g'],['prawns','250g'],['kakka','250g']]},
+ {id:'feast',season:[['11-15','01-10','Christmas'],['03-01','04-30','Easter']],name:'The Christmas & Easter feast box',line:'Beef, prawns and clam for the appam-and-stew table, the way Kerala Christian homes lay it out.',items:[['beef','500g'],['prawns','250g'],['kakka','250g']]},
+ {id:'sadya',season:[['08-01','09-30','Onam'],['04-01','04-20','Vishu']],name:'The Onam & Vishu sadya box',line:'Mango, lemon and lemon-dates: the pickles every sadya leaf needs.',items:[['mango-red','250g'],['lemon','250g'],['dates-lemon','250g']]},
  {id:'abroad',name:'The overseas parcel box',line:'All veg, 500g jars, packed leak-proof so family can courier it to you abroad.',abroad:true,items:[['mango-red','500g'],['garlic','500g'],['dates-lemon','500g']]},
  {id:'maggi',name:'The late-night rescue box',line:'For instant noodles, plain dosa and 11pm rice. One spoon fixes it.',items:[['chemmeen-podi','250g'],['garlic','250g'],['lemon','250g']]}
 ];
@@ -77,6 +78,15 @@ const Cart=(()=>{
     add(id,size,qty=1){const f=find(id,size); f?f.qty=Math.min(f.qty+qty,MAXQ):items.push({id,size,qty}); save();},
     set(id,size,qty){const f=find(id,size); if(!f)return; f.qty=Math.min(qty,MAXQ); if(qty<1)items=items.filter(i=>i!==f); save();},
     clear(){items=[]; save();},
+    // switch a line to another size, merging into an existing line of that size
+    resize(id,from,to){const f=find(id,from), p=this.product(id); if(!f||from===to||!p.sizes.some(s=>s[0]===to))return;
+      const g=find(id,to); if(g){g.qty=Math.min(g.qty+f.qty,MAXQ); items=items.filter(i=>i!==f);} else f.size=to; save();},
+    // 'id:size:qty,...' for reorder links; add() ignores anything not in the catalogue
+    code(list=items){return list.map(i=>`${i.id}:${i.size}:${i.qty}`).join(',')},
+    addCode(c){let n=0; String(c).split(',').slice(0,30).forEach(x=>{const [id,size,q]=x.split(':'), p=this.product(id), qty=parseInt(q,10);
+      if(p&&p.sizes.some(s=>s[0]===size)&&qty>0){find(id,size)?this.set(id,size,Math.min(find(id,size).qty+qty,MAXQ)):(items.push({id,size,qty:Math.min(qty,MAXQ)}),save()); n++;}}); return n;},
+    saveLast(){try{localStorage.setItem('bh-last',this.code())}catch(e){}},
+    last(){try{return localStorage.getItem('bh-last')||''}catch(e){return ''}},
     count(){return items.reduce((a,i)=>a+i.qty,0)},
     // total is null when any item has no price yet
     total(){let t=0; for(const i of items){const p=this.price(i); if(p==null)return null; t+=p*i.qty;} return t},
@@ -105,13 +115,14 @@ const drawer=document.getElementById('drawer'), dItems=document.getElementById('
 function lineHTML(i){
   const p=Cart.product(i.id), pr=Cart.price(i);
   return `<div class="line"><img src="${p.src}" alt="" style="object-position:50% ${p.y}%">
-    <div><b>${p.name}</b><small>${i.size} · ${pr==null?'price on confirmation':money(pr)}</small>
-    <div class="qty" data-id="${i.id}" data-size="${i.size}"><button aria-label="Fewer" data-d="-1">−</button><span>${i.qty}</span><button aria-label="More" data-d="1">+</button></div></div>
+    <div><b>${p.name}</b><small>${p.sizes.length>1?`<select class="resize" data-id="${i.id}" data-size="${i.size}" aria-label="Size">${p.sizes.map(([s])=>`<option${s===i.size?' selected':''}>${s}</option>`).join('')}</select>`:i.size} · ${pr==null?'price on confirmation':money(pr)}</small>
+    <div class="qty" data-id="${i.id}" data-size="${i.size}"><button type="button" aria-label="Fewer" data-d="-1">−</button><span>${i.qty}</span><button type="button" aria-label="More" data-d="1">+</button></div></div>
     <b>${pr==null?'':money(pr*i.qty)}</b></div>`;
 }
 Cart.on(items=>{
   document.querySelectorAll('[data-cart-count]').forEach(e=>{e.textContent=Cart.count(); e.hidden=!Cart.count();});
-  dItems.innerHTML=items.length?items.map(lineHTML).join(''):'<p class="empty">Your cart is empty. Time for a jar or two.</p>';
+  const last=Cart.last(), lastN=last?last.split(',').reduce((a,x)=>a+(parseInt(x.split(':')[2],10)||0),0):0;
+  dItems.innerHTML=items.length?items.map(lineHTML).join(''):'<p class="empty">Your cart is empty. Time for a jar or two.'+(lastN?`<br><br><button class="btn fill" data-reorder>Reorder your last order (${lastN} jar${lastN>1?'s':''})</button>`:'')+'</p>';
   const t=Cart.total();
   document.getElementById('drawer-total').textContent=items.length?(t==null?'Confirmed on WhatsApp':money(t)):money(0);
   document.getElementById('drawer-note').textContent=items.length?'Delivery charge is confirmed with your order.':'';
@@ -124,6 +135,11 @@ document.addEventListener('click',e=>{
   else if(e.target.closest('#drawer [data-close]')) closeCart();
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!drawer.hidden)closeCart()});
+document.addEventListener('change',e=>{const r=e.target.closest('select.resize'); if(r) Cart.resize(r.dataset.id,r.dataset.size,r.value);});
+document.addEventListener('click',e=>{if(e.target.closest('[data-reorder]')){Cart.addCode(Cart.last()); toast('Your last order is back in the cart');}});
+// reorder links (?reorder=id:size:qty,...) fill the cart and open it
+{const m=location.search.match(/[?&]reorder=([^&]+)/); if(m){const n=Cart.addCode(decodeURIComponent(m[1]));
+  history.replaceState(null,'',location.pathname+location.hash); if(n) addEventListener('load',()=>setTimeout(openCart,600));}}
 function openCart(){
   const G=SITE.gsap; drawer.hidden=false; SITE.lenis&&SITE.lenis.stop(); document.documentElement.style.overflow='hidden';
   if(G&&!SITE.reduced){G.fromTo('.drawer-panel',{xPercent:100},{xPercent:0,duration:.5,ease:'power3.out'}); G.fromTo('.drawer-bg',{opacity:0},{opacity:1,duration:.3});}
@@ -146,4 +162,7 @@ function addBox(id){
 // {name:'Anu', place:'Bengaluru', text:'Tastes exactly like home', img:'img/reviews/anu.jpg'}  (img optional: a WhatsApp/Instagram screenshot)
 // The reviews section stays hidden until at least one is added.
 const REVIEWS=[];
-window.Shop={SHOP,CATALOG,BOXES,REVIEWS,addBox,Cart,money,openCart,closeCart,addToCart,toast};
+// a box is in season when today falls inside one of its [from, to, label] month-day windows (windows may wrap past New Year)
+function season(b){const d=new Date(), md=String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  return (b.season||[]).find(([f,t])=>f<=t?md>=f&&md<=t:md>=f||md<=t)?.[2]||'';}
+window.Shop={SHOP,CATALOG,BOXES,REVIEWS,season,lineHTML,addBox,Cart,money,openCart,closeCart,addToCart,toast};

@@ -23,16 +23,16 @@ const CATALOG=[
  {id:'fish',name:"Fish Pickle",cat:"Non-veg",kg:1200,img:4,y:36,heat:3,desc:"Firm fish, fried crisp and folded into a deep red Kerala masala. A coastal classic.",ing:["Fish","Chilli","Garlic","Ginger","Vinegar"],pair:"Kanji, rice and curd, dosa"},
  {id:'beef',name:"Beef Pickle",cat:"Non-veg",kg:1200,img:11,y:47,heat:3,desc:"Slow-cooked beef in black pepper and roasted spice. Rich, dark and very Kerala.",ing:["Beef","Black pepper","Chilli","Garlic","Vinegar"],pair:"Porotta, appam, rice"},
  {id:'chicken',name:"Chicken Pickle",cat:"Non-veg",kg:850,img:2,y:0,heat:3,desc:"Tender pieces of chicken fried, then slow-cooked in a fiery roasted-chilli masala.",ing:["Chicken","Chilli","Garlic","Ginger","Vinegar"],pair:"Hot rice, porotta, appam"},
- {id:'kozhuva',name:"Kozhuva Pickle (Anchovy)",cat:"Non-veg",kg:800,color:'#c0301c',heat:3,desc:"Tiny crisp-fried anchovies in a sharp chilli and garlic masala. A Kerala coast favourite.",ing:["Anchovy","Chilli","Garlic","Ginger","Vinegar"],pair:"Kanji, hot rice"},
- {id:'kakka',name:"Kakka Erachi Pickle (Clam)",cat:"Non-veg",kg:800,color:'#8a4b2a',heat:3,desc:"Clam meat roasted in coconut-oil masala with curry leaf, the way backwater kitchens make it.",ing:["Clam meat","Chilli","Garlic","Curry leaf","Vinegar"],pair:"Rice, kappa, porotta"},
- {id:'chemmeen-podi',name:"Unakka Chemmeen Podi",cat:"Non-veg",kg:1000,color:'#e8561e',heat:2,desc:"Dried prawns roasted and pounded with coconut, chilli and shallots into a dry chammanthi powder.",ing:["Dried prawns","Coconut","Chilli","Shallots","Curry leaf"],pair:"Hot rice with ghee, kanji, dosa"},
+ {id:'kozhuva',name:"Kozhuva Pickle (Anchovy)",cat:"Non-veg",kg:800,heat:3,desc:"Tiny crisp-fried anchovies in a sharp chilli and garlic masala. A Kerala coast favourite.",ing:["Anchovy","Chilli","Garlic","Ginger","Vinegar"],pair:"Kanji, hot rice"},
+ {id:'kakka',name:"Kakka Erachi Pickle (Clam)",cat:"Non-veg",kg:800,heat:3,desc:"Clam meat roasted in coconut-oil masala with curry leaf, the way backwater kitchens make it.",ing:["Clam meat","Chilli","Garlic","Curry leaf","Vinegar"],pair:"Rice, kappa, porotta"},
+ {id:'chemmeen-podi',name:"Unakka Chemmeen Podi",cat:"Non-veg",kg:1000,heat:2,desc:"Dried prawns roasted and pounded with coconut, chilli and shallots into a dry chammanthi powder.",ing:["Dried prawns","Coconut","Chilli","Shallots","Curry leaf"],pair:"Hot rice with ghee, kanji, dosa"},
  {id:'garlic',name:"Garlic Pickle",cat:"Veg",kg:600,img:5,y:44,heat:2,desc:"Whole garlic cloves softened in tangy, spiced oil until mellow and sweet.",ing:["Garlic","Chilli","Fenugreek","Mustard","Vinegar"],pair:"Rice, dal, chapati"},
  {id:'dates-lemon',name:"Lemon & Dates Pickle",cat:"Veg",kg:400,img:1,y:39,heat:1,desc:"Sweet Kerala dates and tangy lemon in a gently spiced masala. The one people who say they don't like pickle end up finishing.",ing:["Dates","Lemon","Chilli","Ginger","Mustard"],pair:"Curd rice, chapati, biryani"},
  {id:'dates',name:"Dates Pickle",cat:"Veg",kg:400,img:8,y:39,heat:1,desc:"Pure dates pickle: sweet, sticky and lightly spiced.",ing:["Dates","Chilli","Ginger","Mustard"],pair:"Curd rice, sandwiches, cheese"},
- {id:'adamanga',name:"Adamanga Pickle",cat:"Veg",kg:400,color:'#b8860b',heat:2,desc:"Sun-dried, salted mango pieces in a deep red masala. Chewy, tangy and long-keeping.",ing:["Dried mango","Chilli","Mustard","Fenugreek","Salt"],pair:"Curd rice, kanji"},
- {id:'mango-red',name:"Mango Pickle (Red)",cat:"Veg",kg:250,color:'#d9441c',heat:2,desc:"Raw mango pieces in classic red chilli masala, the everyday Kerala achar.",ing:["Raw mango","Chilli","Mustard","Fenugreek","Asafoetida"],pair:"Curd rice, sadya, dosa"},
- {id:'mango-white',name:"Mango Pickle (White)",cat:"Veg",kg:250,color:'#c9b458',heat:1,desc:"Tender raw mango in a mild, light-coloured pickle without the red chilli masala: tangy and fresh.",ing:["Raw mango","Green chilli","Mustard","Salt"],pair:"Kanji, curd rice"},
- {id:'lemon',name:"Lemon Pickle",cat:"Veg",kg:250,color:'#e0b01c',heat:2,desc:"Soft lemon pieces in spicy, tangy masala that gets better with every week in the jar.",ing:["Lemon","Chilli","Mustard","Fenugreek","Asafoetida"],pair:"Biryani, curd rice, fried fish"},
+ {id:'adamanga',name:"Adamanga Pickle",cat:"Veg",kg:400,heat:2,desc:"Sun-dried, salted mango pieces in a deep red masala. Chewy, tangy and long-keeping.",ing:["Dried mango","Chilli","Mustard","Fenugreek","Salt"],pair:"Curd rice, kanji"},
+ {id:'mango-red',name:"Mango Pickle (Red)",cat:"Veg",kg:250,heat:2,desc:"Raw mango pieces in classic red chilli masala, the everyday Kerala achar.",ing:["Raw mango","Chilli","Mustard","Fenugreek","Asafoetida"],pair:"Curd rice, sadya, dosa"},
+ {id:'mango-white',name:"Mango Pickle (White)",cat:"Veg",kg:250,heat:1,desc:"Tender raw mango in a mild, light-coloured pickle without the red chilli masala: tangy and fresh.",ing:["Raw mango","Green chilli","Mustard","Salt"],pair:"Kanji, curd rice"},
+ {id:'lemon',name:"Lemon Pickle",cat:"Veg",kg:250,heat:2,desc:"Soft lemon pieces in spicy, tangy masala that gets better with every week in the jar.",ing:["Lemon","Chilli","Mustard","Fenugreek","Asafoetida"],pair:"Biryani, curd rice, fried fish"},
  {id:'dates-lemon-classic',name:"Dates & Lemon (Classic)",cat:"Veg",kg:400,img:12,y:24,heat:1,desc:"Our original dates-and-lemon recipe, a little tangier than the new jar.",ing:["Dates","Lemon","Chilli","Mustard"],pair:"Curd rice, biryani"},
  {id:'mango-carrot',name:"Mango & Carrot Pickle",cat:"Veg",kg:null,img:7,y:52,heat:2,desc:"Raw mango and crunchy carrot in a bright, tangy chilli masala.",ing:["Raw mango","Carrot","Chilli","Mustard","Fenugreek"],pair:"Curd rice, dosa"},
  {id:'pineapple',name:"Pineapple Pickle",cat:"Veg",kg:null,img:10,y:52,heat:1,desc:"Sweet-sour pineapple chunks with a slow chilli finish.",ing:["Pineapple","Chilli","Ginger","Mustard"],pair:"Biryani, fried rice, grills"},
@@ -49,11 +49,11 @@ const BOXES=[
  {id:'maggi',name:'The late-night rescue box',line:'For instant noodles, plain dosa and 11pm rice. One spoon fixes it.',items:[['chemmeen-podi','250g'],['garlic','250g'],['lemon','250g']]}
 ];
 const part=(kg,f)=>kg==null?null:Math.round(kg*f);
-// a simple drawn jar with the product name, for items without a photo yet
+// one plain brand-coloured jar with the product name, for items without a photo yet (same for every item, so no rainbow)
 const jarArt=p=>{const w=p.name.replace(/\s*\(.*\)/,'').toUpperCase().split(' '), l1=w.slice(0,Math.ceil(w.length/2)).join(' '), l2=w.slice(Math.ceil(w.length/2)).join(' ');
-  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"><rect width="300" height="400" fill="#1a120d"/><circle cx="150" cy="210" r="140" fill="${p.color}" opacity=".18"/>
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"><rect width="300" height="400" fill="#1a120d"/>
   <path d="M95 80h110l-4 26h-102z" fill="#c8a46a"/><path d="M88 74q62-26 124 0l-6 14q-56-18-112 0z" fill="#a8844e"/>
-  <rect x="80" y="104" width="140" height="230" rx="22" fill="${p.color}"/>
+  <rect x="80" y="104" width="140" height="230" rx="22" fill="#5a3a22"/>
   <rect x="92" y="170" width="116" height="104" rx="6" fill="#f3e6c8"/><text x="150" y="196" text-anchor="middle" font-family="Antonio,Impact,sans-serif" font-weight="700" font-size="15" fill="#5a2a12">BHARANY</text>
   <text x="150" y="226" text-anchor="middle" font-family="Antonio,Impact,sans-serif" font-weight="700" font-size="${l1.length>9?15:20}" fill="#1a120d">${l1}</text>
   <text x="150" y="252" text-anchor="middle" font-family="Antonio,Impact,sans-serif" font-weight="700" font-size="${l2.length>9?15:20}" fill="#1a120d">${l2}</text></svg>`;

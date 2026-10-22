@@ -22,6 +22,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;700&family=Inter:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
+<style>
+.legal-head{display:grid;gap:32px;grid-template-columns:1fr;align-items:end}
+.legal-head figure img{width:100%;aspect-ratio:4/3;object-fit:cover}
+@media(min-width:900px){.legal-head{grid-template-columns:3fr 2fr}}
+.legal-body{display:grid;gap:40px;grid-template-columns:1fr;padding-bottom:var(--gap)}
+.legal-body .toc{position:static;flex-direction:row}
+.legal-body .prose{margin:0;max-width:760px}
+.legal-pics{display:none}
+@media(min-width:1200px){.legal-body{grid-template-columns:220px minmax(0,760px) 1fr}.legal-pics{display:grid;gap:12px;position:sticky;top:96px;align-self:start}.legal-pics img{width:100%;aspect-ratio:3/4;object-fit:cover}}
+@media(min-width:900px) and (max-width:1199px){.legal-body{grid-template-columns:220px 1fr}.legal-body .toc{position:sticky;top:96px;align-self:start;flex-direction:column;align-items:flex-start}}
+</style>
 </head>
 <body>
 <div class="progress"></div>
@@ -36,27 +47,29 @@
     <a class="m-only wa" href="https://wa.me/919846020348" target="_blank" rel="noopener">Questions? WhatsApp +91 98460 20348</a>
   </div>
   <div class="nav-r">
-    <button class="btn cart-btn" data-open-cart aria-label="Open cart"><svg class="bag" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 13H6zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Cart<span class="badge" data-cart-count hidden>0</span></button>
+    <button class="btn fill cart-btn" data-open-cart aria-label="Open cart"><svg class="bag" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 13H6zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Cart<span class="badge" data-cart-count hidden>0</span></button>
     <button class="btn menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
   </div>
 </nav>
-<section class="page-head">
-  <p class="eyebrow" data-rv>The small print, in plain words</p>
-  <h1 data-split>Terms &amp; conditions</h1>
-  <p class="lede" data-rv style="color:var(--cream)">Last updated: October 2026</p>
-</section>
-<section style="padding-top:0">
-<div class="prose">
-  <div class="toc" data-rv>
-    <a class="btn" href="#orders">Orders</a><a class="btn" href="#pricing">Pricing &amp; payment</a><a class="btn" href="#delivery">Delivery</a>
-    <a class="btn" href="#returns">Returns</a><a class="btn" href="#food">Food safety</a><a class="btn" href="#privacy">Privacy</a><a class="btn" href="#contact">Contact</a>
+<section class="page-head legal-head">
+  <div>
+    <h1 data-split>Terms and conditions</h1>
+    <p class="lede" data-rv>How ordering, delivery, refunds and your personal data work when you buy from Bharany, in plain words. Last updated October 2026.</p>
   </div>
+  <figure data-rv><img src="img/12.jpg" alt="A Bharany jar with its hessian cap" style="object-position:50% 24%"></figure>
+</section>
+<section class="legal-body">
+  <aside class="toc" aria-label="Sections">
+    <a class="btn" href="#orders">Orders</a><a class="btn" href="#pricing">Pricing and payment</a><a class="btn" href="#delivery">Delivery</a>
+    <a class="btn" href="#returns">Returns</a><a class="btn" href="#food">Food safety</a><a class="btn" href="#privacy">Privacy</a><a class="btn" href="#contact">Contact</a>
+  </aside>
+<div class="prose">
   <p data-rv>These terms apply to every order placed with Bharany ("we", "us") through WhatsApp, Instagram, our website or in person. By placing an order you agree to them.</p>
 
-  <h2 id="orders" data-rv>1. Placing an order</h2>
+  <h2 id="orders" data-rv>Placing an order</h2>
   <p data-rv>Orders are placed through the checkout on our website, which sends your order to us on WhatsApp, or by messaging us directly on WhatsApp (+91 98460 20348). An order is confirmed only once we reply to confirm the items, price and delivery details. We may decline or cancel an order if a product is unavailable, if we can't deliver to your address, or if there's an obvious pricing error; if you've already paid, you'll get a full refund.</p>
 
-  <h2 id="pricing" data-rv>2. Pricing &amp; payment</h2>
+  <h2 id="pricing" data-rv>Pricing and payment</h2>
   <ul data-rv>
     <li>Prices are in Indian Rupees and are confirmed with you before you pay.</li>
     <li>Delivery is ₹80 per order within Kerala and ₹120 per order to the rest of India, and free when the order subtotal is ₹1,500 or more. It is shown at checkout before you pay. We deliver to addresses in India only.</li>
@@ -64,11 +77,11 @@
     <li>Product photos are for illustration. Being home made, colour and texture can vary slightly from batch to batch.</li>
   </ul>
 
-  <h2 id="delivery" data-rv>3. Delivery</h2>
+  <h2 id="delivery" data-rv>Delivery</h2>
   <p data-rv>We pack every jar to travel safely. Delivery times we share are estimates and can be affected by courier delays, weather or holidays. Please give a complete address and a phone number that will be reachable. If a parcel is returned because of an incorrect address or no one being available, re-delivery may cost extra.</p>
   <p data-rv><b>Sending abroad:</b> we deliver to addresses in India only. If you ask us to pack an order for an overseas parcel, we pack it to travel, but sending it abroad is arranged by you or your family. You are responsible for checking and following the destination country's customs and food-import rules (many countries do not allow meat products), and for any duties. We can't refund items held, refused or destroyed by customs or damaged in onward shipping.</p>
 
-  <h2 id="returns" data-rv>4. Damaged items, returns &amp; refunds</h2>
+  <h2 id="returns" data-rv>Damaged items, returns and refunds</h2>
   <p data-rv>Because our products are food, we can't accept returns of opened jars or change-of-mind returns. But if something's wrong, we'll make it right:</p>
   <ul data-rv>
     <li>If a jar arrives broken, leaking or with the wrong item, message us on WhatsApp within <b>48 hours of delivery</b> with photos of the jar and the packaging.</li>
@@ -77,7 +90,7 @@
     <li>You may cancel an order for a full refund any time before it's dispatched.</li>
   </ul>
 
-  <h2 id="food" data-rv>5. Food safety, storage &amp; allergens</h2>
+  <h2 id="food" data-rv>Food safety, storage and allergens</h2>
   <ul data-rv>
     <li>Ingredients and the best-before date are printed on each jar. Please read the label before eating, especially if you have an allergy.</li>
     <li>Our kitchen handles mustard, sesame, seafood, nuts and other common allergens, so we can't rule out traces in any product.</li>
@@ -85,13 +98,13 @@
     <li>We aren't responsible for spoilage caused by storage or handling after delivery that doesn't follow these instructions.</li>
   </ul>
 
-  <h2 id="ip" data-rv>6. Our content</h2>
+  <h2 id="ip" data-rv>Our content</h2>
   <p data-rv>The Bharany name, logo, labels, photos and recipes are ours. Please don't copy or reuse them without our written permission.</p>
 
-  <h2 id="liability" data-rv>7. Liability</h2>
+  <h2 id="liability" data-rv>Liability</h2>
   <p data-rv>Nothing in these terms limits your rights as a consumer under Indian law, including the Consumer Protection Act, 2019. Otherwise, our liability for any order is limited to the amount you paid for it.</p>
 
-  <h2 id="privacy" data-rv>8. Privacy</h2>
+  <h2 id="privacy" data-rv>Privacy</h2>
   <p data-rv>This notice explains how Bharany handles your personal data under India's Digital Personal Data Protection Act, 2023. Bharany is the "data fiduciary" for your order details. A Malayalam version is available on request.</p>
   <p data-rv><b>What we collect, and why</b></p>
   <ul data-rv>
@@ -116,19 +129,22 @@
   <p data-rv><b>Cookies</b>: this website uses no tracking or advertising cookies. It saves your cart in your browser so it's still there when you come back.</p>
   <p data-rv><b>If something goes wrong</b>: if your data is ever exposed in a security incident, we'll tell you and the Data Protection Board as the law requires.</p>
 
-  <h2 id="law" data-rv>9. Changes &amp; governing law</h2>
+  <h2 id="law" data-rv>Changes and governing law</h2>
   <p data-rv>We may update these terms from time to time; the version on this page when you place an order is the one that applies. These terms are governed by the laws of India, and disputes are subject to the courts of Kerala.</p>
 
-  <h2 id="contact" data-rv>10. Contact</h2>
+  <h2 id="contact" data-rv>Contact</h2>
   <p data-rv>Questions about an order or these terms? WhatsApp <a href="https://wa.me/919846020348" target="_blank" rel="noopener">+91 98460 20348</a> or message <a href="https://www.instagram.com/bharany_kerala">@bharany_kerala</a> on Instagram.</p>
 </div>
+<aside class="legal-pics" aria-hidden="true"><img src="img/6.jpg" alt="" loading="lazy" style="object-position:50% 24%"><img src="img/1.jpg" alt="" loading="lazy" style="object-position:50% 39%"><img src="img/5.jpg" alt="" loading="lazy" style="object-position:50% 44%"></aside>
 </section>
-<hr>
 <footer>
-  <div><span class="brand">BHARANY</span><p style="margin-top:10px;color:var(--cream)">Spicy &amp; home made Kerala pickles.</p></div>
-  <div><h4>Shop</h4><ul><li><a href="index.html#products">All jars</a></li><li><a href="index.html#story">Our process</a></li><li><a href="index.html#faq">FAQ</a></li></ul></div>
-  <div><h4>Company</h4><ul><li><a href="about.html">About us</a></li><li><a href="terms.html">Terms &amp; conditions</a></li><li><a href="#privacy">Privacy</a></li></ul></div>
-  <div><h4>Say hello</h4><ul><li><a href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp +91 98460 20348</a></li><li><a href="https://www.instagram.com/bharany_kerala">@bharany_kerala</a></li><li><a href="https://www.keralabharany.com">keralabharany.com</a></li></ul></div>
+  <div class="foot">
+    <div><p>Home-made Kerala pickles, made by Amma, for every Malayali away from home.</p></div>
+    <div><h4>Shop</h4><ul><li><a href="index.html#products">All jars</a></li><li><a href="index.html#missing-home">Starter boxes</a></li><li><a href="index.html#story">How it's made</a></li><li><a href="index.html#faq">FAQ</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="about.html">About us</a></li><li><a href="terms.html">Terms and conditions</a></li><li><a href="terms.html#privacy">Privacy</a></li></ul></div>
+    <div><h4>Say hello</h4><ul><li><a href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp +91 98460 20348</a></li><li><a href="https://www.instagram.com/bharany_kerala">@bharany_kerala</a></li><li><a href="https://www.keralabharany.com">keralabharany.com</a></li></ul></div>
+  </div>
+  <p class="foot-name" aria-hidden="true">BHARANY</p>
   <div class="legal"><span>© <span data-year></span> Bharany</span><span>Made in Kerala</span></div>
 </footer>
 <div class="curtain" aria-hidden="true">BHARANY</div>

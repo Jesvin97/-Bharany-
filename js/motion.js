@@ -26,9 +26,6 @@ document.addEventListener('click',e=>{
   SITE.lenis?SITE.lenis.scrollTo(t,{offset:-70,duration:1.4}):t.scrollIntoView({behavior:reduced?'auto':'smooth'});
 });
 
-// floating ingredient graphics behind [data-wm] sections
-document.querySelectorAll('[data-wm]').forEach((s,k)=>[["leaf",6,10],["chilli",78,50],["garlic",40,70]].forEach(([t,x,y])=>
-  s.insertAdjacentHTML('afterbegin',SVG[t].replace('<svg','<svg aria-hidden="true" style="left:'+x+'%;top:'+y+'%"')) ));
 
 // marquee: endless GSAP loop that speeds up and skews with scroll velocity
 SITE.marquee=(track,html)=>{
@@ -53,19 +50,15 @@ const nav=document.querySelector('nav'), bar=document.querySelector('.progress')
 if(reduced||!G){ document.querySelectorAll('[data-rv]').forEach(e=>e.style.opacity=1); }
 else{
   document.querySelectorAll('[data-split]').forEach(el=>G.from(SITE.split(el),{yPercent:115,rotate:4,duration:1,ease:'power4.out',stagger:.06,
-    scrollTrigger:{trigger:el,start:'top 88%'}}));
-  G.set('[data-rv]',{opacity:0,y:50});
-  ST.batch('[data-rv]',{start:'top 90%',onEnter:els=>G.to(els,{opacity:1,y:0,duration:.9,ease:'power3.out',stagger:.09,overwrite:true})});
+    immediateRender:false,scrollTrigger:{trigger:el,start:'top bottom',once:true}}));
+  // content is visible by default; it only rises in as it crosses the bottom edge, so nothing stays hidden if a trigger never fires
+  ST.batch('[data-rv]',{start:'top bottom',once:true,onEnter:els=>G.from(els,{opacity:0,y:28,duration:.8,ease:'power3.out',stagger:.08,clearProps:'transform,opacity'})});
   // parallax on anything tagged data-speed (fraction of scroll distance)
   document.querySelectorAll('[data-speed]').forEach(el=>G.to(el,{yPercent:-100*el.dataset.speed,ease:'none',
     scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
-  document.querySelectorAll('.wm>svg').forEach((s,i)=>{
-    G.to(s,{rotate:i%2?14:-12,y:16,duration:4+i,ease:'sine.inOut',yoyo:true,repeat:-1});
-    G.to(s,{yPercent:-120*(i%3+1),ease:'none',scrollTrigger:{trigger:s.parentElement,start:'top bottom',end:'bottom top',scrub:true}});
-  });
   if(bar) G.to(bar,{scaleX:1,ease:'none',scrollTrigger:{start:0,end:'max',scrub:.3}});
   if(nav) ST.create({start:0,end:'max',onUpdate:s=>{const y=s.scroll();
-    nav.classList.toggle('solid',y>40); nav.classList.toggle('away',s.direction===1&&y>300); }});
+    nav.classList.toggle('solid',y>40); nav.classList.toggle('away',s.direction===1&&y>300&&innerWidth>760); }}); // phones keep the bar, and the cart, in reach
   // magnetic primary buttons
   if(fine) document.querySelectorAll('.btn.fill').forEach(b=>{
     const qx=G.quickTo(b,'x',{duration:.4,ease:'power3'}), qy=G.quickTo(b,'y',{duration:.4,ease:'power3'});
@@ -106,7 +99,7 @@ if(mb&&links){
 const track=document.getElementById('track');
 if(track){ // the hero ingredients: the things people actually buy, separated by a small jar mark
   const names=["Prawns","Fish","Chicken","Beef","Dates","Lemon","Mango","Garlic","Kozhuva","Chammanthi"];
-  const jar='<svg viewBox="0 0 24 28" aria-hidden="true"><path d="M6 3h12v3H6z" fill="#c8a46a"/><rect x="4" y="6" width="16" height="20" rx="4" fill="#e8561e"/><rect x="7" y="12" width="10" height="7" rx="1" fill="#f3e6c8"/></svg>';
+  const jar='<svg viewBox="0 0 24 28" aria-hidden="true"><path d="M6 3h12v3H6z" fill="#050302"/><rect x="4" y="6" width="16" height="20" rx="4" fill="#050302"/><rect x="7" y="12" width="10" height="7" rx="1" fill="#f5a524"/></svg>';
   SITE.marquee(track,names.map(n=>`<span>${n} ${jar}</span>`).join('')); }
 document.querySelectorAll('[data-year]').forEach(e=>e.textContent=new Date().getFullYear());
 })();

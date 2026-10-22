@@ -53,11 +53,10 @@ const part=(kg,f)=>kg==null?null:Math.round(kg*f);
 const jarArt=p=>{const w=p.name.replace(/\s*\(.*\)/,'').toUpperCase().split(' '), l1=w.slice(0,Math.ceil(w.length/2)).join(' '), l2=w.slice(Math.ceil(w.length/2)).join(' ');
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"><rect width="300" height="400" fill="#1a120d"/><circle cx="150" cy="210" r="140" fill="${p.color}" opacity=".18"/>
   <path d="M95 80h110l-4 26h-102z" fill="#c8a46a"/><path d="M88 74q62-26 124 0l-6 14q-56-18-112 0z" fill="#a8844e"/>
-  <rect x="80" y="104" width="140" height="230" rx="22" fill="${p.color}"/><rect x="80" y="104" width="140" height="230" rx="22" fill="url(#g)"/>
+  <rect x="80" y="104" width="140" height="230" rx="22" fill="${p.color}"/>
   <rect x="92" y="170" width="116" height="104" rx="6" fill="#f3e6c8"/><text x="150" y="196" text-anchor="middle" font-family="Antonio,Impact,sans-serif" font-weight="700" font-size="15" fill="#5a2a12">BHARANY</text>
   <text x="150" y="226" text-anchor="middle" font-family="Antonio,Impact,sans-serif" font-weight="700" font-size="${l1.length>9?15:20}" fill="#1a120d">${l1}</text>
-  <text x="150" y="252" text-anchor="middle" font-family="Antonio,Impact,sans-serif" font-weight="700" font-size="${l2.length>9?15:20}" fill="#1a120d">${l2}</text>
-  <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".25"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient></defs></svg>`;
+  <text x="150" y="252" text-anchor="middle" font-family="Antonio,Impact,sans-serif" font-weight="700" font-size="${l2.length>9?15:20}" fill="#1a120d">${l2}</text></svg>`;
   return 'data:image/svg+xml,'+encodeURIComponent(svg);};
 CATALOG.forEach(p=>{
   p.sizes=p.sizes||[["250g",part(p.kg,.25)],["500g",part(p.kg,.5)],["1kg",p.kg]];
@@ -97,14 +96,14 @@ const Cart=(()=>{
 })();
 // delivery charge for a 6-digit PIN code, or null until a valid PIN is entered
 const deliveryFor=(pin,sub)=>!/^[1-9]\d{5}$/.test(pin||'')?null:sub!=null&&sub>=SHOP.delivery.freeFrom?0:/^6[789]/.test(pin)?SHOP.delivery.kerala:SHOP.delivery.india;
-const money=v=>v==null?'—':SHOP.currency+v.toLocaleString('en-IN');
+const money=v=>v==null?'-':SHOP.currency+v.toLocaleString('en-IN');
 
 // ---- cart drawer (injected on every page) ----
 document.body.insertAdjacentHTML('beforeend',`
 <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Your cart" hidden>
   <div class="drawer-bg" data-close></div>
   <aside class="drawer-panel">
-    <header><h3>Your cart</h3><button class="btn" data-close aria-label="Close cart">✕</button></header>
+    <header><h3>Your cart</h3><button class="btn" data-close>Close</button></header>
     <div class="drawer-items" id="drawer-items"></div>
     <footer>
       <div class="sum"><span>Subtotal</span><b id="drawer-total"></b></div>
@@ -130,7 +129,7 @@ Cart.on(items=>{
   const t=Cart.total();
   document.getElementById('drawer-total').textContent=items.length?(t==null?'Confirmed on WhatsApp':money(t)):money(0);
   const sub=Cart.total(), gap=sub==null?null:SHOP.delivery.freeFrom-sub;
-  document.getElementById('drawer-note').textContent=!items.length?'':gap!=null&&gap<=0?'🎉 You get free delivery!':
+  document.getElementById('drawer-note').textContent=!items.length?'':gap!=null&&gap<=0?'You get free delivery.':
     (gap!=null?`Add ${money(gap)} more for free delivery. `:'')+`Delivery: ${money(SHOP.delivery.kerala)} in Kerala, ${money(SHOP.delivery.india)} rest of India, free from ${money(SHOP.delivery.freeFrom)}.`;
   document.getElementById('drawer-go').hidden=!items.length;
 });

@@ -55,8 +55,8 @@ const jarArt=p=>{const w=p.name.replace(/\s*\(.*\)/,'').toUpperCase().split(' ')
   <path d="M95 80h110l-4 26h-102z" fill="#c8a46a"/><path d="M88 74q62-26 124 0l-6 14q-56-18-112 0z" fill="#a8844e"/>
   <rect x="80" y="104" width="140" height="230" rx="22" fill="#5a3a22"/>
   <rect x="92" y="170" width="116" height="104" rx="6" fill="#f3e6c8"/><text x="150" y="196" text-anchor="middle" font-family="Antonio,Impact,sans-serif" font-weight="700" font-size="15" fill="#5a2a12">BHARANY</text>
-  <text x="150" y="226" text-anchor="middle" font-family="Antonio,Impact,sans-serif" font-weight="700" font-size="${l1.length>9?15:20}" fill="#1a120d">${l1}</text>
-  <text x="150" y="252" text-anchor="middle" font-family="Antonio,Impact,sans-serif" font-weight="700" font-size="${l2.length>9?15:20}" fill="#1a120d">${l2}</text></svg>`;
+  <text x="150" y="226" text-anchor="middle" font-family="Antonio,Impact,sans-serif" font-weight="700" font-size="${l1.length>11?12:l1.length>9?14:20}" fill="#1a120d">${l1}</text>
+  <text x="150" y="252" text-anchor="middle" font-family="Antonio,Impact,sans-serif" font-weight="700" font-size="${l2.length>11?12:l2.length>9?14:20}" fill="#1a120d">${l2}</text></svg>`;
   return 'data:image/svg+xml,'+encodeURIComponent(svg);};
 CATALOG.forEach(p=>{
   p.sizes=p.sizes||[["250g",part(p.kg,.25)],["500g",part(p.kg,.5)],["1kg",p.kg]];
@@ -203,12 +203,6 @@ function loadSettings(){
 }
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-// ---- phone bottom bar (every page) ----
-document.body.insertAdjacentHTML('beforeend',`<div class="tabbar" role="navigation" aria-label="Shortcuts">
-  <a href="${location.pathname.endsWith('index.html')||/\/$/.test(location.pathname)?'':'index.html'}#products">Shop</a>
-  <a href="${location.pathname.endsWith('index.html')||/\/$/.test(location.pathname)?'':'index.html'}#missing-home">Boxes</a>
-  <button type="button" data-open-cart>Cart <span class="tab-count" data-cart-count hidden>0</span></button>
-  <a href="https://wa.me/${SHOP.whatsapp}" target="_blank" rel="noopener">WhatsApp</a></div>`);
 Cart.on(()=>document.querySelectorAll('[data-cart-count]').forEach(e=>{e.textContent=Cart.count(); e.hidden=!Cart.count();}));
 
 // ---- sale bar with countdown (every page), only while a sale is switched on and not yet over ----

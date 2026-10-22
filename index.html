@@ -32,7 +32,7 @@
 .hero-copy h1 span{display:inline-block}
 .hero-copy .ml{margin-top:14px}
 .hero-copy .lede{margin:14px 0 24px;max-width:26ch;font-size:clamp(19px,1.8vw,24px)}
-.hero-copy .small{margin-top:14px}
+.hero-copy .small{margin-top:16px}
 .ml{font:700 clamp(22px,3vw,32px)/1.3 var(--body);color:var(--accent)}
 .xv{position:absolute;inset:0;z-index:2;pointer-events:none}
 html.js .xv:not(.ready){visibility:hidden}
@@ -80,6 +80,13 @@ html.js .xv:not(.ready){visibility:hidden}
 .price{font:600 18px var(--body);color:var(--accent)}
 .price span{font-weight:400;color:var(--ink);opacity:.75;font-size:var(--t-small)}
 .card .add{margin-top:auto}
+/* weights on the card: pick one, Add to cart uses it */
+.wts{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:6px}
+.wts button{background:var(--surface-2);color:var(--ink);border:0;border-radius:9999px;padding:8px 4px;cursor:pointer;font:600 14px/1.15 var(--body);display:grid;gap:1px}
+.wts button span{font-weight:400;font-size:13px;opacity:.8}
+.wts button[aria-checked=true]{background:var(--ink);color:var(--ground)}
+.wts button[aria-checked=true] span{opacity:1}
+@media(max-width:560px){.wts{grid-template-columns:repeat(3,1fr);gap:4px}.wts button{font-size:13px;padding:7px 2px}.wts button span{font-size:12px}}
 .more-link{background:none;border:0;color:var(--ink);font:400 var(--t-small) var(--body);text-decoration:underline;cursor:pointer;padding:2px 0;align-self:flex-start;opacity:.8}
 .more-link:hover{opacity:1}
 .buy{display:flex;gap:8px;align-items:center}
@@ -414,9 +421,9 @@ const cardHTML=(p,k,best)=>`
   <div class="ph" data-k="${k}" role="button" tabindex="0" aria-label="Details for ${p.name}"><img src="${p.src}" alt="${p.name}" loading="lazy" style="object-position:50% ${p.y}%"></div>
   <div class="meta">${best?'<span class="tag best">Best seller</span>':''}<span class="tag">${dot(p.cat)}${p.cat}</span>${heat(p.heat)}</div>
   <h3>${p.name}</h3>
-  <p class="price">${p.sizes[0][1]==null?'Price on WhatsApp':money(p.sizes[0][1])} <span>${p.sizes[0][0]}${p.sizes.length>1?', more sizes inside':''}</span></p>
+  <div class="wts" role="radiogroup" aria-label="Weight">${p.sizes.map(([s,pr],i)=>`<button type="button" role="radio" aria-checked="${!i}" data-w="${s}"><b>${s}</b><span>${pr==null?'Ask':money(pr)}</span></button>`).join('')}</div>
   <button class="btn fill block add" data-add>Add to cart</button>
-  <button class="more-link" data-k="${k}">${p.sizes.length>1?'More sizes and details':'Details'}</button>
+  <button class="more-link" data-k="${k}">Details</button>
 </article>`;
 document.getElementById("grid").innerHTML=CATALOG.map((p,k)=>cardHTML(p,k,false)).join("");
 // shop by craving: one sideways row per tab, built from the same cards
@@ -514,9 +521,10 @@ function closeSheet(){
 sheet.addEventListener('cancel',e=>{e.preventDefault();closeSheet()});
 sheet.addEventListener('click',e=>{if(e.target===sheet)closeSheet()});
 // add to cart from a card or the detail sheet (size comes from the picker next to the button)
+document.addEventListener('click',e=>{const w=e.target.closest('.wts button'); if(!w)return; w.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-checked',x===w));});
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-add]'); if(!b)return;
-  const box=b.closest('[data-id]'), p=Cart.product(box.dataset.id), sel=box.querySelector('[data-size]');
+  const box=b.closest('[data-id]'), p=Cart.product(box.dataset.id), sel=box.querySelector('[data-size]')||(box.querySelector('.wts [aria-checked=true]')&&{value:box.querySelector('.wts [aria-checked=true]').dataset.w});
   Shop.addToCart(p.id,sel?sel.value:p.sizes[0][0],b);
   const was=b.dataset.label||(b.dataset.label=b.textContent); b.textContent='Added'; setTimeout(()=>b.textContent=was,1400);
   if(sheet.open&&sheet.contains(b)) closeSheet();
@@ -560,12 +568,12 @@ function geometry(){
   const open={}, closed={}; let y=top;
   for(const k of ['cover','seal','pickle','jar']){open[k]=y; y+=h(k)+gap;}
   // phones: the closed jar sits above the bottom bar
-  const jarY=wide?(H-(h('jar')+h('cover')*.62))/2+h('cover')*.62:H-h('jar')-96;
+  const jarY=wide?(H-(h('jar')+h('cover')*.62))/2+h('cover')*.62:H-h('jar')-28;
   closed.jar=jarY; closed.cover=jarY-h('cover')*.62; closed.seal=jarY-h('seal')*.35; closed.pickle=jarY+h('jar')*.04;
   // phones: the closed jar starts smaller and centred in the space under the copy, then grows as it opens
   let zc=1, ox=0, oy=jarY+h('jar');
-  if(!wide){const cb=document.querySelector('.hero-copy').getBoundingClientRect().bottom, room=H-96-cb-12, need=h('jar')+h('cover')*.62;
-    zc=Math.max(.35,Math.min(1,room/need)); ox=W/2-cx;}
+  if(!wide){const hcE=document.querySelector('.hero-copy'), cb=hcE.offsetTop+hcE.offsetHeight, room=H-28-cb-32, need=h('jar')+h('cover')*.62;
+    zc=Math.max(.2,Math.min(1,room/need)); ox=W/2-cx;}
   return {s,x,w,h,open,closed,wide,cx,zc,ox,oy};
 }
 let g=geometry();
@@ -587,6 +595,8 @@ function draw(p){
   L.pickle.style.opacity=k1>.05?1:0;
 }
 place();
+// re-measure once the fonts have loaded: the copy grows, and the closed jar must start below it
+document.fonts&&document.fonts.ready.then(()=>{place(); window.ScrollTrigger?ScrollTrigger.refresh():draw(1);});
 // reduced motion: a still, open jar with its notes, the copy kept on screen and the ingredients listed under the hero
 function still(){ draw(1); hc.style.opacity=''; hc.style.visibility='';
   // desktop keeps the notes beside the open jar; phones show the ingredients in that column instead

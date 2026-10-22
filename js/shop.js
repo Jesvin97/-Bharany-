@@ -4,7 +4,9 @@ const SHOP={
   whatsapp:'919846020348',   // orders are sent here
   upi:'',                    // your UPI ID (e.g. bharany@okaxis). Empty = no "Pay now by UPI" button
   payee:'Bharany',
-  cod:true,                  // offer cash on delivery
+  cod:false,                 // offer cash on delivery
+  // Google Apps Script web-app URL that alerts you on WhatsApp in the background (see tools/order-alert.gs). Empty = off
+  orderHook:'',
   currency:'₹'
 };
 // ---- EDIT HERE: products ----

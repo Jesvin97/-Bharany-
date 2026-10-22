@@ -110,7 +110,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
   <svg class="tick" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44"/><path d="M30 52l14 14 26-30"/></svg>
   <h1>Thank you!</h1>
   <p class="oid" id="oid"></p>
-  <p>Your order has been prepared as a WhatsApp message to us. <b>Please press send in WhatsApp</b> so we receive it. We'll reply to confirm your total, delivery charge and payment.</p>
+  <p id="done-msg">Your order has been prepared as a WhatsApp message to us. <b>Please press send in WhatsApp</b> so we receive it. We'll reply to confirm your total, delivery charge and payment.</p>
   <div class="btns" id="done-btns"></div>
 </section>
 <hr>
@@ -178,15 +178,21 @@ form.addEventListener('submit',e=>{
     d.notes?'\nNotes: '+d.notes:''].filter(x=>x!=='').join('\n');
   const wa=`https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(msg)}`;
   const upi=d.pay==='upi-now'?`upi://pay?pa=${encodeURIComponent(SHOP.upi)}&pn=${encodeURIComponent(SHOP.payee)}&am=${t}&cu=INR&tn=${encodeURIComponent(oid)}`:'';
+  const lines=Cart.items.map(i=>{const p=Cart.product(i.id); return {name:p.name,size:i.size,qty:i.qty,price:Cart.price(i)};});
+  // background alert to the shop's WhatsApp; no-cors means we can't read the reply, so the WhatsApp button stays as a backup
+  const hooked=!!SHOP.orderHook;
+  if(hooked) fetch(SHOP.orderHook,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify({oid,msg,name:d.name,phone:d.phone,email:d.email||'',address:`${d.address}, ${d.city} ${d.pin}, ${d.state}`,pay:payLabel,total:t,lines})}).catch(()=>{});
   Cart.clear();
   document.getElementById('checkout').hidden=true; const done=document.getElementById('done'); done.hidden=false;
   document.getElementById('oid').textContent='Order '+oid;
   document.getElementById('done-btns').innerHTML=(upi?`<a class="btn fill" href="${upi}">Pay ${money(t)} by UPI</a>`:'')+
-    `<a class="btn ${upi?'':'fill'}" href="${wa}" target="_blank" rel="noopener">Open WhatsApp to send order</a><a class="btn" href="index.html">Back to the shop</a>`;
+    `<a class="btn ${upi||hooked?'':'fill'}" href="${wa}" target="_blank" rel="noopener">${hooked?'Message us on WhatsApp':'Open WhatsApp to send order'}</a><a class="btn" href="index.html">Back to the shop</a>`;
+  if(hooked) document.getElementById('done-msg').innerHTML=`We've received your order. We'll message you on WhatsApp at <b>${d.phone.replace(/[<>&]/g,'')}</b> shortly to confirm your total, delivery charge and payment.`;
   scrollTo(0,0); SITE.lenis&&SITE.lenis.scrollTo(0,{immediate:true});
   const G=SITE.gsap; if(G&&!SITE.reduced){ G.from('.tick circle',{strokeDasharray:280,strokeDashoffset:280,duration:.8});
     G.from('.tick path',{strokeDasharray:80,strokeDashoffset:80,duration:.5,delay:.6}); G.from('.done>*:not(.tick)',{y:30,opacity:0,stagger:.08,delay:.4}); }
-  window.open(wa,'_blank','noopener');
+  if(!hooked) window.open(wa,'_blank','noopener');
 });
 </script>
 </body>

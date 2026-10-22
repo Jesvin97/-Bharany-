@@ -7,6 +7,8 @@ const SHOP={
   cod:false,                 // offer cash on delivery
   // Google Apps Script web-app URL that alerts you on WhatsApp in the background (see tools/order-alert.gs). Empty = off
   orderHook:'',
+  // your own phone video of the cooking, e.g. 'img/cooking.mp4' (10-20s, muted, portrait or square). Empty = line drawing
+  cookingVideo:'',
   currency:'₹'
 };
 // ---- EDIT HERE: products ----
@@ -39,6 +41,7 @@ const CATALOG=[
 const BOXES=[
  {id:'first-month',name:'The first-month box',line:'All veg and easy to keep on a shelf. For the week the homesickness hits.',items:[['mango-red','250g'],['dates-lemon','250g'],['chutney','250g']]},
  {id:'sunday',name:'The Sunday lunch box',line:'Prawns, fish and mango. Plain rice does the rest.',items:[['prawns','250g'],['fish','250g'],['mango-red','250g']]},
+ {id:'feast',name:'The Christmas & Easter feast box',line:'Beef, prawns and clam for the appam-and-stew table, the way Kerala Christian homes lay it out.',items:[['beef','500g'],['prawns','250g'],['kakka','250g']]},
  {id:'abroad',name:'The overseas parcel box',line:'All veg, 500g jars, packed leak-proof so family can courier it to you abroad.',abroad:true,items:[['mango-red','500g'],['garlic','500g'],['dates-lemon','500g']]},
  {id:'maggi',name:'The late-night rescue box',line:'For instant noodles, plain dosa and 11pm rice. One spoon fixes it.',items:[['chemmeen-podi','250g'],['garlic','250g'],['lemon','250g']]}
 ];
@@ -139,4 +142,8 @@ function addBox(id){
   const b=BOXES.find(x=>x.id===id); b.items.forEach(([pid,size])=>Cart.add(pid,size)); if(b.abroad) try{localStorage.setItem('bh-abroad','1')}catch(e){} toast(`${b.name} added (${b.items.length} jars)`);
   const G=SITE.gsap; if(G&&!SITE.reduced) G.fromTo('[data-cart-count]',{scale:1.8},{scale:1,duration:.5,ease:'back.out(3)'});
 }
-window.Shop={SHOP,CATALOG,BOXES,addBox,Cart,money,openCart,closeCart,addToCart,toast};
+// ---- EDIT HERE: real customer reviews only, shared with the customer's permission ----
+// {name:'Anu', place:'Bengaluru', text:'Tastes exactly like home', img:'img/reviews/anu.jpg'}  (img optional: a WhatsApp/Instagram screenshot)
+// The reviews section stays hidden until at least one is added.
+const REVIEWS=[];
+window.Shop={SHOP,CATALOG,BOXES,REVIEWS,addBox,Cart,money,openCart,closeCart,addToCart,toast};

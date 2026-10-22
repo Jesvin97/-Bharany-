@@ -42,6 +42,11 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
 .more-grid{display:grid;gap:14px;grid-template-columns:1fr 1fr;margin-top:14px}
 @media(max-width:560px){.more-grid{grid-template-columns:1fr}}
 .rec{font:500 10px var(--display);letter-spacing:.1em;background:var(--leaf);color:var(--deep);padding:2px 8px;border-radius:9999px;margin-left:8px;vertical-align:2px}
+.abroad-tick{flex-direction:row;align-items:flex-start;gap:12px;text-transform:none;letter-spacing:0;font:500 14px/1.45 var(--body);color:var(--cream);border:1px solid #f5a52444;border-radius:8px;padding:14px;cursor:pointer}
+.abroad-tick input{width:auto;margin-top:3px;accent-color:var(--accent)}
+.abroad-tick b{color:var(--accent)}
+.abroad{display:grid;gap:14px;grid-template-columns:1fr 1fr}.abroad[hidden]{display:none}
+@media(max-width:560px){.abroad{grid-template-columns:1fr}}
 .tick{width:96px;height:96px;margin:0 auto 24px}
 .tick circle,.tick path{fill:none;stroke:var(--leaf);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
 </style>
@@ -68,7 +73,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
       <fieldset data-rv>
         <legend>Contact</legend>
         <label class="full">Full name<input name="name" autocomplete="name" required><span class="err"></span></label>
-        <label class="full">Mobile (WhatsApp)<input name="phone" type="tel" inputmode="numeric" autocomplete="tel" required placeholder="10-digit number"><span class="err"></span></label>
+        <label class="full">Your WhatsApp number<input name="phone" type="tel" autocomplete="tel" required placeholder="98460 20348, or +1 / +44… if you're abroad"><span class="err"></span></label>
       </fieldset>
       <fieldset data-rv>
         <legend>Delivery address</legend>
@@ -82,6 +87,12 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
             <label>Landmark<input name="landmark"></label>
             <label class="full">Order notes<textarea name="notes" rows="2" placeholder="Gift message, delivery time, spice questions…"></textarea></label>
           </div></details>
+        <label class="abroad-tick full"><input type="checkbox" name="abroad" id="abroad"> <span><b>Packing it for someone abroad?</b> We'll pack it leak-proof for an international courier, so family here can send it on to you.</span></label>
+        <div class="abroad full" id="abroad-box" hidden>
+          <label>Final country<input name="country" list="countries" placeholder="e.g. Canada"><datalist id="countries"><option>Canada</option><option>United Kingdom</option><option>United States</option><option>Georgia</option><option>Australia</option><option>Ireland</option><option>Germany</option><option>UAE</option></datalist></label>
+          <label>Phone of the person receiving it in India<input name="rphone" type="tel" inputmode="numeric" placeholder="10-digit Indian number"><span class="err"></span></label>
+          <p class="full note">Many countries don't allow meat in parcels (beef and chicken are usually refused by the UK, US and Canada). Veg pickles and chammanthi are the safest choice. Please check your country's customs rules.<br><b>Before couriering:</b> double-wrap every jar (taped lid, zip bag, then another wrap) so oil can't leak.</p>
+        </div>
       </fieldset>
       <fieldset data-rv>
         <legend>Payment</legend>
@@ -110,8 +121,9 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
   <svg class="tick" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44"/><path d="M30 52l14 14 26-30"/></svg>
   <h1>Thank you!</h1>
   <p class="oid" id="oid"></p>
-  <p>Your order has been prepared as a WhatsApp message to us. <b>Please press send in WhatsApp</b> so we receive it. We'll reply to confirm your total, delivery charge and payment.</p>
+  <p id="done-msg">Your order has been prepared as a WhatsApp message to us. <b>Please press send in WhatsApp</b> so we receive it. We'll reply to confirm your total, delivery charge and payment.</p>
   <div class="btns" id="done-btns"></div>
+  <p class="note" style="margin-top:28px">When your jars arrive: <b>never use a wet spoon</b>, keep the lid tight, and put non-veg pickles in the fridge once opened.</p>
 </section>
 <hr>
 <footer>
@@ -143,7 +155,7 @@ Cart.on(items=>{
     document.getElementById('lines').innerHTML='<p class="empty">Your cart is empty.<br><br><a class="btn" href="index.html#products">Browse the jars</a></p>';
     document.getElementById('place').disabled=true;
   } else document.getElementById('lines').innerHTML=items.map(i=>{const p=Cart.product(i.id),pr=Cart.price(i);
-    return `<div class="line"><img src="img/${p.img}.jpg" alt="" style="object-position:50% ${p.y}%"><div><b>${p.name}</b><small>${i.size} × ${i.qty}</small>
+    return `<div class="line"><img src="${p.src}" alt="" style="object-position:50% ${p.y}%"><div><b>${p.name}</b><small>${i.size} × ${i.qty}</small>
       <div class="qty" data-id="${i.id}" data-size="${i.size}"><button type="button" aria-label="Fewer" data-d="-1">−</button><span>${i.qty}</span><button type="button" aria-label="More" data-d="1">+</button></div></div><b>${pr==null?'':money(pr*i.qty)}</b></div>`}).join('');
   const t=Cart.total(); document.getElementById('sub').textContent=t==null?'Confirmed on WhatsApp':money(t);
   payOptions();
@@ -151,7 +163,8 @@ Cart.on(items=>{
 
 const rules={
   name:v=>v.trim().length>1||'Please enter your name',
-  phone:v=>/^(\+?91)?[6-9]\d{9}$/.test(v.replace(/[\s-]/g,''))||'Enter a valid 10-digit Indian mobile number',
+  phone:v=>{const n=v.replace(/[\s()-]/g,''); return /^(\+?91)?[6-9]\d{9}$/.test(n)||/^\+(?!91)\d{8,15}$/.test(n)||'Enter a 10-digit Indian number, or your number with country code (e.g. +1…)';},
+  rphone:v=>!form.abroad.checked||/^(\+?91)?[6-9]\d{9}$/.test(v.replace(/[\s-]/g,''))||'Enter the 10-digit Indian number of whoever receives it',
   email:v=>!v||/^\S+@\S+\.\S+$/.test(v)||'That email doesn\'t look right',
   address:v=>v.trim().length>5||'Please enter your full address',
   city:v=>v.trim().length>1||'Please enter your city',
@@ -159,6 +172,10 @@ const rules={
   state:v=>v.trim().length>1||'Please enter your state'
 };
 function check(el){const r=rules[el.name]; if(!r)return true; const ok=r(el.value); el.setAttribute('aria-invalid',ok!==true); el.parentElement.querySelector('.err').textContent=ok===true?'':ok; return ok===true;}
+const abroad=document.getElementById('abroad'), abroadBox=document.getElementById('abroad-box');
+abroad.addEventListener('change',()=>{abroadBox.hidden=!abroad.checked; if(abroad.checked&&SITE.gsap&&!SITE.reduced) SITE.gsap.from(abroadBox,{opacity:0,y:-10,duration:.4});});
+let abroadFlag=false; try{abroadFlag=localStorage.getItem('bh-abroad')==='1'}catch(e){}
+if(abroadFlag||/[?&]abroad=1/.test(location.search)){abroad.checked=true; abroadBox.hidden=false;}
 form.addEventListener('blur',e=>{if(rules[e.target.name])check(e.target)},true);
 form.addEventListener('input',e=>{if(e.target.getAttribute('aria-invalid')==='true')check(e.target)});
 
@@ -175,18 +192,25 @@ form.addEventListener('submit',e=>{
     ...Cart.items.map(i=>{const p=Cart.product(i.id),pr=Cart.price(i); return `• ${p.name} (${i.size}) × ${i.qty}${pr==null?'':' = '+money(pr*i.qty)}`;}),
     '',`Subtotal: ${t==null?'please confirm':money(t)}`,`Payment: ${payLabel}`,'',
     `*Deliver to*`,d.name,d.phone+(d.email?' · '+d.email:''),d.address,`${d.city} ${d.pin}, ${d.state}`,d.landmark?'Landmark: '+d.landmark:'',
+    d.abroad?`\n*PACK FOR OVERSEAS PARCEL* → ${d.country||'country not given'}\nReceiver in India: ${d.rphone}`:'',
     d.notes?'\nNotes: '+d.notes:''].filter(x=>x!=='').join('\n');
   const wa=`https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(msg)}`;
   const upi=d.pay==='upi-now'?`upi://pay?pa=${encodeURIComponent(SHOP.upi)}&pn=${encodeURIComponent(SHOP.payee)}&am=${t}&cu=INR&tn=${encodeURIComponent(oid)}`:'';
-  Cart.clear();
+  const lines=Cart.items.map(i=>{const p=Cart.product(i.id); return {name:p.name,size:i.size,qty:i.qty,price:Cart.price(i)};});
+  // background alert to the shop's WhatsApp; no-cors means we can't read the reply, so the WhatsApp button stays as a backup
+  const hooked=!!SHOP.orderHook;
+  if(hooked) fetch(SHOP.orderHook,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain'},
+    body:JSON.stringify({oid,msg,name:d.name,phone:d.phone,email:d.email||'',address:`${d.address}, ${d.city} ${d.pin}, ${d.state}`,pay:payLabel,total:t,lines})}).catch(()=>{});
+  Cart.clear(); try{localStorage.removeItem('bh-abroad')}catch(e){}
   document.getElementById('checkout').hidden=true; const done=document.getElementById('done'); done.hidden=false;
   document.getElementById('oid').textContent='Order '+oid;
   document.getElementById('done-btns').innerHTML=(upi?`<a class="btn fill" href="${upi}">Pay ${money(t)} by UPI</a>`:'')+
-    `<a class="btn ${upi?'':'fill'}" href="${wa}" target="_blank" rel="noopener">Open WhatsApp to send order</a><a class="btn" href="index.html">Back to the shop</a>`;
+    `<a class="btn ${upi||hooked?'':'fill'}" href="${wa}" target="_blank" rel="noopener">${hooked?'Message us on WhatsApp':'Open WhatsApp to send order'}</a><a class="btn" href="index.html">Back to the shop</a>`;
+  if(hooked) document.getElementById('done-msg').innerHTML=`We've received your order. We'll message you on WhatsApp at <b>${d.phone.replace(/[<>&]/g,'')}</b> shortly to confirm your total, delivery charge and payment.`;
   scrollTo(0,0); SITE.lenis&&SITE.lenis.scrollTo(0,{immediate:true});
   const G=SITE.gsap; if(G&&!SITE.reduced){ G.from('.tick circle',{strokeDasharray:280,strokeDashoffset:280,duration:.8});
     G.from('.tick path',{strokeDasharray:80,strokeDashoffset:80,duration:.5,delay:.6}); G.from('.done>*:not(.tick)',{y:30,opacity:0,stagger:.08,delay:.4}); }
-  window.open(wa,'_blank','noopener');
+  if(!hooked) window.open(wa,'_blank','noopener');
 });
 </script>
 </body>

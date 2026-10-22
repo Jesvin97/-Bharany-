@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bharany — Kerala Pickles</title>
-<meta name="description" content="Spicy & home made Kerala pickles, naturally preserved. Order on WhatsApp.">
+<meta name="description" content="Home-made Kerala pickles for everyone living away from home: hostels, PGs and first flats. Small batches, nothing artificial.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;700&family=Inter:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;700&family=Inter:wght@500&family=Manjari:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
 <style>
 .stage{height:400vh;position:relative}
@@ -15,17 +15,53 @@
   /* fades every edge into the page so the video-frame crops (and its corner mark) vanish */
   -webkit-mask-image:linear-gradient(#0000,#000 14%,#000 78%,#0000);mask-image:linear-gradient(#0000,#000 14%,#000 78%,#0000)}
 #burst{object-position:50% 40%}
-#jar{object-position:50% 0}
+#jar{object-position:50% 0;max-width:none}
 .hero-copy{position:absolute;inset:14vh 0 auto;text-align:center;z-index:2;pointer-events:none}
-.hero-copy h1{font-size:clamp(88px,22vw,300px);line-height:.85;letter-spacing:-.02em}
+.hero-copy h1{font-size:clamp(88px,22vw,300px);line-height:.85;letter-spacing:-.02em;text-shadow:0 4px 30px #0009}
+.hero-copy .eyebrow{position:relative;z-index:1;text-shadow:0 1px 8px #000}
 .hero-copy h1 span{display:inline-block}
 .hero-out{position:absolute;inset:auto 24px 8vh;text-align:center;z-index:3;opacity:0}
-.hero-out p{font:700 clamp(28px,5vw,64px)/1 var(--display);text-transform:uppercase;margin-bottom:20px}
+.ml{font:700 clamp(22px,4vw,34px)/1.3 'Manjari',sans-serif!important;text-transform:none!important;color:var(--accent);margin-bottom:6px!important}
+.hero-out .sub{font:500 15px/1.4 var(--body);text-transform:none;color:var(--cream);margin:-8px auto 20px;max-width:34ch}
+.hero-out p{font:700 clamp(28px,5vw,64px)/1 var(--display);text-transform:uppercase;margin-bottom:20px;text-shadow:0 2px 18px #000,0 0 40px #000c}
 @media(max-aspect-ratio:1/1){.hero-out{inset:34vh 24px auto}}
 .bit{position:absolute;top:0;left:0;z-index:2;pointer-events:none;will-change:transform,opacity}
 .bit svg{display:block;width:100%;height:100%}
 .hint{position:absolute;inset:auto 0 4vh;text-align:center;z-index:3;font:500 12px var(--display);letter-spacing:.2em}
 
+.miss h2{margin-bottom:28px}
+.moments{display:grid;gap:24px 16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-bottom:56px}
+.moments div{border-left:3px solid var(--chili);padding:4px 0 4px 18px}
+.moments b{font:700 clamp(24px,3vw,34px)/1.05 var(--display);text-transform:uppercase;display:block;margin-bottom:10px}
+.moments p{color:var(--cream);font-size:16px;line-height:1.5;max-width:36ch}
+.boxes-h{font-size:clamp(26px,3.4vw,40px);margin-bottom:18px}
+.boxes{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.box{background:var(--card);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.box .thumbs{display:flex}
+.box .thumbs img{width:33.4%;aspect-ratio:3/4;object-fit:cover;border-radius:6px;border:2px solid var(--card)}
+.box .thumbs img+img{margin-left:-6%}
+.box h4{font:700 26px/1 var(--display);text-transform:uppercase}
+.box p{color:var(--cream);font-size:14px;line-height:1.45}
+.box ul{list-style:none;padding:0;color:var(--cream);opacity:.8;font-size:13px;display:grid;gap:2px}
+.box .btn{margin-top:auto;text-align:center;padding:12px}
+
+.far{margin-top:56px;border:1px dotted var(--accent);border-radius:10px;padding:24px;display:grid;gap:20px;grid-template-columns:1fr}
+.far h3{font-size:clamp(30px,4vw,48px);line-height:.95;margin-bottom:12px}
+.far p{color:var(--cream);font-size:16px;line-height:1.5;max-width:52ch}
+.far ol{color:var(--cream);font-size:15px;line-height:1.5;padding-left:20px;display:grid;gap:10px;align-content:center}
+.far ol b{color:var(--accent)}
+.far .note{grid-column:1/-1;font-size:13px;opacity:.8;max-width:none}
+@media(min-width:900px){.far{grid-template-columns:3fr 2fr;padding:36px}}
+@media(max-width:560px){.far{padding:18px}}
+.tips{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.tips div{background:var(--card);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.tips svg{width:40px;height:40px;fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.tips b{font:700 24px/1.05 var(--display);text-transform:uppercase}
+.tips p{color:var(--cream);font-size:14px;line-height:1.5}
+.tips .warn{border:1px solid var(--chili)}
+.tips .warn svg{stroke:var(--chili)}.tips .warn b{color:var(--chili)}
+.care-note{margin-top:20px;color:var(--cream);font-size:15px;border-left:3px solid var(--accent);padding-left:14px}
+.care-note b{color:var(--accent)}
 /* storyboard: pinned, scrubbed sideways through five panels */
 .story{max-width:none;padding:0;overflow:hidden;position:relative}
 .story-head{position:absolute;top:96px;left:24px;z-index:2}
@@ -44,6 +80,18 @@
 @media(min-width:900px){.panel figure{order:-1}.panel{padding-inline:48px;grid-template-columns:1fr 1fr;align-items:center;gap:48px;padding-top:120px}.panel figure{max-height:60vh}}
 .story-bar{position:absolute;left:24px;right:24px;bottom:20px;height:2px;background:#f5a52433}
 .story-bar i{display:block;height:100%;background:var(--accent);transform-origin:0;transform:scaleX(0)}
+@media(max-width:760px){
+  .story-head{position:static;padding:56px 16px 0}.story-head h2{font-size:clamp(40px,12vw,56px)}
+  .story-track{flex-direction:column;width:auto;height:auto}
+  .panel{width:auto;height:auto;padding:32px 16px;gap:16px}
+  .panel+.panel{border-left:0;border-top:1px dotted #f5a52466}
+  .panel figure{max-height:none;aspect-ratio:16/10}
+  .panel .num{font-size:110px;top:24px;bottom:auto;right:16px}
+  .panel h3{font-size:clamp(36px,10vw,48px)}
+  .story-bar{display:none}
+  .hero-out p{font-size:clamp(30px,9vw,44px)}
+  .hint{font-size:11px}
+}
 @media(prefers-reduced-motion:reduce){.story-track{width:auto;height:auto;overflow-x:auto;scroll-snap-type:x mandatory}.panel{scroll-snap-align:start}}
 
 /* products */
@@ -114,11 +162,13 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
     <img id="burst" src="img/13.jpg" alt="Prawn, garlic, curry leaf and chilli powder bursting in mid-air">
     <img id="jar" src="img/14.jpg" alt="Open Bharany prawns pickle jar" style="opacity:0">
     <div class="hero-copy">
-      <p class="eyebrow">SPICY &amp; HOME MADE · KERALA</p>
+      <p class="eyebrow">FOR EVERY MALAYALI AWAY FROM HOME</p>
       <h1 id="title">Bharany</h1>
     </div>
     <div class="hero-out">
-      <p>Into the jar. Naturally preserved.</p>
+      <p>Tastes like Amma packed&nbsp;it.</p>
+      <p class="ml">വീട്ടിലെ രുചി</p>
+      <p class="sub">Home-made Kerala pickles for the hostel, the PG and the flat.</p>
       <a class="btn fill" href="#products">See the jars</a>
     </div>
     <div class="hint">SCROLL ↓</div>
@@ -127,12 +177,33 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
 <div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
 
 <section>
-  <p class="eyebrow" data-rv>The Bharany promise</p>
+  <p class="eyebrow" data-rv>Why it feels like home</p>
   <div class="promise">
-    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#f5a524" stroke-width="2.5"><path d="M6 22 24 8l18 14v18H6z"/><path d="M19 40V28h10v12"/></svg><b>Home made</b><p>Cooked in small batches in a Kerala kitchen, not a factory line.</p></div>
-    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#5aa646" stroke-width="2.5"><path d="M24 4c14 12 14 30 0 40C10 34 10 16 24 4z"/><path d="M24 12v30"/></svg><b>No artificial ingredients</b><p>Real spices, real oil, real produce. Nothing you'd need a chemistry degree to read.</p></div>
-    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#e8561e" stroke-width="2.5"><rect x="12" y="14" width="24" height="28" rx="4"/><path d="M10 8h28v6H10z"/></svg><b>Naturally preserved</b><p>Preserved the old way, with salt, spice, oil and vinegar, so the jar keeps.</p></div>
-    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#f5a524" stroke-width="2.5"><path d="M6 16h28v20H6zM34 22h6l4 6v8H34"/><circle cx="14" cy="38" r="4"/><circle cx="38" cy="38" r="4"/></svg><b>Order direct</b><p>Message us on WhatsApp. You talk to the people who made your jar.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#f5a524" stroke-width="2.5"><path d="M6 22 24 8l18 14v18H6z"/><path d="M19 40V28h10v12"/></svg><b>Made by Amma</b><p>Every batch is cooked by a Kerala mother in her own home kitchen, not on a factory line.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#5aa646" stroke-width="2.5"><path d="M24 4c14 12 14 30 0 40C10 34 10 16 24 4z"/><path d="M24 12v30"/></svg><b>No chemical preservatives</b><p>Unlike many commercial pickles, no sodium benzoate or artificial preservatives. Just salt, spice, oil and vinegar, the way pickle has always been kept.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#e8561e" stroke-width="2.5"><rect x="12" y="14" width="24" height="28" rx="4"/><path d="M10 8h28v6H10z"/></svg><b>Fresh meat &amp; fish</b><p>Meat, fish and prawns are bought fresh and cooked the same day, never from frozen stock.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#f5a524" stroke-width="2.5"><path d="M6 16h28v20H6zM34 22h6l4 6v8H34"/><circle cx="14" cy="38" r="4"/><circle cx="38" cy="38" r="4"/></svg><b>Made to keep</b><p>Cooked down slowly and sealed under oil so it lasts. Look after it (see below) and it stays good to the last spoon.</p></div>
+  </div>
+</section>
+<hr>
+
+<section class="miss wm" id="missing-home" data-wm>
+  <p class="eyebrow" data-rv>For Malayalis in hostels, PGs and first flats</p>
+  <h2 data-split>Missing home?</h2>
+  <p class="ml" data-rv style="margin:-16px 0 28px">വീട് മിസ്സ് ചെയ്യുന്നുണ്ടോ?</p>
+  <div class="moments">
+    <div data-rv><b>The mess served dal. Again.</b><p>A spoon of prawn pickle and plain rice turns it into Sunday lunch at home.</p></div>
+    <div data-rv><b>The hostel gate shuts at 9. The cravings don't.</b><p>Hot rice from the rice cooker and a spoon of chemmeen podi. Five minutes, and you're home.</p></div>
+    <div data-rv><b>Canteen lunch at the office. Again.</b><p>Pack a little mango pickle in your lunch box. Someone at the next desk will ask where it's from.</p></div>
+    <div data-rv><b>Onam in Bengaluru. Vishu in Pune.</b><p>A sadya isn't a sadya without pickle on the leaf. Bring that bit of home to the table.</p></div>
+  </div>
+  <h3 class="boxes-h" data-rv>Not sure where to start? Pick a box.</h3>
+  <div class="boxes" id="boxes"></div>
+  <div class="far" data-rv>
+    <div><p class="eyebrow">Canada, UK, US, Georgia…</p><h3>Living abroad? Home can still reach you.</h3>
+      <p>A jar of pickle from home is the classic thing to squeeze into a suitcase or courier box. Order to your family's address in India, tick <b>"Packing it for someone abroad?"</b> at checkout, and we'll pack it leak-proof for the long trip.</p></div>
+    <ol><li><b>Order online</b>, paying from wherever you are.</li><li><b>We deliver</b> to your family in India, packed for an international courier.</li><li><b>They send it on</b> to you with their next parcel or courier. <b>Double-wrap every jar</b>: tape the lid, seal it in a zip bag, then wrap again, so oil can't leak in transit.</li></ol>
+    <p class="note">Customs rules differ by country. Meat (beef, chicken) is usually refused by the UK, US and Canada, so veg pickles and chammanthi are the safest choice. <a href="checkout.html?abroad=1" style="text-decoration:underline">Order for abroad →</a></p>
   </div>
 </section>
 <hr>
@@ -161,7 +232,7 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
       <span class="num" aria-hidden="true">04</span>
     </article>
     <article class="panel">
-      <div><p class="eyebrow">Step 05</p><h3>At your door</h3><p>Add your jars to the cart, check out, and we confirm your order personally on WhatsApp. Then your jars are packed to travel safely to you.</p>
+      <div><p class="eyebrow">Step 05</p><h3>Wherever you've landed</h3><p>Add your jars to the cart, check out, and we confirm your order personally on WhatsApp. Then your jars are packed to travel safely to you.</p>
         <p style="margin-top:20px"><a class="btn fill" href="#products">Shop the jars</a></p></div>
       <figure><svg class="draw" viewBox="0 0 200 160" aria-hidden="true"><path d="M40 60 100 34l60 26v60l-60 26-60-26z"/><path d="M40 60l60 26 60-26M100 86v60"/><path d="M70 47l60 26"/></svg></figure>
       <span class="num" aria-hidden="true">05</span>
@@ -185,26 +256,42 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
 <hr>
 
 <section class="about wm" data-wm>
-  <h2 data-split>Pure Kerala goodness in every spoon</h2>
+  <h2 data-split>Rice, a spoon of pickle, and you're home</h2>
   <div>
-    <p class="lede" data-rv>Fresh, natural, premium quality. No artificial ingredients, no added sugar in our coconut range, and a hessian-topped jar that looks like it came from a Kerala kitchen, because it did.</p>
+    <p class="lede" data-rv>We make it for the people who left: for college, for the first job, for a city that doesn't cook like Amma or Ammachi does. Same recipes, same small batches, in a hessian-topped jar that looks like it came from a Kerala kitchen, because it did.</p>
     <p style="margin-top:20px" data-rv><a class="btn" href="about.html">Read our story →</a></p>
   </div>
+</section>
+<hr>
+
+<section class="care" id="care">
+  <p class="eyebrow" data-rv>Jar care</p>
+  <h2 data-split>Look after your jar</h2>
+  <div class="tips">
+    <div data-rv class="warn"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M30 6c-8 0-10 8-10 14v22"/><path d="M20 20c-6 0-8-4-8-8"/><path d="M36 30l6 6M42 30l-6 6"/></svg><b>Never a wet spoon</b><p>Water is the enemy of pickle. Even one wet spoon can bring mould into the whole jar. Use a clean, completely dry spoon every time.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="16" width="24" height="26" rx="4"/><path d="M10 10h28v6H10z"/></svg><b>Lid on tight</b><p>Close it straight after use. Air and moisture shorten its life, especially in humid hostel rooms.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 30c6-4 10 4 16 0s10-4 16 0"/><path d="M14 18h20v24H14z"/></svg><b>Keep it under oil</b><p>The layer of oil on top protects the pickle. Press pieces down so they stay covered.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="14" y="4" width="20" height="40" rx="3"/><path d="M14 18h20M19 10v4M19 24v6"/></svg><b>Non-veg: fridge after opening</b><p>Meat, fish and prawn pickles go in the fridge once opened. Veg pickles keep in a cool, dry cupboard.</p></div>
+  </div>
+  <p class="care-note" data-rv>Sending a jar abroad? <b>Double-wrap it</b>: tape the lid, seal it in a zip bag, then wrap it again to stop oil leaking in transit.</p>
 </section>
 <hr>
 
 <section class="faq" id="faq">
   <h2 data-split>Good questions</h2>
   <details data-rv><summary>How do I order?</summary><div class="a"><p>Tap "Add" on the jars you want, open your cart and check out. Your order comes to us on WhatsApp and we confirm the total and delivery with you before you pay. Prefer to just chat? Message +91 98460 20348.</p></div></details>
-  <details data-rv><summary>How long does a jar keep?</summary><div class="a"><p>Our pickles are naturally preserved. The best-before date is printed on every jar. Once open, keep it closed tightly, refrigerate non-veg pickles, and always use a clean, dry spoon.</p></div></details>
-  <details data-rv><summary>Do you deliver outside Kerala?</summary><div class="a"><p>Ask us on WhatsApp with your pin code and we'll tell you what's possible and what delivery will cost.</p></div></details>
-  <details data-rv><summary>What's in each pickle?</summary><div class="a"><p>Tap "Details" on any jar to see its key ingredients. The full ingredient list, including allergens like mustard, is printed on the label. Ask us if you have an allergy and we'll help.</p></div></details>
+  <details data-rv><summary>How long does a jar keep?</summary><div class="a"><p>Our pickles are naturally preserved. The best-before date is printed on every jar. Once open, never use a wet spoon, keep the lid tight and refrigerate non-veg pickles. See <a href="#care" style="text-decoration:underline">jar care</a>.</p></div></details>
+  <details data-rv><summary>Can I keep it in a hostel room without a fridge?</summary><div class="a"><p>Sealed jars are fine on a shelf. Once opened, veg pickles keep well in a cool, dry cupboard if you use a clean, dry spoon. Non-veg pickles need a fridge after opening, so if you don't have one, start with veg jars or a 250g size you'll finish quickly.</p></div></details>
+  <details data-rv><summary>Can my parents order and send it to my hostel?</summary><div class="a"><p>Yes. They can check out with your hostel or PG address and your phone number, and add a note for you in "Order notes".</p></div></details>
+  <details data-rv><summary>Do you deliver outside Kerala?</summary><div class="a"><p>Ask us on WhatsApp with your PIN code and we'll tell you what's possible and what delivery will cost.</p></div></details>
+  <details data-rv><summary>I live abroad. Can I still get it?</summary><div class="a"><p>We deliver within India, so the usual way is to order to your family's address here and tick "Packing it for someone abroad?" at checkout. We pack it leak-proof; before couriering it on, they should double-wrap each jar (taped lid, zip bag, then another wrap) so oil can't leak. Customs rules vary: meat pickles are usually refused by the UK, US and Canada, so stick to veg pickles and chammanthi, and check your country's rules before sending.</p></div></details>
+  <details data-rv><summary>What's in each pickle?</summary><div class="a"><p>Tap "More sizes &amp; details" on any jar to see its key ingredients. The full ingredient list, including allergens like mustard, is printed on the label. Ask us if you have an allergy and we'll help.</p></div></details>
   <details data-rv><summary>My jar arrived damaged. What now?</summary><div class="a"><p>Send us a photo on WhatsApp within 48 hours of delivery and we'll make it right. See our <a href="terms.html#returns" style="text-decoration:underline">terms</a> for details.</p></div></details>
 </section>
 <hr>
 
 <section class="cta wm" data-wm>
-  <h2 data-split>Hungry yet?</h2>
+  <h2 data-split>Call home. Then order a jar.</h2>
   <a class="btn fill" href="#products">Shop the jars</a>
   <p style="margin-top:16px;color:var(--cream)">Questions? <a href="https://wa.me/919846020348" target="_blank" rel="noopener" style="text-decoration:underline">WhatsApp +91 98460 20348</a></p>
 </section>
@@ -232,7 +319,7 @@ const sizeSel=p=>p.sizes.length>1?`<select aria-label="Size of ${p.name}" data-s
   :`<span class="one-size">${p.sizes[0][0]}${p.sizes[0][1]==null?'':' · '+money(p.sizes[0][1])}</span>`;
 document.getElementById("grid").innerHTML=CATALOG.map((p,k)=>`
 <article class="card" data-rv data-cat="${p.cat}" data-id="${p.id}">
-  <div class="ph" data-k="${k}" role="button" tabindex="0" aria-label="Details for ${p.name}"><img src="img/${p.img}.jpg" alt="${p.name}" loading="lazy" style="object-position:50% ${p.y}%"></div>
+  <div class="ph" data-k="${k}" role="button" tabindex="0" aria-label="Details for ${p.name}"><img src="${p.src}" alt="${p.name}" loading="lazy" style="object-position:50% ${p.y}%"></div>
   <div class="meta"><span class="tag">${dot(p.cat)}${p.cat}</span>${heat(p.heat)}</div>
   <h3>${p.name}</h3>
   <p>${p.desc}</p>
@@ -240,6 +327,13 @@ document.getElementById("grid").innerHTML=CATALOG.map((p,k)=>`
   <div class="row"><button class="btn fill" data-add>Add · ${p.sizes[0][0]}${p.sizes[0][1]==null?'':' · '+money(p.sizes[0][1])}</button></div>
   ${p.sizes.length>1?`<button class="more-link" data-k="${k}">More sizes &amp; details →</button>`:`<button class="more-link" data-k="${k}">Details →</button>`}
 </article>`).join("");
+document.getElementById("boxes").innerHTML=Shop.BOXES.map(b=>{
+  const its=b.items.map(([id,size])=>({p:Cart.product(id),size})), sum=its.reduce((a,{p,size})=>{const pr=p.sizes.find(s=>s[0]===size)[1]; return a==null||pr==null?null:a+pr},0);
+  return `<article class="box" data-rv><div class="thumbs">${its.map(({p})=>`<img src="${p.src}" alt="" loading="lazy" style="object-position:50% ${p.y}%">`).join('')}</div>
+    <h4>${b.name}</h4><p>${b.line}</p><ul>${its.map(({p,size})=>`<li>${p.name} · ${size}</li>`).join('')}</ul>
+    <button class="btn fill" data-box="${b.id}">Add box${sum==null?'':' · '+money(sum)}</button></article>`}).join('');
+document.getElementById("boxes").addEventListener('click',e=>{const b=e.target.closest('[data-box]'); if(!b)return; Shop.addBox(b.dataset.box);
+  const was=b.dataset.label||(b.dataset.label=b.textContent); b.textContent='Added ✓'; setTimeout(()=>b.textContent=was,1400);});
 </script>
 <script src="js/motion.js"></script>
 <script src="vendor/three.min.js"></script>
@@ -257,13 +351,13 @@ document.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>
 }));
 function openSheet(k){
   const p=CATALOG[k];
-  sheet.innerHTML=`<div class="sheet" data-id="${p.id}"><img src="img/${p.img}.jpg" alt="${p.name}" style="object-position:50% ${p.y}%">
+  sheet.innerHTML=`<div class="sheet" data-id="${p.id}"><img src="${p.src}" alt="${p.name}" style="object-position:50% ${p.y}%">
     <div class="body"><button class="btn x" aria-label="Close">✕</button>
       <div class="meta"><span class="tag">${dot(p.cat)}${p.cat}</span>${heat(p.heat)}</div>
       <h3 id="sheet-title">${p.name}</h3><p>${p.desc}</p>
       <div><h4>Key ingredients</h4><div class="chips" style="margin-top:8px">${p.ing.map(x=>`<span>${x}</span>`).join("")}</div></div>
       <div><h4>Enjoy it with</h4><p>${p.pair}</p></div>
-      <div><h4>Storage</h4><ul><li>Always use a clean, dry spoon.</li><li>Keep the lid tightly closed${p.cat=="Non-veg"?"; refrigerate after opening":" in a cool, dry place"}.</li><li>Best before: printed on the jar.</li></ul></div>
+      <div><h4>Storage</h4><ul><li><b>Never use a wet spoon.</b> Even a drop of water can spoil the whole jar.</li><li>Keep the lid tightly closed${p.cat=="Non-veg"?"; refrigerate after opening":" in a cool, dry place"}.</li><li>Best before: printed on the jar.</li></ul></div>
       <small>Full ingredients and allergen information (e.g. mustard) are printed on the jar label.</small>
       <div class="buy">${sizeSel(p)}<button class="btn fill" data-add>Add to cart</button></div>
     </div></div>`;
@@ -299,20 +393,26 @@ if(fine&&!reduced) cards.forEach(c=>{
 
 // ---------- storyboard: pin and scrub sideways; line drawings draw themselves as each panel arrives ----------
 const story=document.querySelector('.story'), strack=document.querySelector('.story-track');
-if(G&&!reduced){
-  const dist=()=>strack.scrollWidth-innerWidth;
-  const side=G.to(strack,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:story,start:'top top',end:()=>'+='+dist(),pin:true,scrub:1,invalidateOnRefresh:true}});
-  G.to('.story-bar i',{scaleX:1,ease:'none',scrollTrigger:{trigger:story,start:'top top',end:()=>'+='+dist(),scrub:true}});
+// phones get a plain vertical stack: sideways pinning fights thumb scrolling on a narrow screen
+if(G&&!reduced) G.matchMedia().add({wide:'(min-width:761px)',narrow:'(max-width:760px)'},ctx=>{
+  let side=null;
+  if(ctx.conditions.wide){
+    const dist=()=>strack.scrollWidth-innerWidth;
+    side=G.to(strack,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:story,start:'top top',end:()=>'+='+dist(),pin:true,scrub:1,invalidateOnRefresh:true}});
+    G.to('.story-bar i',{scaleX:1,ease:'none',scrollTrigger:{trigger:story,start:'top top',end:()=>'+='+dist(),scrub:true}});
+  }
+  const at=(p,x,y)=>side?{trigger:p,containerAnimation:side,start:'left '+x}:{trigger:p,start:'top '+y};
   document.querySelectorAll('.panel').forEach((p,i)=>{
-    const st={trigger:p,containerAnimation:side,start:'left 75%',toggleActions:'play none none reverse'};
-    if(i) G.from(p.querySelectorAll('h3,p,.eyebrow'),{opacity:0,x:40,stagger:.08,duration:.7,ease:'power3.out',scrollTrigger:st});
-    G.from(p.querySelector('figure'),{clipPath:'inset(0 100% 0 0)',duration:1,ease:'power4.inOut',scrollTrigger:{...st,start:'left 85%'}});
+    const st={...at(p,'75%','80%'),toggleActions:'play none none reverse'};
+    if(i||!side) G.from(p.querySelectorAll('h3,p,.eyebrow'),{opacity:0,[side?'x':'y']:40,stagger:.08,duration:.7,ease:'power3.out',scrollTrigger:st});
+    G.from(p.querySelector('figure'),{clipPath:side?'inset(0 100% 0 0)':'inset(100% 0 0 0)',duration:1,ease:'power4.inOut',scrollTrigger:{...st,...at(p,'85%','85%')}});
     G.from(p.querySelector('.num'),{yPercent:60,opacity:0,duration:1,ease:'power3.out',scrollTrigger:st});
     p.querySelectorAll('.draw *').forEach(s=>{const L=s.getTotalLength?s.getTotalLength():300;
-      G.fromTo(s,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.4,ease:'power2.inOut',scrollTrigger:{...st,start:'left 60%'}}); });
-    const img=p.querySelector('figure img'); if(img) G.fromTo(img,{scale:1.25},{scale:1,ease:'none',scrollTrigger:{trigger:p,containerAnimation:side,start:'left right',end:'right left',scrub:true}});
+      G.fromTo(s,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.4,ease:'power2.inOut',scrollTrigger:{...st,...at(p,'60%','70%')}}); });
+    const img=p.querySelector('figure img'); if(img) G.fromTo(img,{scale:1.25},{scale:1,ease:'none',
+      scrollTrigger:side?{trigger:p,containerAnimation:side,start:'left right',end:'right left',scrub:true}:{trigger:p,start:'top bottom',end:'bottom top',scrub:true}});
   });
-}
+});
 
 // ---------- hero: ingredients fall from the sky into the jar mouth (p = scroll progress through .stage, 0..1) ----------
 const kinds=Object.keys(SVG), sticky=document.querySelector('.sticky'), stage=document.querySelector('.stage');
@@ -388,7 +488,7 @@ else{
    .from('nav',{y:-40,opacity:0,duration:.6},'-=.8');
   G.to('.hint',{y:8,duration:.8,ease:'sine.inOut',yoyo:true,repeat:-1});
   // title drifts up and spreads as you leave the top
-  G.to('#title',{yPercent:-40,letterSpacing:'.04em',ease:'none',scrollTrigger:{trigger:stage,start:'top top',end:'25% top',scrub:true}});
+  G.to('#title',{yPercent:innerWidth<761?-12:-40,letterSpacing:'.04em',ease:'none',scrollTrigger:{trigger:stage,start:'top top',end:'25% top',scrub:true}});
 }
 </script>
 </body>

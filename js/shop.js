@@ -203,12 +203,6 @@ function loadSettings(){
 }
 const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-// ---- phone bottom bar (every page) ----
-document.body.insertAdjacentHTML('beforeend',`<div class="tabbar" role="navigation" aria-label="Shortcuts">
-  <a href="${location.pathname.endsWith('index.html')||/\/$/.test(location.pathname)?'':'index.html'}#products">Shop</a>
-  <a href="${location.pathname.endsWith('index.html')||/\/$/.test(location.pathname)?'':'index.html'}#missing-home">Boxes</a>
-  <button type="button" data-open-cart>Cart <span class="tab-count" data-cart-count hidden>0</span></button>
-  <a href="https://wa.me/${SHOP.whatsapp}" target="_blank" rel="noopener">WhatsApp</a></div>`);
 Cart.on(()=>document.querySelectorAll('[data-cart-count]').forEach(e=>{e.textContent=Cart.count(); e.hidden=!Cart.count();}));
 
 // ---- sale bar with countdown (every page), only while a sale is switched on and not yet over ----

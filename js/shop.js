@@ -9,7 +9,9 @@ const SHOP={
   orderHook:'',
   // your own phone video of the cooking, e.g. 'img/cooking.mp4' (10-20s, muted, portrait or square). Empty = line drawing
   cookingVideo:'',
-  currency:'₹'
+  currency:'₹',
+  // delivery per order, by PIN code: Kerala PINs start 67, 68 or 69
+  delivery:{kerala:80,india:120}
 };
 // ---- EDIT HERE: products ----
 // kg: price for 1 kg in rupees (from Bharany's price list). 500g is exactly half and 250g exactly a quarter (nearest rupee);
@@ -93,6 +95,8 @@ const Cart=(()=>{
     on(f){subs.add(f); f(items);}
   };
 })();
+// delivery charge for a 6-digit PIN code, or null until a valid PIN is entered
+const deliveryFor=pin=>/^[1-9]\d{5}$/.test(pin||'')?(/^6[789]/.test(pin)?SHOP.delivery.kerala:SHOP.delivery.india):null;
 const money=v=>v==null?'—':SHOP.currency+v.toLocaleString('en-IN');
 
 // ---- cart drawer (injected on every page) ----
@@ -125,7 +129,7 @@ Cart.on(items=>{
   dItems.innerHTML=items.length?items.map(lineHTML).join(''):'<p class="empty">Your cart is empty. Time for a jar or two.'+(lastN?`<br><br><button class="btn fill" data-reorder>Reorder your last order (${lastN} jar${lastN>1?'s':''})</button>`:'')+'</p>';
   const t=Cart.total();
   document.getElementById('drawer-total').textContent=items.length?(t==null?'Confirmed on WhatsApp':money(t)):money(0);
-  document.getElementById('drawer-note').textContent=items.length?'Delivery charge is confirmed with your order.':'';
+  document.getElementById('drawer-note').textContent=items.length?`Delivery: ${money(SHOP.delivery.kerala)} in Kerala, ${money(SHOP.delivery.india)} rest of India.`:'';
   document.getElementById('drawer-go').hidden=!items.length;
 });
 document.addEventListener('click',e=>{
@@ -165,4 +169,4 @@ const REVIEWS=[];
 // a box is in season when today falls inside one of its [from, to, label] month-day windows (windows may wrap past New Year)
 function season(b){const d=new Date(), md=String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
   return (b.season||[]).find(([f,t])=>f<=t?md>=f&&md<=t:md>=f||md<=t)?.[2]||'';}
-window.Shop={SHOP,CATALOG,BOXES,REVIEWS,season,lineHTML,addBox,Cart,money,openCart,closeCart,addToCart,toast};
+window.Shop={deliveryFor,SHOP,CATALOG,BOXES,REVIEWS,season,lineHTML,addBox,Cart,money,openCart,closeCart,addToCart,toast};

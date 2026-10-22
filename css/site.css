@@ -90,3 +90,56 @@ footer a:hover{color:var(--accent)}
   display:grid;place-items:center;font:700 clamp(48px,10vw,120px)/1 var(--display);color:var(--deep);letter-spacing:.02em}
 
 @media(prefers-reduced-motion:reduce){.curtain{display:none}nav{transition:none}}
+
+/* ---- nav: links + cart; collapses to a full-screen menu on phones ---- */
+.nav-r{display:flex;gap:8px;align-items:center}
+.links{display:flex;gap:10px;flex-wrap:wrap}
+.cart-btn{position:relative}
+.badge{position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;border-radius:10px;background:var(--chili);color:#fff;font:700 11px/20px var(--body);text-align:center;padding:0 5px}
+.badge[hidden]{display:none}
+.menu-btn{display:none}
+@media(max-width:760px){
+  nav{padding:14px 16px}
+  .menu-btn{display:inline-block}
+  .links{position:fixed;inset:0;z-index:-1;background:var(--ink);flex-direction:column;justify-content:center;align-items:flex-start;gap:4px;padding:96px 24px 40px;
+    visibility:hidden;clip-path:circle(0 at calc(100% - 40px) 34px);transition:clip-path .6s var(--ease),visibility 0s .6s}
+  .links.open{visibility:visible;clip-path:circle(150% at calc(100% - 40px) 34px);transition:clip-path .6s var(--ease)}
+  .links .btn{border:0;padding:4px 0;font-size:clamp(44px,13vw,64px);font-weight:700;background:none!important;color:var(--accent)!important}
+  .links .btn.fill{margin-top:24px;font-size:16px;padding:14px 24px;border:1px solid var(--accent);background:var(--accent)!important;color:var(--deep)!important}
+  nav.menu-open{transform:none!important;background:transparent;backdrop-filter:none}
+  section{padding:56px 16px}
+  h2{margin-bottom:28px}
+  .page-head{padding-top:120px}
+  footer{padding:40px 16px 20px}
+}
+@media(prefers-reduced-motion:reduce){.links{transition:none!important}}
+
+/* ---- cart drawer ---- */
+.drawer{position:fixed;inset:0;z-index:40}
+.drawer[hidden]{display:none}
+.drawer-bg{position:absolute;inset:0;background:#000b;backdrop-filter:blur(3px)}
+.drawer-panel{position:absolute;inset:0 0 0 auto;width:min(440px,100vw);background:var(--card);display:flex;flex-direction:column}
+.drawer-panel>header,.drawer-panel>footer{padding:20px;display:flex;flex-direction:column;gap:10px}
+.drawer-panel>header{flex-direction:row;justify-content:space-between;align-items:center;border-bottom:1px dotted var(--accent)}
+.drawer-panel h3{font-size:32px}
+.drawer-items{flex:1;overflow:auto;padding:8px 20px;overscroll-behavior:contain}
+.drawer-panel>footer{border-top:1px dotted var(--accent)}
+.line{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #f5a52422}
+.line img{width:64px;height:80px;object-fit:cover;border-radius:4px}
+.line b{font:700 17px/1.1 var(--display);text-transform:uppercase;display:block}
+.line small{color:var(--cream);opacity:.7;display:block;margin:4px 0 8px}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--accent);border-radius:9999px}
+.qty button{background:none;border:0;color:var(--accent);font:700 18px var(--body);width:36px;height:34px;cursor:pointer}
+.qty span{min-width:22px;text-align:center;color:var(--cream)}
+.sum{display:flex;justify-content:space-between;font:700 20px var(--display);text-transform:uppercase}
+.note{color:var(--cream);opacity:.7;font-size:12px}
+.empty{color:var(--cream);padding:40px 0;text-align:center;font-size:15px}
+.btn.block{display:block;text-align:center;padding:14px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,150%);background:var(--accent);color:var(--deep);padding:12px 20px;border-radius:9999px;font:500 14px var(--body);z-index:45;transition:transform .4s var(--ease);max-width:calc(100vw - 32px);text-align:center}
+.toast.on{transform:translate(-50%,0)}
+
+/* ---- forms (checkout, size pickers) ---- */
+select,input,textarea{font:500 15px var(--body);color:var(--cream);background:var(--deep);border:1px solid #f5a52466;border-radius:6px;padding:12px;width:100%}
+select:focus,input:focus,textarea:focus{border-color:var(--accent);outline:none}
+label{display:flex;flex-direction:column;gap:6px;font:500 12px var(--display);letter-spacing:.1em;text-transform:uppercase}
+.bag{width:14px;height:14px;vertical-align:-2px;margin-right:6px}

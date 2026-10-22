@@ -92,6 +92,16 @@ else{
     addEventListener('pageshow',e=>{if(e.persisted)G.set(curtain,{scaleY:0})}); // back-button from bfcache
   }
 }
+// phone menu: full-screen overlay that opens as a circle from the Menu button
+const mb=document.querySelector('.menu-btn'), links=document.querySelector('.links');
+if(mb&&links){
+  const set=o=>{links.classList.toggle('open',o); nav.classList.toggle('menu-open',o); mb.setAttribute('aria-expanded',o); mb.textContent=o?'Close':'Menu';
+    o?SITE.lenis&&SITE.lenis.stop():SITE.lenis&&SITE.lenis.start(); document.documentElement.style.overflow=o?'hidden':'';
+    if(o&&G&&!reduced) G.fromTo(links.children,{y:40,opacity:0},{y:0,opacity:1,stagger:.06,duration:.6,delay:.15,ease:'power3.out'}); };
+  mb.addEventListener('click',()=>set(!links.classList.contains('open')));
+  links.addEventListener('click',e=>{if(e.target.closest('a'))set(false)});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&links.classList.contains('open'))set(false)});
+}
 // ingredient ribbon on any page that has one
 const track=document.getElementById('track');
 if(track){ const names=["Curry leaf","Garlic","Chilli","Black pepper","Dates","Lemon","Prawns"], ic=["leaf","garlic","chilli","pepper"];

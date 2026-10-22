@@ -64,6 +64,15 @@
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips span{font-size:11px;border:1px solid #f5a52466;border-radius:9999px;padding:3px 9px;color:var(--cream)}
 .card .row{display:flex;gap:8px;margin-top:auto}
+.more-link{background:none;border:0;color:var(--cream);opacity:.7;font:500 12px var(--body);text-decoration:underline;cursor:pointer;padding:2px 0;align-self:flex-start}
+.more-link:hover{opacity:1}
+.card .row .fill{flex:1;text-align:center}
+.buy{display:flex;gap:8px;align-items:center;margin-top:auto}
+.buy select{padding:9px 10px;font-size:14px}
+.sheet .buy{margin-top:8px}.sheet .buy select{max-width:200px}
+.one-size{color:var(--cream);font-size:13px}
+@media(max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:10px}.card{padding:8px;gap:8px}.card h3{font-size:19px}.card p,.card .chips{display:none}
+  .card .row{flex-direction:column}.card .row .btn{padding:10px 8px;text-align:center}.heat svg{width:9px;height:14px}.tag{font-size:9px;padding:3px 8px}}
 .dot{width:12px;height:12px;border:1.5px solid currentColor;display:inline-grid;place-items:center;margin-right:6px;vertical-align:-1px}
 .dot::after{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 .veg{color:var(--leaf)}.nonveg{color:var(--chili)}
@@ -91,11 +100,13 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
 <div class="progress"></div>
 <nav>
   <a class="brand" href="#top">BHARANY</a>
-  <div>
-    <a class="btn" href="#products">Pickles</a>
-    <a class="btn" href="#story">Our process</a>
+  <div class="links" id="menu">
+    <a class="btn" href="#products">Shop</a>
     <a class="btn" href="about.html">About</a>
-    <a class="btn fill" href="https://wa.me/919846020348" target="_blank" rel="noopener">Order now</a>
+  </div>
+  <div class="nav-r">
+    <button class="btn cart-btn" data-open-cart aria-label="Open cart"><svg class="bag" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 13H6zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Cart<span class="badge" data-cart-count hidden>0</span></button>
+    <button class="btn menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
   </div>
 </nav>
 <header class="stage" id="top">
@@ -150,8 +161,8 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
       <span class="num" aria-hidden="true">04</span>
     </article>
     <article class="panel">
-      <div><p class="eyebrow">Step 05</p><h3>At your door</h3><p>Order on WhatsApp, confirm with a real person, and your jars are packed to travel safely to you.</p>
-        <p style="margin-top:20px"><a class="btn fill" href="https://wa.me/919846020348" target="_blank" rel="noopener">Start an order</a></p></div>
+      <div><p class="eyebrow">Step 05</p><h3>At your door</h3><p>Add your jars to the cart, check out, and we confirm your order personally on WhatsApp. Then your jars are packed to travel safely to you.</p>
+        <p style="margin-top:20px"><a class="btn fill" href="#products">Shop the jars</a></p></div>
       <figure><svg class="draw" viewBox="0 0 200 160" aria-hidden="true"><path d="M40 60 100 34l60 26v60l-60 26-60-26z"/><path d="M40 60l60 26 60-26M100 86v60"/><path d="M70 47l60 26"/></svg></figure>
       <span class="num" aria-hidden="true">05</span>
     </article>
@@ -184,7 +195,7 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
 
 <section class="faq" id="faq">
   <h2 data-split>Good questions</h2>
-  <details data-rv><summary>How do I order?</summary><div class="a"><p>Tap any "Order" button or message us on WhatsApp at +91 98460 20348 with the jars you'd like. We'll confirm price, availability and delivery with you directly before you pay.</p></div></details>
+  <details data-rv><summary>How do I order?</summary><div class="a"><p>Tap "Add" on the jars you want, open your cart and check out. Your order comes to us on WhatsApp and we confirm the total and delivery with you before you pay. Prefer to just chat? Message +91 98460 20348.</p></div></details>
   <details data-rv><summary>How long does a jar keep?</summary><div class="a"><p>Our pickles are naturally preserved. The best-before date is printed on every jar. Once open, keep it closed tightly, refrigerate non-veg pickles, and always use a clean, dry spoon.</p></div></details>
   <details data-rv><summary>Do you deliver outside Kerala?</summary><div class="a"><p>Ask us on WhatsApp with your pin code and we'll tell you what's possible and what delivery will cost.</p></div></details>
   <details data-rv><summary>What's in each pickle?</summary><div class="a"><p>Tap "Details" on any jar to see its key ingredients. The full ingredient list, including allergens like mustard, is printed on the label. Ask us if you have an allergy and we'll help.</p></div></details>
@@ -194,7 +205,8 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
 
 <section class="cta wm" data-wm>
   <h2 data-split>Hungry yet?</h2>
-  <a class="btn fill" href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp +91 98460 20348</a>
+  <a class="btn fill" href="#products">Shop the jars</a>
+  <p style="margin-top:16px;color:var(--cream)">Questions? <a href="https://wa.me/919846020348" target="_blank" rel="noopener" style="text-decoration:underline">WhatsApp +91 98460 20348</a></p>
 </section>
 <hr>
 <footer>
@@ -206,40 +218,29 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
 </footer>
 <div class="curtain" aria-hidden="true">BHARANY</div>
 
-<script>
-// [name, category, image, object-position-y%, heat 0-3, description, key ingredients, enjoy with]
-// y-offsets hide the Instagram UI baked into the screenshots. Ingredient lists are the headline ones; the label carries the full list.
-const P=[
- ["Dates & Lemon Pickle","Veg",1,39,1,"Sweet Kerala dates and tangy lemon in a gently spiced masala. The one people who say they don't like pickle end up finishing.",["Dates","Lemon","Chilli","Ginger","Mustard"],"Curd rice, chapati, biryani"],
- ["Chicken Pickle","Non-veg",2,0,3,"Tender pieces of chicken fried, then slow-cooked in a fiery roasted-chilli masala.",["Chicken","Chilli","Garlic","Ginger","Vinegar"],"Hot rice, porotta, appam"],
- ["Fish Pickle","Non-veg",4,36,3,"Firm fish, fried crisp and folded into a deep red Kerala masala. A coastal classic.",["Fish","Chilli","Garlic","Ginger","Vinegar"],"Kanji, rice and curd, dosa"],
- ["Prawns Pickle","Non-veg",6,24,3,"The jar from our film. Plump prawns roasted with garlic and curry leaf in a punchy chilli masala.",["Prawns","Chilli","Garlic","Curry leaf","Vinegar"],"Ghee rice, porotta, rice"],
- ["Beef Pickle","Non-veg",11,47,3,"Slow-cooked beef in black pepper and roasted spice. Rich, dark and very Kerala.",["Beef","Black pepper","Chilli","Garlic","Vinegar"],"Porotta, appam, rice"],
- ["Garlic Pickle","Veg",5,44,2,"Whole garlic cloves softened in tangy, spiced oil until mellow and sweet.",["Garlic","Chilli","Fenugreek","Mustard","Vinegar"],"Rice, dal, chapati"],
- ["Dates Pickle","Veg",8,39,1,"Pure dates pickle: sweet, sticky and lightly spiced.",["Dates","Chilli","Ginger","Mustard"],"Curd rice, sandwiches, cheese"],
- ["Dates & Lemon (Classic)","Veg",12,24,1,"Our original dates-and-lemon recipe, a little tangier than the new jar.",["Dates","Lemon","Chilli","Mustard"],"Curd rice, biryani"],
- ["Mango & Carrot Pickle","Veg",7,52,2,"Raw mango and crunchy carrot in a bright, tangy chilli masala.",["Raw mango","Carrot","Chilli","Mustard","Fenugreek"],"Curd rice, thayir sadam, dosa"],
- ["Pineapple Pickle","Veg",10,52,1,"Sweet-sour pineapple chunks with a slow chilli finish.",["Pineapple","Chilli","Ginger","Mustard"],"Biryani, fried rice, grills"],
- ["Desiccated Kerala Coconut · 200g","Pantry",3,47,0,"Finely grated, dried Kerala coconut with no added sugar. Ready for baking, chutneys and curries.",["Coconut"],"Baking, chutney, curries"],
- ["Curry Leaf Coconut Chutney · 200g","Pantry",9,34,1,"Dry coconut chutney powder roasted with curry leaves. Sprinkle, mix with oil, done.",["Coconut","Curry leaf","Chilli","Urad dal"],"Idli, dosa, hot rice with ghee"]
-];
-const CH='<svg viewBox="0 0 40 60"><path d="M8 4C32 2 40 28 30 58 24 40 14 24 8 4Z" fill="#e8561e"/></svg>';
-const heat=h=>`<span class="heat" aria-label="Heat ${h} of 3">${[1,2,3].map(i=>CH.replace('<svg',i>h?'<svg class="off"':'<svg')).join('')}</span>`;
-const dot=c=>c==="Pantry"?"":`<span class="dot ${c=="Veg"?"veg":"nonveg"}" aria-hidden="true"></span>`;
-const wa=n=>`https://wa.me/919846020348?text=${encodeURIComponent("Hi, I'd like to order: "+n)}`;
-document.getElementById("grid").innerHTML=P.map(([n,c,i,y,h,d,ing],k)=>`
-<article class="card" data-rv data-cat="${c}">
-  <div class="ph" data-k="${k}" role="button" tabindex="0" aria-label="Details for ${n}"><img src="img/${i}.jpg" alt="${n}" loading="lazy" style="object-position:50% ${y}%"></div>
-  <div class="meta"><span class="tag">${dot(c)}${c}</span>${h?heat(h):""}</div>
-  <h3>${n}</h3>
-  <p>${d}</p>
-  <div class="chips">${ing.slice(0,3).map(x=>`<span>${x}</span>`).join("")}</div>
-  <div class="row"><button class="btn" data-k="${k}">Details</button><a class="btn fill" href="${wa(n)}" target="_blank" rel="noopener">Order</a></div>
-</article>`).join("");
-</script>
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/lenis.min.js"></script>
+<script src="js/shop.js"></script>
+<script>
+// cards render before motion.js so its scroll reveals pick them up
+// CATALOG, Cart and money are globals from shop.js
+const CH='<svg viewBox="0 0 40 60"><path d="M8 4C32 2 40 28 30 58 24 40 14 24 8 4Z" fill="#e8561e"/></svg>';
+const heat=h=>h?`<span class="heat" aria-label="Heat ${h} of 3">${[1,2,3].map(i=>CH.replace('<svg',i>h?'<svg class="off"':'<svg')).join('')}</span>`:'';
+const dot=c=>c==="Pantry"?"":`<span class="dot ${c=="Veg"?"veg":"nonveg"}" aria-hidden="true"></span>`;
+const sizeSel=p=>p.sizes.length>1?`<select aria-label="Size of ${p.name}" data-size>${p.sizes.map(([s,pr])=>`<option value="${s}">${s}${pr==null?'':' · '+money(pr)}</option>`).join('')}</select>`
+  :`<span class="one-size">${p.sizes[0][0]}${p.sizes[0][1]==null?'':' · '+money(p.sizes[0][1])}</span>`;
+document.getElementById("grid").innerHTML=CATALOG.map((p,k)=>`
+<article class="card" data-rv data-cat="${p.cat}" data-id="${p.id}">
+  <div class="ph" data-k="${k}" role="button" tabindex="0" aria-label="Details for ${p.name}"><img src="img/${p.img}.jpg" alt="${p.name}" loading="lazy" style="object-position:50% ${p.y}%"></div>
+  <div class="meta"><span class="tag">${dot(p.cat)}${p.cat}</span>${heat(p.heat)}</div>
+  <h3>${p.name}</h3>
+  <p>${p.desc}</p>
+  <div class="chips">${p.ing.slice(0,3).map(x=>`<span>${x}</span>`).join("")}</div>
+  <div class="row"><button class="btn fill" data-add>Add · ${p.sizes[0][0]}${p.sizes[0][1]==null?'':' · '+money(p.sizes[0][1])}</button></div>
+  ${p.sizes.length>1?`<button class="more-link" data-k="${k}">More sizes &amp; details →</button>`:`<button class="more-link" data-k="${k}">Details →</button>`}
+</article>`).join("");
+</script>
 <script src="js/motion.js"></script>
 <script src="vendor/three.min.js"></script>
 <script>
@@ -255,16 +256,16 @@ document.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>
   if(window.ScrollTrigger) ScrollTrigger.refresh();
 }));
 function openSheet(k){
-  const [n,c,i,y,h,d,ing,pair]=P[k];
-  sheet.innerHTML=`<div class="sheet"><img src="img/${i}.jpg" alt="${n}" style="object-position:50% ${y}%">
+  const p=CATALOG[k];
+  sheet.innerHTML=`<div class="sheet" data-id="${p.id}"><img src="img/${p.img}.jpg" alt="${p.name}" style="object-position:50% ${p.y}%">
     <div class="body"><button class="btn x" aria-label="Close">✕</button>
-      <div class="meta"><span class="tag">${dot(c)}${c}</span>${h?heat(h):""}</div>
-      <h3 id="sheet-title">${n}</h3><p>${d}</p>
-      <div><h4>Key ingredients</h4><div class="chips" style="margin-top:8px">${ing.map(x=>`<span>${x}</span>`).join("")}</div></div>
-      <div><h4>Enjoy it with</h4><p>${pair}</p></div>
-      <div><h4>Storage</h4><ul><li>Always use a clean, dry spoon.</li><li>Keep the lid tightly closed${c=="Non-veg"?"; refrigerate after opening":" in a cool, dry place"}.</li><li>Best before: printed on the jar.</li></ul></div>
-      <small>Full ingredients and allergen information (e.g. mustard) are printed on the jar label. Ask us on WhatsApp for sizes and current prices.</small>
-      <a class="btn fill" style="align-self:flex-start" href="${wa(n)}" target="_blank" rel="noopener">Order on WhatsApp</a>
+      <div class="meta"><span class="tag">${dot(p.cat)}${p.cat}</span>${heat(p.heat)}</div>
+      <h3 id="sheet-title">${p.name}</h3><p>${p.desc}</p>
+      <div><h4>Key ingredients</h4><div class="chips" style="margin-top:8px">${p.ing.map(x=>`<span>${x}</span>`).join("")}</div></div>
+      <div><h4>Enjoy it with</h4><p>${p.pair}</p></div>
+      <div><h4>Storage</h4><ul><li>Always use a clean, dry spoon.</li><li>Keep the lid tightly closed${p.cat=="Non-veg"?"; refrigerate after opening":" in a cool, dry place"}.</li><li>Best before: printed on the jar.</li></ul></div>
+      <small>Full ingredients and allergen information (e.g. mustard) are printed on the jar label.</small>
+      <div class="buy">${sizeSel(p)}<button class="btn fill" data-add>Add to cart</button></div>
     </div></div>`;
   sheet.querySelector('.x').onclick=closeSheet;
   sheet.showModal(); SITE.lenis&&SITE.lenis.stop();
@@ -278,6 +279,14 @@ function closeSheet(){
 }
 sheet.addEventListener('cancel',e=>{e.preventDefault();closeSheet()});
 sheet.addEventListener('click',e=>{if(e.target===sheet)closeSheet()});
+// add to cart from a card or the detail sheet (size comes from the picker next to the button)
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-add]'); if(!b)return;
+  const box=b.closest('[data-id]'), p=Cart.product(box.dataset.id), sel=box.querySelector('[data-size]');
+  Shop.addToCart(p.id,sel?sel.value:p.sizes[0][0],b);
+  const was=b.dataset.label||(b.dataset.label=b.textContent); b.textContent='Added ✓'; setTimeout(()=>b.textContent=was,1400);
+  if(sheet.open&&sheet.contains(b)) closeSheet();
+});
 document.getElementById('grid').addEventListener('click',e=>{const t=e.target.closest('[data-k]'); if(t)openSheet(+t.dataset.k)});
 document.getElementById('grid').addEventListener('keydown',e=>{const t=e.target.closest('.ph'); if(t&&(e.key=='Enter'||e.key==' ')){e.preventDefault();openSheet(+t.dataset.k)}});
 // card tilt: image plate follows the pointer in 3D

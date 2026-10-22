@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://lh3.googleusercontent.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Bharany Kerala Pickles</title>
 <meta name="description" content="Home-made Kerala pickles for everyone living away from home: hostels, PGs and first flats. Small batches, nothing artificial.">
@@ -20,31 +20,36 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0c0907">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;700&family=Inter:wght@500&family=Manjari:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Manjari:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
 <style>
-/* hero: a scroll scene. The first screen carries the name, what it is, and the action */
+/* hero: an exploded view of the jar. Scrolling lifts the jute cover, the seal and the pickle out of the jar */
 .stage{height:300vh;position:relative}
-.sticky{position:sticky;top:0;height:100svh;overflow:hidden}
-.sticky>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform,opacity;
-  -webkit-mask-image:linear-gradient(#0000,#000 14%,#000 78%,#0000);mask-image:linear-gradient(#0000,#000 14%,#000 78%,#0000)} /* taste-skill-ignore: edge-fade scrim hides the video-frame crops and corner mark */
-#burst{object-position:50% 40%}
-#jar{object-position:50% 0;max-width:none}
-/* neutral scrim behind the first-screen text: the one allowed gradient */
-.scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(#0c0907e6,#0c090799 45%,#0c090700 75%)} /* taste-skill-ignore */
-.hero-copy{position:absolute;inset:13svh var(--margin) auto;text-align:center;z-index:3}
-.hero-copy h1{font-size:var(--t-display);line-height:.85;color:var(--accent)}
+.sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:1fr;align-items:center}
+.hero-copy{position:relative;z-index:3;padding:96px var(--margin) 0;align-self:start}
+.hero-copy h1{font:700 var(--t-display)/.85 var(--brand);text-transform:uppercase;color:var(--accent)}
 .hero-copy h1 span{display:inline-block}
-.hero-copy .lede{margin:22px auto 26px;max-width:30ch;font-size:clamp(19px,1.8vw,24px)}
-.hero-copy .small{margin:14px auto 0}
-.hero-out{position:absolute;inset:auto 0 0;padding:120px var(--margin) 9svh;text-align:center;z-index:3;opacity:0;background:linear-gradient(#0c090700,#0c0907d9 45%,#0c0907)} /* taste-skill-ignore: neutral scrim under text on the photo */
-.hero-out p{font:700 clamp(32px,5vw,64px)/1 var(--display);text-transform:uppercase;margin:0 auto 10px;max-width:none}
+.hero-copy .ml{margin-top:14px}
+.hero-copy .lede{margin:14px 0 24px;max-width:26ch;font-size:clamp(19px,1.8vw,24px)}
+.hero-copy .small{margin-top:14px}
 .ml{font:700 clamp(22px,3vw,32px)/1.3 'Manjari',sans-serif;color:var(--accent)}
-.hero-out .ml{font-family:'Manjari',sans-serif;text-transform:none;font-size:clamp(22px,3vw,32px);margin-bottom:22px}
-@media(max-aspect-ratio:1/1){.hero-out{padding-bottom:6svh}}
-.bit{position:absolute;top:0;left:0;z-index:2;pointer-events:none;will-change:transform,opacity}
-.bit svg{display:block;width:100%;height:100%}
-
+.xv{position:absolute;inset:0;z-index:2;pointer-events:none}
+.xv img{position:absolute;left:0;top:0;will-change:transform;user-select:none}
+.xv .note{position:absolute;left:0;top:0;width:min(30vw,300px);opacity:0;will-change:transform,opacity}
+.xv .note b{display:block;font:500 var(--t-h3)/1.1 var(--display);color:var(--ink);margin-bottom:4px}
+.xv .note span{font-size:var(--t-small);line-height:1.45;display:block}
+@media(min-width:900px){
+  .hero-copy{position:absolute;left:0;top:50%;transform:translateY(-50%);padding:0 var(--margin);width:46%}
+  .hero-copy h1{font-size:clamp(110px,13vw,220px)}
+}
+@media(max-width:899px){
+  .hero-copy{text-align:center}
+  .hero-copy h1{font-size:clamp(76px,22vw,150px)}
+  .hero-copy .lede{margin-inline:auto}
+  .xv .note{width:44vw}
+  .xv .note b{font-size:20px}
+  .xv .note span{display:none}
+}
 /* products */
 .shop-top{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:28px}
 .shop-top h2{margin:0}
@@ -71,6 +76,24 @@
 .veg{color:var(--veg)}.nonveg{color:var(--nonveg)}
 @media(max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:8px}.card{padding:8px;gap:8px}.card h3{font-size:19px}.price{font-size:16px}.card .btn{padding:12px 10px}.tag{padding:5px 8px}}
 
+/* banner: the owner's poster, or the in-season festival box, in a field of the accent colour */
+.promo{padding-top:clamp(56px,6vw,96px)}
+.promo a.poster{display:block}
+.promo a.poster img{width:100%;max-height:70svh;object-fit:cover}
+.promo .cap{margin-top:12px}
+.fest{background:var(--accent);color:var(--deep);display:grid;gap:24px;grid-template-columns:1fr;padding:clamp(24px,4vw,56px);align-items:center}
+.fest h2{color:var(--deep);margin-bottom:12px}
+.fest p{color:var(--deep)}
+.fest .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.fest .thumbs img{width:100%;aspect-ratio:3/4;object-fit:cover}
+.fest .btn{background:var(--deep);color:var(--accent);margin-top:20px}
+@media(min-width:900px){.fest{grid-template-columns:1fr 1fr}}
+/* shop by craving: tabs over one sideways row of jars */
+.crave .filters{margin-bottom:20px}
+.crave-row{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,260px);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;padding-bottom:8px}
+.crave-row .card{scroll-snap-align:start}
+@media(max-width:560px){.crave-row{grid-auto-columns:46%}}
+.best{background:var(--accent);color:var(--deep)}
 /* missing home: four moments in large type, then the boxes in a snap row */
 .ml-sub{margin:-12px 0 clamp(32px,4vw,56px)}
 .moments{display:grid;gap:40px 48px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-bottom:clamp(64px,8vw,120px)}
@@ -99,7 +122,7 @@
 .story-head h2{margin:0}
 .story-track{display:flex;height:100svh;width:max-content;will-change:transform;list-style:none;padding:0}
 .panel{width:min(100vw,1100px);height:100%;flex:none;display:grid;grid-template-columns:1fr;align-content:center;gap:24px;padding:200px var(--margin) 56px;position:relative;overflow:hidden}
-.panel h3{font-size:clamp(40px,5.5vw,76px);line-height:.92;margin-bottom:14px}
+.panel h3{font-size:clamp(40px,5vw,68px);line-height:1;margin-bottom:14px}
 .panel figure{overflow:hidden;aspect-ratio:4/3;max-height:46vh;background:var(--surface)}
 .panel figure img,#cook-fig video{width:100%;height:100%;object-fit:cover}
 @media(min-width:900px){.panel figure{order:-1;max-height:56vh}.panel{padding-inline:48px;grid-template-columns:1fr 1fr;align-items:center;gap:56px}}
@@ -128,8 +151,8 @@
 /* reviews (shown once real ones are added) */
 .rev-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
 .rev{background:var(--surface);padding:20px;display:flex;flex-direction:column;gap:12px}
-.rev img{width:100%;max-height:420px;object-fit:cover;object-position:top}
-.rev q{font:700 26px/1.1 var(--display);text-transform:uppercase}
+.rev img,.rev video{width:100%;max-height:420px;object-fit:cover;object-position:top}
+.rev q{font:500 26px/1.2 var(--display)}
 .rev span{font-size:var(--t-small);opacity:.8}
 
 /* faq: heading and contact on the left, questions on the right */
@@ -137,7 +160,7 @@
 @media(min-width:900px){.faq-s{grid-template-columns:4fr 7fr}}
 /* jar care: the one rule large, the rest beside it */
 .care-s{display:grid;gap:clamp(32px,5vw,80px);grid-template-columns:1fr}
-.care-s .big{font:700 clamp(36px,4.6vw,64px)/.98 var(--display);text-transform:uppercase;color:var(--accent);max-width:14ch;margin-bottom:18px}
+.care-s .big{font:500 clamp(36px,4.6vw,64px)/1.02 var(--display);color:var(--accent);max-width:14ch;margin-bottom:18px}
 .care-s ul{list-style:none;padding:0;display:grid;gap:32px;align-content:center}
 .care-s h3{margin-bottom:8px}
 @media(min-width:900px){.care-s{grid-template-columns:1fr 1fr}}
@@ -148,7 +171,7 @@ dialog::backdrop{background:#000c}
 .sheet{display:grid;grid-template-columns:1fr;background:var(--surface);position:relative}
 .sheet img{width:100%;height:100%;max-height:48svh;object-fit:cover}
 .sheet .body{padding:28px;display:flex;flex-direction:column;gap:16px}
-.sheet h3{font-size:clamp(36px,5vw,56px);line-height:.92}
+.sheet h3{font-size:clamp(34px,4.4vw,52px);line-height:1}
 .sheet h4{font:600 var(--t-body) var(--body);margin-bottom:4px}
 .sheet ul{padding-left:18px}
 .sheet .x{position:absolute;top:12px;right:12px}
@@ -174,28 +197,33 @@ dialog::backdrop{background:#000c}
 </nav>
 <header class="stage" id="top">
   <div class="sticky">
-    <img id="burst" src="img/13.jpg" alt="Prawn, garlic, curry leaf and chilli powder bursting in mid-air">
-    <img id="jar" src="img/14.jpg" alt="Open Bharany prawns pickle jar" style="opacity:0">
-    <div class="scrim"></div>
     <div class="hero-copy">
       <h1 id="title">Bharany</h1>
+      <p class="ml">വീട്ടിലെ രുചി</p>
       <p class="lede">Home-made Kerala pickles for every Malayali away from home.</p>
       <a class="btn fill" href="#products">Shop the jars</a>
       <p class="small">Free delivery on orders of ₹1,500 and above</p>
     </div>
-    <div class="hero-out">
-      <p>Tastes like Amma packed&nbsp;it.</p>
-      <p class="ml">വീട്ടിലെ രുചി</p>
-      <a class="btn fill" href="#products">Shop the jars</a>
+    <div class="xv" id="xv" aria-label="What's inside a Bharany jar">
+      <img data-l="pickle" src="img/xv/pickle.webp" width="417" height="227" alt="Beef pickle">
+      <img data-l="jar" src="img/xv/jar.webp" width="450" height="631" alt="Bharany beef pickle in a glass jar">
+      <img data-l="seal" src="img/xv/seal.webp" width="381" height="82" alt="Metal inner seal">
+      <img data-l="cover" src="img/xv/cover.webp" width="451" height="206" alt="Jute cover">
+      <p class="note" data-n="cover"><b>Jute cover</b><span>Tied on by hand, the way Kerala homes have always covered pickle.</span></p>
+      <p class="note" data-n="seal"><b>Inner seal</b><span>Keeps every jar clean, fresh and leak-proof on the way to you.</span></p>
+      <p class="note" data-n="pickle"><b>The pickle</b><span>Tender beef slow-roasted with red chillies, spices, garlic, shallots and coconut oil.</span></p>
+      <p class="note" data-n="jar"><b>Glass jar</b><span>Clean glass that keeps the taste true. No chemical preservatives inside.</span></p>
     </div>
   </div>
 </header>
 <div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
+<section class="promo" id="promo" hidden aria-label="Offer"></section>
 
 <section id="products">
   <div class="shop-top">
     <h2 data-split>The jars</h2>
     <div class="filters" role="group" aria-label="Filter jars">
+      <button class="btn" aria-pressed="false" data-f="best" hidden>Best sellers</button>
       <button class="btn" aria-pressed="true" data-f="all">All</button>
       <button class="btn" aria-pressed="false" data-f="Veg">Veg</button>
       <button class="btn" aria-pressed="false" data-f="Non-veg">Non-veg</button>
@@ -234,6 +262,12 @@ dialog::backdrop{background:#000c}
     </div>
   </div>
 </section></div>
+
+<section class="crave" id="cravings">
+  <h2 data-split>Shop by craving</h2>
+  <div class="filters" role="tablist" aria-label="Cravings" id="crave-tabs"></div>
+  <div class="crave-row" id="crave-row" role="tabpanel"></div>
+</section>
 
 <section class="story" id="story" aria-labelledby="story-h">
   <div class="story-head"><h2 id="story-h" data-split>From Amma's kitchen to your table</h2></div>
@@ -351,15 +385,24 @@ const heat=h=>h?`<span class="tag">${['','Mild','Medium','Hot'][h]}</span>`:'';
 const dot=c=>c==="Pantry"?"":`<span class="dot ${c=="Veg"?"veg":"nonveg"}" aria-hidden="true"></span>`;
 const sizeSel=p=>p.sizes.length>1?`<select aria-label="Size of ${p.name}" data-size>${p.sizes.map(([s,pr])=>`<option value="${s}">${s}${pr==null?'':' · '+money(pr)}</option>`).join('')}</select>`
   :`<span class="one-size">${p.sizes[0][0]}${p.sizes[0][1]==null?'':' · '+money(p.sizes[0][1])}</span>`;
-document.getElementById("grid").innerHTML=CATALOG.map((p,k)=>`
-<article class="card" data-rv data-cat="${p.cat}" data-id="${p.id}">
+const cardHTML=(p,k,best)=>`
+<article class="card" data-rv data-cat="${p.cat}" data-id="${p.id}"${best?' data-best':''}>
   <div class="ph" data-k="${k}" role="button" tabindex="0" aria-label="Details for ${p.name}"><img src="${p.src}" alt="${p.name}" loading="lazy" style="object-position:50% ${p.y}%"></div>
-  <div class="meta"><span class="tag">${dot(p.cat)}${p.cat}</span>${heat(p.heat)}</div>
+  <div class="meta">${best?'<span class="tag best">Best seller</span>':''}<span class="tag">${dot(p.cat)}${p.cat}</span>${heat(p.heat)}</div>
   <h3>${p.name}</h3>
   <p class="price">${p.sizes[0][1]==null?'Price on WhatsApp':money(p.sizes[0][1])} <span>${p.sizes[0][0]}${p.sizes.length>1?', more sizes inside':''}</span></p>
   <button class="btn fill block add" data-add>Add to cart</button>
   <button class="more-link" data-k="${k}">${p.sizes.length>1?'More sizes and details':'Details'}</button>
-</article>`).join("");
+</article>`;
+document.getElementById("grid").innerHTML=CATALOG.map((p,k)=>cardHTML(p,k,false)).join("");
+// shop by craving: one sideways row per tab, built from the same cards
+{const tabs=document.getElementById('crave-tabs'), row=document.getElementById('crave-row');
+ const show=id=>{const c=Shop.CRAVINGS.find(x=>x.id===id); tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===id));
+   row.innerHTML=c.items.map(p=>cardHTML(p,CATALOG.indexOf(p),false)).join(''); row.scrollLeft=0;
+   if(window.gsap&&window.SITE&&!SITE.reduced) gsap.from(row.children,{opacity:0,y:20,duration:.4,stagger:.04,clearProps:'all'});};
+ tabs.innerHTML=Shop.CRAVINGS.map((c,i)=>`<button class="btn" role="tab" aria-pressed="${!i}" data-c="${c.id}">${c.name}</button>`).join('');
+ tabs.addEventListener('click',e=>{const b=e.target.closest('[data-c]'); if(b) show(b.dataset.c);});
+ show(Shop.CRAVINGS[0].id);}
 // boxes in their festival season move to the front and get a badge
 document.getElementById("boxes").innerHTML=[...Shop.BOXES].sort((a,b)=>!!Shop.season(b)-!!Shop.season(a)).map(b=>{
   const its=b.items.map(([id,size])=>({p:Cart.product(id),size})), sum=its.reduce((a,{p,size})=>{const pr=p.sizes.find(s=>s[0]===size)[1]; return a==null||pr==null?null:a+pr},0);
@@ -368,6 +411,29 @@ document.getElementById("boxes").innerHTML=[...Shop.BOXES].sort((a,b)=>!!Shop.se
     <button class="btn fill block" data-box="${b.id}">Add box${sum==null?'':', '+money(sum)}</button></article>`}).join('');
 document.getElementById("boxes").addEventListener('click',e=>{const b=e.target.closest('[data-box]'); if(!b)return; Shop.addBox(b.dataset.box);
   const was=b.dataset.label||(b.dataset.label=b.textContent); b.textContent='Added'; setTimeout(()=>b.textContent=was,1400);});
+// settings from the sheet (or defaults): best sellers and the banner
+Shop.settingsReady.then(st=>{
+  const best=st.bestsellers, grid=document.getElementById('grid');
+  if(best.length){
+    best.slice().reverse().forEach(id=>{const c=grid.querySelector(`.card[data-id="${id}"]`); if(!c)return; grid.prepend(c); c.setAttribute('data-best','');
+      c.querySelector('.meta').insertAdjacentHTML('afterbegin','<span class="tag best">Best seller</span>');});
+    document.querySelector('[data-f="best"]').hidden=false;
+  }
+  const b=st.banner, el=document.getElementById('promo'), poster=Shop.posterSrc(b.image);
+  const fest=Shop.BOXES.find(x=>x.id===b.box)||Shop.BOXES.find(x=>Shop.season(x));
+  if(b.mode==='off'||(b.mode==='auto'&&!poster&&!(fest&&Shop.season(fest)))) return;
+  const link=/^(#|index\.html#|checkout\.html)/.test(b.link)?b.link:'#missing-home', E=Shop.esc;
+  if(poster){
+    el.innerHTML=`<a class="poster" href="${E(link)}"><img src="${E(poster)}" alt="${E(b.title||'Bharany offer')}"></a>${b.title||b.text?`<p class="cap"><b>${E(b.title)}</b> ${E(b.text)}</p>`:''}`;
+  } else if(fest){
+    const its=fest.items.map(([id,size])=>({p:Cart.product(id),size})), sum=its.reduce((a,{p,size})=>{const pr=p.sizes.find(s=>s[0]===size)[1]; return a==null||pr==null?null:a+pr},0);
+    el.innerHTML=`<div class="fest"><div><h2>${E(b.title||(Shop.season(fest)?Shop.season(fest)+' is here':fest.name))}</h2>
+      <p class="lede">${E(b.text||fest.line)}</p><button class="btn" data-box="${fest.id}">Add the ${E(fest.name.replace(/^The /,''))}${sum==null?'':', '+money(sum)}</button></div>
+      <div class="thumbs">${its.map(({p})=>`<img src="${p.src}" alt="${E(p.name)}" style="object-position:50% ${p.y}%">`).join('')}</div></div>`;
+    el.querySelector('[data-box]').addEventListener('click',e=>{Shop.addBox(fest.id); e.target.textContent='Added'; });
+  }
+  el.hidden=false; if(window.ScrollTrigger) ScrollTrigger.refresh();
+});
 // structured data so Google can show the shop and its prices
 {const priced=CATALOG.filter(p=>p.sizes.some(x=>x[1]!=null)), url='https://jesvin97.github.io/-Bharany-/';
  const ld={"@context":"https://schema.org","@graph":[
@@ -380,21 +446,20 @@ document.getElementById("boxes").addEventListener('click',e=>{const b=e.target.c
 // real reviews and the cooking video appear only once Bharany adds them in js/shop.js
 if(Shop.REVIEWS.length){
   const esc=v=>String(v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  document.getElementById('rev-grid').innerHTML=Shop.REVIEWS.map(r=>`<figure class="rev" data-rv>${r.img?`<img src="${esc(r.img)}" alt="Message from ${esc(r.name)}" loading="lazy">`:''}
+  document.getElementById('rev-grid').innerHTML=Shop.REVIEWS.map(r=>`<figure class="rev" data-rv>${r.video?`<video src="${esc(r.video)}" controls playsinline preload="metadata"${r.img?` poster="${esc(r.img)}"`:''}></video>`:r.img?`<img src="${esc(r.img)}" alt="Message from ${esc(r.name)}" loading="lazy">`:''}
     <q>${esc(r.text)}</q><span>${esc(r.name)}${r.place?', '+esc(r.place):''}</span></figure>`).join('');
   document.getElementById('reviews').hidden=false;
 }
 if(Shop.SHOP.cookingVideo) document.getElementById('cook-fig').innerHTML=`<video src="${Shop.SHOP.cookingVideo}" autoplay muted loop playsinline aria-label="Amma cooking a batch of pickle"></video>`;
 </script>
 <script src="js/motion.js"></script>
-<script src="vendor/three.min.js"></script>
 <script>
 const {gsap:G,reduced,fine,SVG}=SITE;
 // ---------- product filter + detail sheet ----------
-const cards=[...document.querySelectorAll('.card')], sheet=document.getElementById('sheet');
+const cards=[...document.querySelectorAll('#grid .card')], sheet=document.getElementById('sheet');
 document.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',x===b));
-  const f=b.dataset.f, show=cards.filter(c=>f=="all"||c.dataset.cat==f);
+  const f=b.dataset.f, show=cards.filter(c=>f=="all"||(f=="best"?c.hasAttribute('data-best'):c.dataset.cat==f));
   cards.forEach(c=>c.hidden=!show.includes(c));
   if(G&&!reduced) G.fromTo(show,{opacity:0,y:30,scale:.96},{opacity:1,y:0,scale:1,duration:.5,stagger:.05,ease:'power3.out',overwrite:true});
   else show.forEach(c=>c.style.opacity=1);
@@ -432,8 +497,9 @@ document.addEventListener('click',e=>{
   const was=b.dataset.label||(b.dataset.label=b.textContent); b.textContent='Added'; setTimeout(()=>b.textContent=was,1400);
   if(sheet.open&&sheet.contains(b)) closeSheet();
 });
-document.getElementById('grid').addEventListener('click',e=>{const t=e.target.closest('[data-k]'); if(t)openSheet(+t.dataset.k)});
-document.getElementById('grid').addEventListener('keydown',e=>{const t=e.target.closest('.ph'); if(t&&(e.key=='Enter'||e.key==' ')){e.preventDefault();openSheet(+t.dataset.k)}});
+// details open from the shop grid and the craving row alike
+document.addEventListener('click',e=>{const t=e.target.closest('.card [data-k]'); if(t)openSheet(+t.dataset.k)});
+document.addEventListener('keydown',e=>{const t=e.target.closest('.ph'); if(t&&(e.key=='Enter'||e.key==' ')){e.preventDefault();openSheet(+t.dataset.k)}});
 // card tilt: the picture follows the pointer in 3D
 if(fine&&!reduced) cards.forEach(c=>{
   const ph=c.querySelector('.ph');
@@ -462,79 +528,53 @@ if(G&&!reduced) G.matchMedia().add({wide:'(min-width:900px)',narrow:'(max-width:
   });
 });
 
-// ---------- hero: ingredients fall from the sky into the jar mouth (p = scroll progress through .stage, 0..1) ----------
-const kinds=Object.keys(SVG), sticky=document.querySelector('.sticky'), stage=document.querySelector('.stage');
-// 3D ingredients (three.js). If WebGL/three is unavailable we fall back to the flat SVG bits.
-let R=null,scene,cam,K=2*10*Math.tan(20*Math.PI/180); // K = world height visible at z=0
-try{ if(window.THREE){
-  R=new THREE.WebGLRenderer({alpha:true,antialias:true}); R.setPixelRatio(Math.min(devicePixelRatio,2));
-  R.domElement.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none';
-  sticky.append(R.domElement);
-  scene=new THREE.Scene(); cam=new THREE.PerspectiveCamera(40,1,.1,50); cam.position.z=10;
-  scene.add(new THREE.AmbientLight(0xffffff,.75));
-  const L=new THREE.DirectionalLight(0xffd9a0,1.5); L.position.set(3,5,6); scene.add(L);
-}}catch(e){R=null}
-const mat=(c,r)=>new THREE.MeshStandardMaterial({color:c,roughness:r,side:THREE.DoubleSide});
-const mk=R&&{
-  leaf(){const s=new THREE.Shape(); s.moveTo(0,-.6); s.bezierCurveTo(.5,-.2,.45,.3,0,.7); s.bezierCurveTo(-.45,.3,-.5,-.2,0,-.6);
-    const g=new THREE.ExtrudeGeometry(s,{depth:.04,bevelEnabled:false}), P=g.attributes.position;
-    for(let i=0;i<P.count;i++) P.setZ(i,P.getZ(i)+.35*P.getX(i)*P.getX(i)); // cup the blade
-    g.computeVertexNormals(); return new THREE.Mesh(g,mat(0x5aa646,.6))},
-  prawn(){const g=new THREE.Group(), m=mat(0xf0a070,.45); // curled body: tapering segments along an arc, then a tail fan
-    for(let i=0;i<8;i++){const a=i/7*2.4-.2, sp=new THREE.Mesh(new THREE.SphereGeometry(.2-i*.014,12,10),m); sp.position.set(Math.sin(a)*.5,Math.cos(a)*.5-.5,0); sp.scale.set(1.1,.9,1); g.add(sp);}
-    const t=new THREE.Mesh(new THREE.ConeGeometry(.16,.3,3),mat(0xe0763a,.5)); t.position.set(Math.sin(2.2)*.5+.1,Math.cos(2.2)*.5-.62,0); t.rotation.z=2.2; g.add(t); g.scale.setScalar(.9); return g},
-  garlic(){const pts=[]; for(let i=0;i<=16;i++){const u=i/16; pts.push(new THREE.Vector2(.5*Math.sin(Math.PI*Math.pow(u,.7)),u*1.2-.6));}
-    return new THREE.Mesh(new THREE.LatheGeometry(pts,18),mat(0xf3e6c8,.4))},
-  chilli(){const g=new THREE.Group(), c=new THREE.Mesh(new THREE.ConeGeometry(.16,1.1,14),mat(0xc0301c,.35)); c.rotation.z=Math.PI; g.add(c);
-    const st=new THREE.Mesh(new THREE.CylinderGeometry(.04,.04,.25,8),mat(0x3f7a30,.6)); st.position.y=.65; g.add(st); g.rotation.z=.2; return g},
-  pepper(){return new THREE.Mesh(new THREE.SphereGeometry(.22,14,14),mat(0x1c1410,.7))}
-};
-const bits=Array.from({length:28},(_,i)=>{
-  const o={x0:(i/28)*100+(Math.random()-.5)*8,d:Math.random()*.3,spin:(Math.random()-.5)*900,s:.3+Math.random()*.35};
-  if(R){o.el=mk[['leaf','garlic','chilli','pepper','prawn'][i%5]](); o.el.scale.setScalar(0); scene.add(o.el);}
-  else{o.el=document.createElement('div'); o.el.className='bit'; o.el.innerHTML=SVG[kinds[i%4]];
-    const s=24+Math.random()*34; o.el.style.width=s+'px'; o.el.style.height=s*(i%4==3?1:1.3)+'px'; sticky.append(o.el);}
-  return o;
-});
-function fit(){ if(!R)return; R.setSize(sticky.clientWidth,sticky.clientHeight,false); cam.aspect=sticky.clientWidth/sticky.clientHeight; cam.updateProjectionMatrix(); }
-fit(); addEventListener('resize',fit);
-const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)), ease=t=>t*t*(3-2*t);
-const burst=document.getElementById('burst'), jar=document.getElementById('jar'), out=document.querySelector('.hero-out');
-// The jar frame is 1920x1080 with its open mouth (880px wide) centred at ~(955,150). Landscape: cover the stage.
-// Portrait: size it so the jar fills the width and sits on the bottom edge, so the label is not cropped away.
-function layout(){
-  const W=innerWidth,H=innerHeight, port=W<H, sc=port?W*.95/880:Math.max(W/1920,H/1080), jt=port?(H-1080*sc)/H*100:38;
-  Object.assign(jar.style,{objectFit:'fill',top:0,right:'auto',bottom:'auto',width:1920*sc+'px',height:1080*sc+'px',left:(W-1920*sc)/2+'px'});
-  return {mouthX:(W-1920*sc)/2+955*sc, mouth:150*sc+jt*H/100, jt};
+// ---------- hero: exploded view. p = scroll progress through .stage; 0 = closed jar, 1 = every layer apart ----------
+const stage=document.querySelector('.stage'), xv=document.getElementById('xv');
+const L={}, N={}; xv.querySelectorAll('img').forEach(i=>L[i.dataset.l]=i); xv.querySelectorAll('.note').forEach(n=>N[n.dataset.n]=n);
+const H0={cover:206,seal:82,pickle:227,jar:631}, W0={cover:451,seal:381,pickle:417,jar:450};
+// where every layer sits, closed and apart, for the current screen
+function geometry(){
+  const W=innerWidth, H=innerHeight, wide=W>=900, gap=wide?26:14;
+  const stack=H0.cover+H0.seal+H0.pickle+H0.jar+gap*3/.6;
+  const s=Math.min((H*(wide?.86:.64))/stack, (wide?W*.26:W*.5)/W0.jar);
+  const cx=wide?W*.62:W*.32, top=wide?(H-stack*s)/2:H*.12;
+  const h=k=>H0[k]*s, w=k=>W0[k]*s, x=k=>cx-w(k)/2;
+  const open={}, closed={}; let y=top;
+  for(const k of ['cover','seal','pickle','jar']){open[k]=y; y+=h(k)+gap;}
+  // phones: the closed jar sits above the bottom bar
+  const jarY=wide?(H-(h('jar')+h('cover')*.62))/2+h('cover')*.62:H-h('jar')-96;
+  closed.jar=jarY; closed.cover=jarY-h('cover')*.62; closed.seal=jarY-h('seal')*.35; closed.pickle=jarY+h('jar')*.04;
+  // phones: the closed jar starts smaller and centred in the space under the copy, then grows as it opens
+  let zc=1, ox=0, oy=jarY+h('jar');
+  if(!wide){const cb=document.querySelector('.hero-copy').getBoundingClientRect().bottom, room=H-96-cb-12, need=h('jar')+h('cover')*.62;
+    zc=Math.max(.35,Math.min(1,room/need)); ox=W/2-cx;}
+  return {s,x,w,h,open,closed,wide,cx,zc,ox,oy};
 }
-let mouse=0; // gentle pointer parallax on the 3D bits
+let g=geometry();
+function place(){ g=geometry(); for(const k in L){L[k].style.width=g.w(k)+'px'; L[k].style.height='auto'; L[k].style.left=g.x(k)+'px';}
+  for(const k in N){N[k].style.left=(g.cx+g.w('jar')/2+(g.wide?28:10))+'px';} }
 function draw(p){
-  const vh=innerHeight/100, vw=innerWidth/100;
-  const {mouthX,mouth,jt}=layout(), m=clamp(innerWidth/1100,.45,1);
-  burst.style.opacity=1-clamp((p-.25)/.3); burst.style.transform=`translateY(${p*14}vh) scale(${1+p*.12})`;
-  const j=ease(clamp((p-.2)/.4)); jar.style.opacity=j; jar.style.transform=`translateY(${(1-j)*60+jt}vh)`;
-  out.style.opacity=clamp((p-.86)/.1); out.style.pointerEvents=p>.86?'auto':'none';
-  bits.forEach(b=>{
-    const t=clamp((p-.08-b.d)/.5), e=t*t, x=mouthX+(b.x0*vw-mouthX)*(1-.92*e), y=-80+(mouth+80)*e, f=t<=0?0:t>.92?(1-t)/.08:1;
-    if(R){ const H=innerHeight, a=b.spin*t*Math.PI/180;
-      b.el.position.set((x-innerWidth/2)/H*K+mouse*(1-e)*.6,(H/2-y)/H*K,0); b.el.rotation.set(a*.7,a,a*.5); b.el.scale.setScalar(b.s*f*m); }
-    else{ b.el.style.opacity=f; b.el.style.transform=`translate(${x}px,${y}px) rotate(${b.spin*t}deg)`; }
-  });
-  if(R)R.render(scene,cam);
+  const e=t=>t<0?0:t>1?1:t*t*(3-2*t), k1=e((p-.08)/.6);
+  for(const k in L){const y=g.closed[k]+(g.open[k]-g.closed[k])*k1; L[k].style.transform=`translateY(${y}px) rotate(${k==='cover'?-6*k1:0}deg)`;
+    if(N[k]){const o=e((p-.35-.08*['cover','seal','pickle','jar'].indexOf(k))/.15); N[k].style.opacity=o; N[k].style.transform=`translateY(${g.open[k]+g.h(k)/2-24+(1-o)*16}px)`;}}
+  if(!g.wide){const z=g.zc+(1-g.zc)*k1; xv.style.transformOrigin=`${g.cx}px ${g.oy}px`; xv.style.transform=`translateX(${g.ox*(1-k1)}px) scale(${z})`;}
+  else xv.style.transform='';
+  // the pickle stays hidden inside the jar until it clears the rim
+  L.pickle.style.opacity=k1>.05?1:0;
 }
-if(reduced||!G){ jar.style.opacity=1; burst.style.opacity=0; out.style.opacity=1; jar.style.transform=`translateY(${layout().jt}vh)`; addEventListener('resize',()=>jar.style.transform=`translateY(${layout().jt}vh)`); if(R)R.domElement.remove(); else bits.forEach(b=>b.el.remove()); }
+place();
+if(reduced||!G){ draw(1); addEventListener('resize',()=>{place();draw(1)}); }
 else{
-  const st=ScrollTrigger.create({trigger:stage,start:'top top',end:'bottom bottom',onUpdate:s=>draw(s.progress),onRefresh:s=>draw(s.progress)});
+  const st=ScrollTrigger.create({trigger:stage,start:'top top',end:'bottom bottom',onUpdate:s=>draw(s.progress),onRefresh:s=>{place();draw(s.progress)}});
   draw(0);
-  if(fine) addEventListener('pointermove',e=>{mouse=(e.clientX/innerWidth-.5); draw(st.progress)});
-  // intro, settled within a second: letters rise, then the line, the action and the note
+  // intro, settled within a second: letters rise, then the line, the action and the note; the jar drops onto the page
   const t=document.getElementById('title'); t.innerHTML=[...t.textContent].map(c=>`<span>${c}</span>`).join('');
   G.timeline({defaults:{ease:'power4.out'}})
    .from('#title span',{yPercent:60,opacity:0,duration:.6,stagger:.035})
-   .from('.hero-copy>:not(h1)',{y:20,opacity:0,duration:.5,stagger:.07},'-=.35')
-   .from(burst,{scale:1.2,duration:1.6,ease:'power2.out'},0);
-  // the first-screen copy lifts away as the ingredients start to fall, so nothing sits over the pictures for long
-  G.to('.hero-copy',{yPercent:-30,opacity:0,ease:'none',scrollTrigger:{trigger:stage,start:'top top',end:'22% top',scrub:true}});
+   .from('.hero-copy>:not(h1)',{y:20,opacity:0,duration:.5,stagger:.06},'-=.35')
+   .from(xv,{opacity:0,duration:.9,ease:'power3.out'},0);
+  // on phones the copy makes room for the open jar
+  if(innerWidth<900) G.to('.hero-copy',{yPercent:-40,opacity:0,ease:'none',scrollTrigger:{trigger:stage,start:'top top',end:'18% top',scrub:true}});
 }
 </script>
 </body>

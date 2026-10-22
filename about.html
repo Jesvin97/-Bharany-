@@ -23,22 +23,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;700&family=Inter:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
 <style>
-.hero-img{height:80vh;overflow:hidden;position:relative;border-radius:8px;margin:0 24px}
+.hero-img{height:78svh;overflow:hidden;position:relative;margin:var(--gap) var(--margin) 0}
 .hero-img img{width:100%;height:130%;object-fit:cover;object-position:50% 40%}
 .split{display:grid;gap:40px;grid-template-columns:1fr}
-.split p{color:var(--cream);font-size:18px;line-height:1.55;margin-bottom:16px;max-width:56ch}
-.big{font:700 clamp(32px,5vw,64px)/1 var(--display);text-transform:uppercase}
+.split p{margin-bottom:16px}
+.big{font:700 clamp(24px,2.5vw,34px)/1.1 var(--display);text-transform:uppercase;max-width:22ch}
 @media(min-width:900px){.split{grid-template-columns:1fr 1fr}}
-/* timeline: the line fills as you scroll and each value lights up as it passes */
-.values{position:relative;padding-left:40px;display:grid;gap:56px}
-.values::before,.values i{content:"";position:absolute;left:8px;top:0;bottom:0;width:2px;background:#f5a52433}
-.values i{background:var(--accent);transform-origin:top;transform:scaleY(0)}
-.value{position:relative}
-.value::before{content:"";position:absolute;left:-39px;top:8px;width:16px;height:16px;border-radius:50%;background:var(--ink);border:2px solid var(--accent)}
-.value h3{font-size:clamp(32px,4vw,52px);line-height:1;margin-bottom:10px}
-.value p{color:var(--cream);font-size:17px;line-height:1.55;max-width:60ch}
-.pics{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
-.pics img{border-radius:6px;aspect-ratio:3/4;object-fit:cover;width:100%}
+.values{list-style:none;padding:0;display:grid;gap:40px 56px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.values h3{margin-bottom:8px}
+.pics{display:grid;gap:12px;grid-template-columns:2fr 1fr 1fr}
+.pics img{aspect-ratio:3/4;object-fit:cover;width:100%;height:100%}
+.pics img:first-child{grid-row:span 2;aspect-ratio:auto}
+@media(max-width:700px){.pics{grid-template-columns:1fr 1fr}.pics img:first-child{grid-column:span 2;grid-row:auto;aspect-ratio:4/3}}
 </style>
 </head>
 <body>
@@ -54,15 +50,14 @@
     <a class="m-only wa" href="https://wa.me/919846020348" target="_blank" rel="noopener">Questions? WhatsApp +91 98460 20348</a>
   </div>
   <div class="nav-r">
-    <button class="btn cart-btn" data-open-cart aria-label="Open cart"><svg class="bag" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 13H6zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Cart<span class="badge" data-cart-count hidden>0</span></button>
+    <button class="btn fill cart-btn" data-open-cart aria-label="Open cart"><svg class="bag" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 13H6zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Cart<span class="badge" data-cart-count hidden>0</span></button>
     <button class="btn menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
   </div>
 </nav>
 
-<section class="page-head wm" data-wm>
-  <p class="eyebrow" data-rv>About us</p>
-  <h1 data-split>From a Kerala kitchen</h1>
-  <p class="lede" data-rv style="color:var(--cream)">Bharany means the traditional jar our grandmothers kept their pickles in. Every jar is still made by a mother, in her own kitchen, the way they did.</p>
+<section class="page-head">
+  <h1 data-split>About Bharany</h1>
+  <p class="lede" data-rv>Bharany means the traditional jar our grandmothers kept their pickles in. Every jar is still made by a mother, in her own kitchen, the way they did.</p>
 </section>
 
 <div class="hero-img"><img src="img/13.jpg" alt="Prawn, garlic, curry leaf and chilli" data-speed=".2"></div>
@@ -80,15 +75,14 @@
 
 <section>
   <h2 data-split>What we stand for</h2>
-  <div class="values"><i></i>
-    <div class="value" data-rv><h3>Small batches</h3><p>We cook in small quantities so every batch gets attention, and every jar tastes the way it should.</p></div>
-    <div class="value" data-rv><h3>No chemical preservatives</h3><p>No sodium benzoate, no artificial colours or flavours. Salt, spice, oil and vinegar do the preserving, just as they always have.</p></div>
-    <div class="value" data-rv><h3>Fresh, never frozen</h3><p>Meat, fish and prawns are bought fresh and cooked the same day.</p></div>
-    <div class="value" data-rv><h3>Honest labels</h3><p>What's in the jar is on the jar. If you have a question about an ingredient or an allergy, ask us and you'll get a straight answer.</p></div>
-    <div class="value" data-rv><h3>Real people</h3><p>Every order comes through WhatsApp, to us. No call centres, no bots. If something isn't right, we fix it.</p></div>
-  </div>
+  <ul class="values">
+    <li data-rv><h3>Small batches</h3><p>We cook in small quantities so every batch gets attention, and every jar tastes the way it should.</p></li>
+    <li data-rv><h3>No chemical preservatives</h3><p>No sodium benzoate, no artificial colours or flavours. Salt, spice, oil and vinegar do the preserving, just as they always have.</p></li>
+    <li data-rv><h3>Fresh, never frozen</h3><p>Meat, fish and prawns are bought fresh and cooked the same day.</p></li>
+    <li data-rv><h3>Honest labels</h3><p>What's in the jar is on the jar. If you have a question about an ingredient or an allergy, ask us and you'll get a straight answer.</p></li>
+    <li data-rv><h3>Real people</h3><p>Every order comes through WhatsApp, to us. No call centres, no bots. If something isn't right, we fix it.</p></li>
+  </ul>
 </section>
-<hr>
 
 <section>
   <h2 data-split>On the shelf</h2>
@@ -99,18 +93,19 @@
     <img data-rv src="img/9.jpg" alt="Curry leaf coconut chutney" loading="lazy" style="object-position:50% 34%">
   </div>
 </section>
-<hr>
 
-<section class="cta wm" data-wm>
+<section class="cta">
   <h2 data-split>Taste the story</h2>
-  <a class="btn fill" href="index.html#products">See the jars</a>
+  <a class="btn fill" href="index.html#products">Shop the jars</a>
 </section>
-<hr>
 <footer>
-  <div><span class="brand">BHARANY</span><p style="margin-top:10px;color:var(--cream)">Spicy &amp; home made Kerala pickles.</p></div>
-  <div><h4>Shop</h4><ul><li><a href="index.html#products">All jars</a></li><li><a href="index.html#story">Our process</a></li><li><a href="index.html#faq">FAQ</a></li></ul></div>
-  <div><h4>Company</h4><ul><li><a href="about.html">About us</a></li><li><a href="terms.html">Terms &amp; conditions</a></li><li><a href="terms.html#privacy">Privacy</a></li></ul></div>
-  <div><h4>Say hello</h4><ul><li><a href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp +91 98460 20348</a></li><li><a href="https://www.instagram.com/bharany_kerala">@bharany_kerala</a></li><li><a href="https://www.keralabharany.com">keralabharany.com</a></li></ul></div>
+  <div class="foot">
+    <div><p>Home-made Kerala pickles, made by Amma, for every Malayali away from home.</p></div>
+    <div><h4>Shop</h4><ul><li><a href="index.html#products">All jars</a></li><li><a href="index.html#missing-home">Starter boxes</a></li><li><a href="index.html#story">How it's made</a></li><li><a href="index.html#faq">FAQ</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="about.html">About us</a></li><li><a href="terms.html">Terms and conditions</a></li><li><a href="terms.html#privacy">Privacy</a></li></ul></div>
+    <div><h4>Say hello</h4><ul><li><a href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp +91 98460 20348</a></li><li><a href="https://www.instagram.com/bharany_kerala">@bharany_kerala</a></li><li><a href="https://www.keralabharany.com">keralabharany.com</a></li></ul></div>
+  </div>
+  <p class="foot-name" aria-hidden="true">BHARANY</p>
   <div class="legal"><span>© <span data-year></span> Bharany</span><span>Made in Kerala</span></div>
 </footer>
 <div class="curtain" aria-hidden="true">BHARANY</div>
@@ -122,7 +117,6 @@
 <script>
 const {gsap:G,reduced}=SITE;
 if(G&&!reduced){
-  G.to('.values i',{scaleY:1,ease:'none',scrollTrigger:{trigger:'.values',start:'top 70%',end:'bottom 60%',scrub:true}});
   G.from('.hero-img',{clipPath:'inset(30% 10% 30% 10% round 8px)',ease:'none',scrollTrigger:{trigger:'.hero-img',start:'top bottom',end:'top 20%',scrub:true}});
 }
 </script>

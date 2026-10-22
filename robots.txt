@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /checkout.html
+Disallow: /tools/
+
+Sitemap: https://jesvin97.github.io/-Bharany-/sitemap.xml

@@ -7,6 +7,18 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Bharany — Kerala Pickles</title>
 <meta name="description" content="Home-made Kerala pickles for everyone living away from home: hostels, PGs and first flats. Small batches, nothing artificial.">
+<link rel="canonical" href="https://jesvin97.github.io/-Bharany-/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Bharany">
+<meta property="og:title" content="Bharany — Tastes like Amma packed it">
+<meta property="og:description" content="Home-made Kerala pickles for everyone living away from home: hostels, PGs and first flats. Small batches, nothing artificial.">
+<meta property="og:url" content="https://jesvin97.github.io/-Bharany-/">
+<meta property="og:image" content="https://jesvin97.github.io/-Bharany-/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_IN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0c0907">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;700&family=Inter:wght@500&family=Manjari:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
@@ -346,13 +358,23 @@ document.getElementById("grid").innerHTML=CATALOG.map((p,k)=>`
   <div class="row"><button class="btn fill" data-add>Add · ${p.sizes[0][0]}${p.sizes[0][1]==null?'':' · '+money(p.sizes[0][1])}</button></div>
   ${p.sizes.length>1?`<button class="more-link" data-k="${k}">More sizes &amp; details →</button>`:`<button class="more-link" data-k="${k}">Details →</button>`}
 </article>`).join("");
-document.getElementById("boxes").innerHTML=Shop.BOXES.map(b=>{
+// boxes in their festival season move to the front and get a badge
+document.getElementById("boxes").innerHTML=[...Shop.BOXES].sort((a,b)=>!!Shop.season(b)-!!Shop.season(a)).map(b=>{
   const its=b.items.map(([id,size])=>({p:Cart.product(id),size})), sum=its.reduce((a,{p,size})=>{const pr=p.sizes.find(s=>s[0]===size)[1]; return a==null||pr==null?null:a+pr},0);
   return `<article class="box" data-rv><div class="thumbs">${its.map(({p})=>`<img src="${p.src}" alt="" loading="lazy" style="object-position:50% ${p.y}%">`).join('')}</div>
-    <h4>${b.name}</h4><p>${b.line}</p><ul>${its.map(({p,size})=>`<li>${p.name} · ${size}</li>`).join('')}</ul>
+    ${Shop.season(b)?`<span class="tag">In season · ${Shop.season(b)}</span>`:""}<h4>${b.name}</h4><p>${b.line}</p><ul>${its.map(({p,size})=>`<li>${p.name} · ${size}</li>`).join('')}</ul>
     <button class="btn fill" data-box="${b.id}">Add box${sum==null?'':' · '+money(sum)}</button></article>`}).join('');
 document.getElementById("boxes").addEventListener('click',e=>{const b=e.target.closest('[data-box]'); if(!b)return; Shop.addBox(b.dataset.box);
   const was=b.dataset.label||(b.dataset.label=b.textContent); b.textContent='Added ✓'; setTimeout(()=>b.textContent=was,1400);});
+// structured data so Google can show the shop and its prices
+{const priced=CATALOG.filter(p=>p.sizes.some(x=>x[1]!=null)), url='https://jesvin97.github.io/-Bharany-/';
+ const ld={"@context":"https://schema.org","@graph":[
+  {"@type":"Store","name":"Bharany","url":url,"image":url+"img/og.jpg","telephone":"+91 98460 20348","priceRange":"₹63–₹1500",
+   "address":{"@type":"PostalAddress","addressRegion":"Kerala","addressCountry":"IN"},"sameAs":["https://www.instagram.com/bharany_kerala"]},
+  ...priced.map(p=>{const pr=p.sizes.map(x=>x[1]).filter(v=>v!=null);
+   return {"@type":"Product","name":p.name,"description":p.desc,"image":new URL(p.img?p.src:'img/og.jpg',url).href,"brand":{"@type":"Brand","name":"Bharany"},
+    "offers":{"@type":"AggregateOffer","priceCurrency":"INR","lowPrice":Math.min(...pr),"highPrice":Math.max(...pr),"offerCount":pr.length,"availability":"https://schema.org/InStock"}};})]};
+ const el=document.createElement('script'); el.type='application/ld+json'; el.textContent=JSON.stringify(ld); document.head.append(el);}
 // real reviews and the cooking video appear only once Bharany adds them in js/shop.js
 if(Shop.REVIEWS.length){
   const esc=v=>String(v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));

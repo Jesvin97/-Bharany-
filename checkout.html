@@ -7,6 +7,18 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Bharany Checkout</title>
 <meta name="description" content="Check out your Bharany pickle order.">
+<link rel="canonical" href="https://jesvin97.github.io/-Bharany-/checkout.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Bharany">
+<meta property="og:title" content="Bharany Checkout">
+<meta property="og:description" content="Check out your Bharany pickle order.">
+<meta property="og:url" content="https://jesvin97.github.io/-Bharany-/checkout.html">
+<meta property="og:image" content="https://jesvin97.github.io/-Bharany-/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_IN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0c0907">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;700&family=Inter:wght@500&display=swap" rel="stylesheet">
@@ -76,12 +88,12 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
     <form id="form" novalidate>
       <h1 data-split>Checkout</h1>
       <div class="steps" aria-hidden="true"><span class="on">1 · Details</span><span>→</span><span class="on">2 · Payment</span><span>→</span><span id="step3">3 · Confirm on WhatsApp</span></div>
-      <fieldset data-rv>
+      <fieldset>
         <legend>Contact</legend>
         <label class="full">Full name<input name="name" autocomplete="name" maxlength="80" required><span class="err"></span></label>
         <label class="full">Your WhatsApp number<input name="phone" type="tel" autocomplete="tel" maxlength="20" required placeholder="98460 20348, or +1 / +44… if you're abroad"><span class="err"></span></label>
       </fieldset>
-      <fieldset data-rv>
+      <fieldset>
         <legend>Delivery address</legend>
         <label class="full">House / street / area<textarea name="address" rows="2" autocomplete="street-address" maxlength="300" required></textarea><span class="err"></span></label>
         <label>City / town<input name="city" autocomplete="address-level2" maxlength="60" required><span class="err"></span></label>
@@ -100,16 +112,16 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
           <p class="full note">Many countries don't allow meat in parcels (beef and chicken are usually refused by the UK, US and Canada). Veg pickles and chammanthi are the safest choice. Please check your country's customs rules.<br><b>Before couriering:</b> double-wrap every jar (taped lid, zip bag, then another wrap) so oil can't leak.</p>
         </div>
       </fieldset>
-      <fieldset data-rv>
+      <fieldset>
         <legend>Payment</legend>
         <div class="pay full" id="pay"></div>
       </fieldset>
-      <label style="flex-direction:row;align-items:center;gap:10px;text-transform:none;letter-spacing:0;font:500 14px var(--body);color:var(--cream)" data-rv>
+      <label style="flex-direction:row;align-items:center;gap:10px;text-transform:none;letter-spacing:0;font:500 14px var(--body);color:var(--cream)">
         <input type="checkbox" name="agree" required style="width:auto;accent-color:var(--accent)"> <span>I agree to the <a href="terms.html" target="_blank" style="text-decoration:underline">terms &amp; conditions</a></span></label>
       <p class="note" style="margin-top:10px">We use your details only to process, deliver and talk to you about this order. See our <a href="terms.html#privacy" target="_blank" style="text-decoration:underline">privacy notice</a> for who handles them and how to have them deleted.</p>
       <span class="err" id="agree-err"></span>
     </form>
-    <aside class="summary" data-rv>
+    <aside class="summary">
       <h2>Your order</h2>
       <div id="lines"></div>
       <div class="sum"><span>Subtotal</span><b id="sub"></b></div>
@@ -161,9 +173,7 @@ Cart.on(items=>{
   if(!items.length&&document.getElementById('done').hidden){
     document.getElementById('lines').innerHTML='<p class="empty">Your cart is empty.<br><br><a class="btn" href="index.html#products">Browse the jars</a></p>';
     document.getElementById('place').disabled=true;
-  } else document.getElementById('lines').innerHTML=items.map(i=>{const p=Cart.product(i.id),pr=Cart.price(i);
-    return `<div class="line"><img src="${p.src}" alt="" style="object-position:50% ${p.y}%"><div><b>${p.name}</b><small>${i.size} × ${i.qty}</small>
-      <div class="qty" data-id="${i.id}" data-size="${i.size}"><button type="button" aria-label="Fewer" data-d="-1">−</button><span>${i.qty}</span><button type="button" aria-label="More" data-d="1">+</button></div></div><b>${pr==null?'':money(pr*i.qty)}</b></div>`}).join('');
+  } else document.getElementById('lines').innerHTML=items.map(Shop.lineHTML).join('');
   const t=Cart.total(); document.getElementById('sub').textContent=t==null?'Confirmed on WhatsApp':money(t);
   payOptions();
 });
@@ -202,18 +212,20 @@ form.addEventListener('submit',e=>{
     `*Deliver to*`,d.name,d.phone+(d.email?' · '+d.email:''),d.address,`${d.city} ${d.pin}, ${d.state}`,d.landmark?'Landmark: '+d.landmark:'',
     d.abroad?`\n*PACK FOR OVERSEAS PARCEL* → ${d.country||'country not given'}\nReceiver in India: ${d.rphone}`:'',
     d.notes?'\nNotes: '+d.notes:''].filter(x=>x!=='').join('\n');
-  const wa=`https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(msg)}`;
+  const reorder=new URL('index.html?reorder='+encodeURIComponent(Cart.code()),location.href).href;
+  const wa=`https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(msg+'\n\nReorder link: '+reorder)}`;
   const upi=d.pay==='upi-now'?`upi://pay?pa=${encodeURIComponent(SHOP.upi)}&pn=${encodeURIComponent(SHOP.payee)}&am=${t}&cu=INR&tn=${encodeURIComponent(oid)}`:'';
   const lines=Cart.items.map(i=>{const p=Cart.product(i.id); return {name:p.name,size:i.size,qty:i.qty,price:Cart.price(i)};});
   // background alert to the shop's WhatsApp; no-cors means we can't read the reply, so the WhatsApp button stays as a backup
   const hooked=!!SHOP.orderHook;
   if(hooked) fetch(SHOP.orderHook,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain'},
     body:JSON.stringify({oid,msg,name:d.name,phone:d.phone,email:d.email||'',address:`${d.address}, ${d.city} ${d.pin}, ${d.state}`,pay:payLabel,total:t,lines,abroad:!!d.abroad})}).catch(()=>{});
-  Cart.clear(); try{localStorage.removeItem('bh-abroad')}catch(e){}
+  Cart.saveLast(); Cart.clear(); try{localStorage.removeItem('bh-abroad')}catch(e){}
   document.getElementById('checkout').hidden=true; const done=document.getElementById('done'); done.hidden=false;
   document.getElementById('oid').textContent='Order '+oid;
   document.getElementById('done-btns').innerHTML=(upi?`<a class="btn fill" href="${upi}">Pay ${money(t)} by UPI</a>`:'')+
-    `<a class="btn ${upi||hooked?'':'fill'}" href="${wa}" target="_blank" rel="noopener">${hooked?'Message us on WhatsApp':'Open WhatsApp to send order'}</a><a class="btn" href="index.html">Back to the shop</a>`;
+    `<a class="btn ${upi||hooked?'':'fill'}" href="${wa}" target="_blank" rel="noopener">${hooked?'Message us on WhatsApp':'Open WhatsApp to send order'}</a><a class="btn" href="index.html">Back to the shop</a>`+
+    `<p class="note" style="flex-basis:100%;margin-top:14px">Running low later? <a href="${reorder}" style="text-decoration:underline">Bookmark this link</a> to order the same jars again in one tap.</p>`;
   if(hooked) document.getElementById('done-msg').innerHTML=`We've received your order. We'll message you on WhatsApp at <b>${d.phone.replace(/[<>&]/g,'')}</b> shortly to confirm your total, delivery charge and payment.`;
   scrollTo(0,0); SITE.lenis&&SITE.lenis.scrollTo(0,{immediate:true});
   const G=SITE.gsap; if(G&&!SITE.reduced){ G.from('.tick circle',{strokeDasharray:280,strokeDashoffset:280,duration:.8});

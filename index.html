@@ -15,12 +15,13 @@
   /* fades every edge into the page so the video-frame crops (and its corner mark) vanish */
   -webkit-mask-image:linear-gradient(#0000,#000 14%,#000 78%,#0000);mask-image:linear-gradient(#0000,#000 14%,#000 78%,#0000)}
 #burst{object-position:50% 40%}
-#jar{object-position:50% 0}
+#jar{object-position:50% 0;max-width:none}
 .hero-copy{position:absolute;inset:14vh 0 auto;text-align:center;z-index:2;pointer-events:none}
-.hero-copy h1{font-size:clamp(88px,22vw,300px);line-height:.85;letter-spacing:-.02em}
+.hero-copy h1{font-size:clamp(88px,22vw,300px);line-height:.85;letter-spacing:-.02em;text-shadow:0 4px 30px #0009}
+.hero-copy .eyebrow{position:relative;z-index:1;text-shadow:0 1px 8px #000}
 .hero-copy h1 span{display:inline-block}
 .hero-out{position:absolute;inset:auto 24px 8vh;text-align:center;z-index:3;opacity:0}
-.hero-out p{font:700 clamp(28px,5vw,64px)/1 var(--display);text-transform:uppercase;margin-bottom:20px}
+.hero-out p{font:700 clamp(28px,5vw,64px)/1 var(--display);text-transform:uppercase;margin-bottom:20px;text-shadow:0 2px 18px #000,0 0 40px #000c}
 @media(max-aspect-ratio:1/1){.hero-out{inset:34vh 24px auto}}
 .bit{position:absolute;top:0;left:0;z-index:2;pointer-events:none;will-change:transform,opacity}
 .bit svg{display:block;width:100%;height:100%}
@@ -44,6 +45,18 @@
 @media(min-width:900px){.panel figure{order:-1}.panel{padding-inline:48px;grid-template-columns:1fr 1fr;align-items:center;gap:48px;padding-top:120px}.panel figure{max-height:60vh}}
 .story-bar{position:absolute;left:24px;right:24px;bottom:20px;height:2px;background:#f5a52433}
 .story-bar i{display:block;height:100%;background:var(--accent);transform-origin:0;transform:scaleX(0)}
+@media(max-width:760px){
+  .story-head{position:static;padding:56px 16px 0}.story-head h2{font-size:clamp(40px,12vw,56px)}
+  .story-track{flex-direction:column;width:auto;height:auto}
+  .panel{width:auto;height:auto;padding:32px 16px;gap:16px}
+  .panel+.panel{border-left:0;border-top:1px dotted #f5a52466}
+  .panel figure{max-height:none;aspect-ratio:16/10}
+  .panel .num{font-size:110px;top:24px;bottom:auto;right:16px}
+  .panel h3{font-size:clamp(36px,10vw,48px)}
+  .story-bar{display:none}
+  .hero-out p{font-size:clamp(30px,9vw,44px)}
+  .hint{font-size:11px}
+}
 @media(prefers-reduced-motion:reduce){.story-track{width:auto;height:auto;overflow-x:auto;scroll-snap-type:x mandatory}.panel{scroll-snap-align:start}}
 
 /* products */
@@ -232,7 +245,7 @@ const sizeSel=p=>p.sizes.length>1?`<select aria-label="Size of ${p.name}" data-s
   :`<span class="one-size">${p.sizes[0][0]}${p.sizes[0][1]==null?'':' · '+money(p.sizes[0][1])}</span>`;
 document.getElementById("grid").innerHTML=CATALOG.map((p,k)=>`
 <article class="card" data-rv data-cat="${p.cat}" data-id="${p.id}">
-  <div class="ph" data-k="${k}" role="button" tabindex="0" aria-label="Details for ${p.name}"><img src="img/${p.img}.jpg" alt="${p.name}" loading="lazy" style="object-position:50% ${p.y}%"></div>
+  <div class="ph" data-k="${k}" role="button" tabindex="0" aria-label="Details for ${p.name}"><img src="${p.src}" alt="${p.name}" loading="lazy" style="object-position:50% ${p.y}%"></div>
   <div class="meta"><span class="tag">${dot(p.cat)}${p.cat}</span>${heat(p.heat)}</div>
   <h3>${p.name}</h3>
   <p>${p.desc}</p>
@@ -257,7 +270,7 @@ document.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>
 }));
 function openSheet(k){
   const p=CATALOG[k];
-  sheet.innerHTML=`<div class="sheet" data-id="${p.id}"><img src="img/${p.img}.jpg" alt="${p.name}" style="object-position:50% ${p.y}%">
+  sheet.innerHTML=`<div class="sheet" data-id="${p.id}"><img src="${p.src}" alt="${p.name}" style="object-position:50% ${p.y}%">
     <div class="body"><button class="btn x" aria-label="Close">✕</button>
       <div class="meta"><span class="tag">${dot(p.cat)}${p.cat}</span>${heat(p.heat)}</div>
       <h3 id="sheet-title">${p.name}</h3><p>${p.desc}</p>
@@ -299,20 +312,26 @@ if(fine&&!reduced) cards.forEach(c=>{
 
 // ---------- storyboard: pin and scrub sideways; line drawings draw themselves as each panel arrives ----------
 const story=document.querySelector('.story'), strack=document.querySelector('.story-track');
-if(G&&!reduced){
-  const dist=()=>strack.scrollWidth-innerWidth;
-  const side=G.to(strack,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:story,start:'top top',end:()=>'+='+dist(),pin:true,scrub:1,invalidateOnRefresh:true}});
-  G.to('.story-bar i',{scaleX:1,ease:'none',scrollTrigger:{trigger:story,start:'top top',end:()=>'+='+dist(),scrub:true}});
+// phones get a plain vertical stack: sideways pinning fights thumb scrolling on a narrow screen
+if(G&&!reduced) G.matchMedia().add({wide:'(min-width:761px)',narrow:'(max-width:760px)'},ctx=>{
+  let side=null;
+  if(ctx.conditions.wide){
+    const dist=()=>strack.scrollWidth-innerWidth;
+    side=G.to(strack,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:story,start:'top top',end:()=>'+='+dist(),pin:true,scrub:1,invalidateOnRefresh:true}});
+    G.to('.story-bar i',{scaleX:1,ease:'none',scrollTrigger:{trigger:story,start:'top top',end:()=>'+='+dist(),scrub:true}});
+  }
+  const at=(p,x,y)=>side?{trigger:p,containerAnimation:side,start:'left '+x}:{trigger:p,start:'top '+y};
   document.querySelectorAll('.panel').forEach((p,i)=>{
-    const st={trigger:p,containerAnimation:side,start:'left 75%',toggleActions:'play none none reverse'};
-    if(i) G.from(p.querySelectorAll('h3,p,.eyebrow'),{opacity:0,x:40,stagger:.08,duration:.7,ease:'power3.out',scrollTrigger:st});
-    G.from(p.querySelector('figure'),{clipPath:'inset(0 100% 0 0)',duration:1,ease:'power4.inOut',scrollTrigger:{...st,start:'left 85%'}});
+    const st={...at(p,'75%','80%'),toggleActions:'play none none reverse'};
+    if(i||!side) G.from(p.querySelectorAll('h3,p,.eyebrow'),{opacity:0,[side?'x':'y']:40,stagger:.08,duration:.7,ease:'power3.out',scrollTrigger:st});
+    G.from(p.querySelector('figure'),{clipPath:side?'inset(0 100% 0 0)':'inset(100% 0 0 0)',duration:1,ease:'power4.inOut',scrollTrigger:{...st,...at(p,'85%','85%')}});
     G.from(p.querySelector('.num'),{yPercent:60,opacity:0,duration:1,ease:'power3.out',scrollTrigger:st});
     p.querySelectorAll('.draw *').forEach(s=>{const L=s.getTotalLength?s.getTotalLength():300;
-      G.fromTo(s,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.4,ease:'power2.inOut',scrollTrigger:{...st,start:'left 60%'}}); });
-    const img=p.querySelector('figure img'); if(img) G.fromTo(img,{scale:1.25},{scale:1,ease:'none',scrollTrigger:{trigger:p,containerAnimation:side,start:'left right',end:'right left',scrub:true}});
+      G.fromTo(s,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.4,ease:'power2.inOut',scrollTrigger:{...st,...at(p,'60%','70%')}}); });
+    const img=p.querySelector('figure img'); if(img) G.fromTo(img,{scale:1.25},{scale:1,ease:'none',
+      scrollTrigger:side?{trigger:p,containerAnimation:side,start:'left right',end:'right left',scrub:true}:{trigger:p,start:'top bottom',end:'bottom top',scrub:true}});
   });
-}
+});
 
 // ---------- hero: ingredients fall from the sky into the jar mouth (p = scroll progress through .stage, 0..1) ----------
 const kinds=Object.keys(SVG), sticky=document.querySelector('.sticky'), stage=document.querySelector('.stage');
@@ -388,7 +407,7 @@ else{
    .from('nav',{y:-40,opacity:0,duration:.6},'-=.8');
   G.to('.hint',{y:8,duration:.8,ease:'sine.inOut',yoyo:true,repeat:-1});
   // title drifts up and spreads as you leave the top
-  G.to('#title',{yPercent:-40,letterSpacing:'.04em',ease:'none',scrollTrigger:{trigger:stage,start:'top top',end:'25% top',scrub:true}});
+  G.to('#title',{yPercent:innerWidth<761?-12:-40,letterSpacing:'.04em',ease:'none',scrollTrigger:{trigger:stage,start:'top top',end:'25% top',scrub:true}});
 }
 </script>
 </body>

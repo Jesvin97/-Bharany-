@@ -135,8 +135,8 @@ footer a:hover{color:var(--accent)}
 .note{color:var(--cream);opacity:.7;font-size:12px}
 .empty{color:var(--cream);padding:40px 0;text-align:center;font-size:15px}
 .btn.block{display:block;text-align:center;padding:14px}
-.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,150%);background:var(--accent);color:var(--deep);padding:12px 20px;border-radius:9999px;font:500 14px var(--body);z-index:45;transition:transform .4s var(--ease);max-width:calc(100vw - 32px);text-align:center}
-.toast.on{transform:translate(-50%,0)}
+.toast{position:fixed;left:50%;top:80px;transform:translate(-50%,-30px);opacity:0;background:var(--accent);color:var(--deep);padding:12px 20px;border-radius:9999px;font:500 14px var(--body);z-index:45;transition:transform .4s var(--ease),opacity .4s,visibility 0s .4s;visibility:hidden;max-width:calc(100vw - 32px);text-align:center}
+.toast.on{transform:translate(-50%,0);opacity:1;visibility:visible;transition:transform .4s var(--ease)}
 
 /* ---- forms (checkout, size pickers) ---- */
 select,input,textarea{font:500 15px var(--body);color:var(--cream);background:var(--deep);border:1px solid #f5a52466;border-radius:6px;padding:12px;width:100%}

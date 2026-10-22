@@ -143,7 +143,7 @@ Cart.on(items=>{
     document.getElementById('lines').innerHTML='<p class="empty">Your cart is empty.<br><br><a class="btn" href="index.html#products">Browse the jars</a></p>';
     document.getElementById('place').disabled=true;
   } else document.getElementById('lines').innerHTML=items.map(i=>{const p=Cart.product(i.id),pr=Cart.price(i);
-    return `<div class="line"><img src="img/${p.img}.jpg" alt="" style="object-position:50% ${p.y}%"><div><b>${p.name}</b><small>${i.size} × ${i.qty}</small>
+    return `<div class="line"><img src="${p.src}" alt="" style="object-position:50% ${p.y}%"><div><b>${p.name}</b><small>${i.size} × ${i.qty}</small>
       <div class="qty" data-id="${i.id}" data-size="${i.size}"><button type="button" aria-label="Fewer" data-d="-1">−</button><span>${i.qty}</span><button type="button" aria-label="More" data-d="1">+</button></div></div><b>${pr==null?'':money(pr*i.qty)}</b></div>`}).join('');
   const t=Cart.total(); document.getElementById('sub').textContent=t==null?'Confirmed on WhatsApp':money(t);
   payOptions();

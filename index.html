@@ -30,7 +30,7 @@
 .hero-copy{position:relative;z-index:3;padding:96px var(--margin) 0;align-self:start}
 .hero-copy h1{font:700 var(--t-display)/.85 var(--brand);text-transform:uppercase;color:var(--accent)}
 .hero-copy h1 span{display:inline-block}
-.hero-copy .ml{margin-top:14px}
+.hero-copy .ml{margin-top:20px}
 .hero-copy .lede{margin:14px 0 24px;max-width:26ch;font-size:clamp(19px,1.8vw,24px)}
 .hero-copy .small{margin-top:16px}
 .ml{font:700 clamp(22px,3vw,32px)/1.3 var(--body);color:var(--accent)}
@@ -54,8 +54,10 @@ html.js .xv:not(.ready){visibility:hidden}
 @media(max-width:899px){.ing{right:var(--margin);top:12svh;width:42vw}.ing h2{font-size:22px;margin-bottom:12px}.ing ul{grid-template-columns:1fr;gap:10px}
   .ing li{grid-template-columns:56px 1fr;gap:10px}.ing img{width:56px;height:56px}.ing b{font-size:16px}.ing span,.ing .btn{display:none}}
 @media(min-width:900px){
-  .hero-copy{position:absolute;left:0;top:50%;transform:translateY(-50%);padding:0 var(--margin);width:46%}
-  .hero-copy h1{font-size:clamp(110px,13vw,220px)}
+  /* sized by width and height together, so the name stays on one line and the copy clears the nav on short laptop screens */
+  .hero-copy{position:absolute;left:0;top:calc(50% + 36px);transform:translateY(-50%);padding:0 var(--margin);width:52%}
+  .hero-copy h1{font-size:clamp(84px,min(10.5vw,21svh),200px);white-space:nowrap}
+  .hero-copy .lede{margin:12px 0 22px}
 }
 @media(max-width:899px){
   .hero-copy{text-align:center}
@@ -397,7 +399,7 @@ dialog::backdrop{background:#000c}
   <div class="foot">
     <div><p>Home-made Kerala pickles, made by Amma, for every Malayali away from home.</p></div>
     <div><h4>Shop</h4><ul><li><a href="#products">All jars</a></li><li><a href="#missing-home">Starter boxes</a></li><li><a href="#story">How it's made</a></li><li><a href="#faq">FAQ</a></li></ul></div>
-    <div><h4>Company</h4><ul><li><a href="about.html">About us</a></li><li><a href="terms.html">Terms and conditions</a></li><li><a href="terms.html#privacy">Privacy</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="about.html">About us</a></li><li><a href="terms.html">Terms and conditions</a></li><li><a href="privacy.html">Privacy</a></li></ul></div>
     <div><h4>Say hello</h4><ul><li><a href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp +91 98460 20348</a></li><li><a href="https://www.instagram.com/bharany_kerala">@bharany_kerala</a></li><li><a href="https://www.keralabharany.com">keralabharany.com</a></li></ul></div>
   </div>
   <p class="foot-name" aria-hidden="true">BHARANY</p>

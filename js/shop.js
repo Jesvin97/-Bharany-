@@ -35,6 +35,12 @@ const CATALOG=[
  {id:'chutney',name:"Vepilla Chammanthi",cat:"Pantry",kg:900,img:9,y:34,heat:1,desc:"Dry coconut chutney powder roasted with curry leaves. Sprinkle, mix with oil, done.",ing:["Coconut","Curry leaf","Chilli","Urad dal"],pair:"Idli, dosa, hot rice with ghee"},
  {id:'coconut',name:"Desiccated Kerala Coconut",cat:"Pantry",kg:null,img:3,y:47,heat:0,desc:"Finely grated, dried Kerala coconut with no added sugar. Ready for baking, chutneys and curries.",ing:["Coconut"],pair:"Baking, chutney, curries",sizes:[["200g",null]]}
 ];
+// ---- EDIT HERE: starter boxes (adds several jars in one tap). items: [product id, size] ----
+const BOXES=[
+ {id:'first-month',name:'The first-month box',line:'All veg and easy to keep on a shelf. For the week the homesickness hits.',items:[['mango-red','250g'],['dates-lemon','250g'],['chutney','250g']]},
+ {id:'sunday',name:'The Sunday lunch box',line:'Prawns, fish and mango. Plain rice does the rest.',items:[['prawns','250g'],['fish','250g'],['mango-red','250g']]},
+ {id:'maggi',name:'The late-night rescue box',line:'For instant noodles, plain dosa and 11pm rice. One spoon fixes it.',items:[['chemmeen-podi','250g'],['garlic','250g'],['lemon','250g']]}
+];
 const part=(kg,f)=>kg==null?null:Math.ceil(kg*f/5)*5;
 // a simple drawn jar with the product name, for items without a photo yet
 const jarArt=p=>{const w=p.name.replace(/\s*\(.*\)/,'').toUpperCase().split(' '), l1=w.slice(0,Math.ceil(w.length/2)).join(' '), l2=w.slice(Math.ceil(w.length/2)).join(' ');
@@ -125,4 +131,8 @@ function addToCart(id,size,btn){
   Cart.add(id,size); toast(`${Cart.product(id).name} (${size}) added`);
   const G=SITE.gsap; if(G&&!SITE.reduced) G.fromTo('[data-cart-count]',{scale:1.8},{scale:1,duration:.5,ease:'back.out(3)'});
 }
-window.Shop={SHOP,CATALOG,Cart,money,openCart,closeCart,addToCart,toast};
+function addBox(id){
+  const b=BOXES.find(x=>x.id===id); b.items.forEach(([pid,size])=>Cart.add(pid,size)); toast(`${b.name} added (${b.items.length} jars)`);
+  const G=SITE.gsap; if(G&&!SITE.reduced) G.fromTo('[data-cart-count]',{scale:1.8},{scale:1,duration:.5,ease:'back.out(3)'});
+}
+window.Shop={SHOP,CATALOG,BOXES,addBox,Cart,money,openCart,closeCart,addToCart,toast};

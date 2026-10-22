@@ -59,12 +59,6 @@ else{
   if(bar) G.to(bar,{scaleX:1,ease:'none',scrollTrigger:{start:0,end:'max',scrub:.3}});
   if(nav) ST.create({start:0,end:'max',onUpdate:s=>{const y=s.scroll();
     nav.classList.toggle('solid',y>40); nav.classList.toggle('away',s.direction===1&&y>300&&innerWidth>760); }}); // phones keep the bar, and the cart, in reach
-  // magnetic primary buttons
-  if(fine) document.querySelectorAll('.btn.fill').forEach(b=>{
-    const qx=G.quickTo(b,'x',{duration:.4,ease:'power3'}), qy=G.quickTo(b,'y',{duration:.4,ease:'power3'});
-    b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect(); qx((e.clientX-r.left-r.width/2)*.3); qy((e.clientY-r.top-r.height/2)*.4);});
-    b.addEventListener('pointerleave',()=>{qx(0);qy(0)});
-  });
   // FAQ: animate open/close height instead of the native snap
   document.querySelectorAll('.faq details').forEach(d=>{
     const s=d.querySelector('summary'), a=d.querySelector('.a');

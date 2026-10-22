@@ -64,6 +64,12 @@
 .tips .warn svg{stroke:var(--chili)}.tips .warn b{color:var(--chili)}
 .care-note{margin-top:20px;color:var(--cream);font-size:15px;border-left:3px solid var(--accent);padding-left:14px}
 .care-note b{color:var(--accent)}
+.rev-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.rev{background:var(--card);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.rev img{border-radius:6px;width:100%;max-height:420px;object-fit:cover;object-position:top}
+.rev q{font:700 24px/1.15 var(--display);text-transform:uppercase;quotes:"“" "”"}
+.rev span{color:var(--cream);opacity:.75;font-size:13px}
+#cook-fig video{width:100%;height:100%;object-fit:cover}
 /* storyboard: pinned, scrubbed sideways through five panels */
 .story{max-width:none;padding:0;overflow:hidden;position:relative}
 .story-head{position:absolute;top:96px;left:24px;z-index:2}
@@ -229,7 +235,7 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
     </article>
     <article class="panel">
       <div><p class="eyebrow">Step 03</p><h3>Slow-roasted in spice</h3><p>Chilli, pepper, mustard and curry leaf roasted in oil, then cooked low and slow in small batches until the masala clings.</p></div>
-      <figure><svg class="draw" viewBox="0 0 200 160" aria-hidden="true"><path d="M30 80h140v30a40 40 0 0 1-40 40H70a40 40 0 0 1-40-40z"/><line x1="14" y1="86" x2="30" y2="86"/><line x1="170" y1="86" x2="186" y2="86"/><path d="M70 60c-8-10 8-18 0-30M100 60c-8-10 8-18 0-30M130 60c-8-10 8-18 0-30"/></svg></figure>
+      <figure id="cook-fig"><svg class="draw" viewBox="0 0 200 160" aria-hidden="true"><path d="M30 80h140v30a40 40 0 0 1-40 40H70a40 40 0 0 1-40-40z"/><line x1="14" y1="86" x2="30" y2="86"/><line x1="170" y1="86" x2="186" y2="86"/><path d="M70 60c-8-10 8-18 0-30M100 60c-8-10 8-18 0-30M130 60c-8-10 8-18 0-30"/></svg></figure>
       <span class="num" aria-hidden="true">03</span>
     </article>
     <article class="panel">
@@ -269,6 +275,13 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
   </div>
 </section>
 <hr>
+
+<section class="reviews" id="reviews" hidden>
+  <p class="eyebrow" data-rv>From people who miss home</p>
+  <h2 data-split>What they say</h2>
+  <div class="rev-grid" id="rev-grid"></div>
+</section>
+<hr id="reviews-hr" hidden>
 
 <section class="care" id="care">
   <p class="eyebrow" data-rv>Jar care</p>
@@ -340,6 +353,14 @@ document.getElementById("boxes").innerHTML=Shop.BOXES.map(b=>{
     <button class="btn fill" data-box="${b.id}">Add box${sum==null?'':' · '+money(sum)}</button></article>`}).join('');
 document.getElementById("boxes").addEventListener('click',e=>{const b=e.target.closest('[data-box]'); if(!b)return; Shop.addBox(b.dataset.box);
   const was=b.dataset.label||(b.dataset.label=b.textContent); b.textContent='Added ✓'; setTimeout(()=>b.textContent=was,1400);});
+// real reviews and the cooking video appear only once Bharany adds them in js/shop.js
+if(Shop.REVIEWS.length){
+  const esc=v=>String(v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  document.getElementById('rev-grid').innerHTML=Shop.REVIEWS.map(r=>`<figure class="rev" data-rv>${r.img?`<img src="${esc(r.img)}" alt="Message from ${esc(r.name)}" loading="lazy">`:''}
+    <q>${esc(r.text)}</q><span>${esc(r.name)}${r.place?' · '+esc(r.place):''}</span></figure>`).join('');
+  document.getElementById('reviews').hidden=false; document.getElementById('reviews-hr').hidden=false;
+}
+if(Shop.SHOP.cookingVideo) document.getElementById('cook-fig').innerHTML=`<video src="${Shop.SHOP.cookingVideo}" autoplay muted loop playsinline aria-label="Amma cooking a batch of pickle"></video>`;
 </script>
 <script src="js/motion.js"></script>
 <script src="vendor/three.min.js"></script>

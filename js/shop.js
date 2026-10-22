@@ -61,15 +61,18 @@ CATALOG.forEach(p=>{
 const Cart=(()=>{
   const KEY='bh-cart'; let items=[];
   try{items=JSON.parse(localStorage.getItem(KEY))||[]}catch(e){}
-  items=items.filter(i=>CATALOG.some(p=>p.id===i.id));
+  // the stored cart is user-editable: keep only known products, real sizes and sane quantities
+  const MAXQ=20;
+  items=(Array.isArray(items)?items:[]).filter(i=>{const p=CATALOG.find(p=>p.id===i?.id); return p&&p.sizes.some(s=>s[0]===i.size)&&Number.isInteger(i.qty)&&i.qty>0;})
+    .map(i=>({id:i.id,size:i.size,qty:Math.min(i.qty,MAXQ)}));
   const subs=new Set(), save=()=>{try{localStorage.setItem(KEY,JSON.stringify(items))}catch(e){} subs.forEach(f=>f(items));};
   const find=(id,size)=>items.find(i=>i.id===id&&i.size===size);
   return {
     get items(){return items},
     product:id=>CATALOG.find(p=>p.id===id),
     price(i){const p=this.product(i.id), s=p.sizes.find(s=>s[0]===i.size); return s?s[1]:null},
-    add(id,size,qty=1){const f=find(id,size); f?f.qty+=qty:items.push({id,size,qty}); save();},
-    set(id,size,qty){const f=find(id,size); if(!f)return; f.qty=qty; if(qty<1)items=items.filter(i=>i!==f); save();},
+    add(id,size,qty=1){const f=find(id,size); f?f.qty=Math.min(f.qty+qty,MAXQ):items.push({id,size,qty}); save();},
+    set(id,size,qty){const f=find(id,size); if(!f)return; f.qty=Math.min(qty,MAXQ); if(qty<1)items=items.filter(i=>i!==f); save();},
     clear(){items=[]; save();},
     count(){return items.reduce((a,i)=>a+i.qty,0)},
     // total is null when any item has no price yet

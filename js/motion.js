@@ -104,7 +104,9 @@ if(mb&&links){
 }
 // ingredient ribbon on any page that has one
 const track=document.getElementById('track');
-if(track){ const names=["Curry leaf","Garlic","Chilli","Black pepper","Dates","Lemon","Prawns"], ic=["leaf","garlic","chilli","pepper"];
-  SITE.marquee(track,names.map((n,i)=>`<span>${n} ${SVG[ic[i%4]]}</span>`).join('')); }
+if(track){ // the hero ingredients: the things people actually buy, separated by a small jar mark
+  const names=["Prawns","Fish","Chicken","Beef","Dates","Lemon","Mango","Garlic","Kozhuva","Chammanthi"];
+  const jar='<svg viewBox="0 0 24 28" aria-hidden="true"><path d="M6 3h12v3H6z" fill="#c8a46a"/><rect x="4" y="6" width="16" height="20" rx="4" fill="#e8561e"/><rect x="7" y="12" width="10" height="7" rx="1" fill="#f3e6c8"/></svg>';
+  SITE.marquee(track,names.map(n=>`<span>${n} ${jar}</span>`).join('')); }
 document.querySelectorAll('[data-year]').forEach(e=>e.textContent=new Date().getFullYear());
 })();

@@ -63,7 +63,9 @@
 .heat svg.off{opacity:.2;filter:grayscale(1)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips span{font-size:11px;border:1px solid #f5a52466;border-radius:9999px;padding:3px 9px;color:var(--cream)}
-.card .row{display:flex;gap:8px}
+.card .row{display:flex;gap:8px;margin-top:auto}
+.more-link{background:none;border:0;color:var(--cream);opacity:.7;font:500 12px var(--body);text-decoration:underline;cursor:pointer;padding:2px 0;align-self:flex-start}
+.more-link:hover{opacity:1}
 .card .row .fill{flex:1;text-align:center}
 .buy{display:flex;gap:8px;align-items:center;margin-top:auto}
 .buy select{padding:9px 10px;font-size:14px}
@@ -100,10 +102,7 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
   <a class="brand" href="#top">BHARANY</a>
   <div class="links" id="menu">
     <a class="btn" href="#products">Shop</a>
-    <a class="btn" href="#story">Our process</a>
     <a class="btn" href="about.html">About</a>
-    <a class="btn" href="#faq">FAQ</a>
-    <a class="btn fill" href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp us</a>
   </div>
   <div class="nav-r">
     <button class="btn cart-btn" data-open-cart aria-label="Open cart">Cart<span class="badge" data-cart-count hidden>0</span></button>
@@ -237,8 +236,8 @@ document.getElementById("grid").innerHTML=CATALOG.map((p,k)=>`
   <h3>${p.name}</h3>
   <p>${p.desc}</p>
   <div class="chips">${p.ing.slice(0,3).map(x=>`<span>${x}</span>`).join("")}</div>
-  <div class="buy">${sizeSel(p)}</div>
-  <div class="row"><button class="btn" data-k="${k}">Details</button><button class="btn fill" data-add>Add to cart</button></div>
+  <div class="row"><button class="btn fill" data-add>Add · ${p.sizes[0][0]}${p.sizes[0][1]==null?'':' · '+money(p.sizes[0][1])}</button></div>
+  ${p.sizes.length>1?`<button class="more-link" data-k="${k}">More sizes &amp; details →</button>`:`<button class="more-link" data-k="${k}">Details →</button>`}
 </article>`).join("");
 </script>
 <script src="js/motion.js"></script>
@@ -284,7 +283,7 @@ document.addEventListener('click',e=>{
   const b=e.target.closest('[data-add]'); if(!b)return;
   const box=b.closest('[data-id]'), p=Cart.product(box.dataset.id), sel=box.querySelector('[data-size]');
   Shop.addToCart(p.id,sel?sel.value:p.sizes[0][0],b);
-  b.textContent='Added ✓'; setTimeout(()=>b.textContent='Add to cart',1400);
+  const was=b.dataset.label||(b.dataset.label=b.textContent); b.textContent='Added ✓'; setTimeout(()=>b.textContent=was,1400);
   if(sheet.open&&sheet.contains(b)) closeSheet();
 });
 document.getElementById('grid').addEventListener('click',e=>{const t=e.target.closest('[data-k]'); if(t)openSheet(+t.dataset.k)});

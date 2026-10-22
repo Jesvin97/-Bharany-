@@ -38,6 +38,10 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
 .done p{color:var(--cream);font-size:17px;line-height:1.5;margin-bottom:16px}
 .done .oid{font:700 28px var(--display);color:var(--accent);letter-spacing:.06em}
 .done .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.more summary{cursor:pointer;color:var(--cream);font:500 14px var(--body);text-transform:none;letter-spacing:0}
+.more-grid{display:grid;gap:14px;grid-template-columns:1fr 1fr;margin-top:14px}
+@media(max-width:560px){.more-grid{grid-template-columns:1fr}}
+.rec{font:500 10px var(--display);letter-spacing:.1em;background:var(--leaf);color:var(--deep);padding:2px 8px;border-radius:9999px;margin-left:8px;vertical-align:2px}
 .tick{width:96px;height:96px;margin:0 auto 24px}
 .tick circle,.tick path{fill:none;stroke:var(--leaf);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
 </style>
@@ -48,10 +52,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
   <a class="brand" href="index.html">BHARANY</a>
   <div class="links" id="menu">
     <a class="btn" href="index.html#products">Shop</a>
-    <a class="btn" href="index.html#story">Our process</a>
     <a class="btn" href="about.html">About</a>
-    <a class="btn" href="index.html#faq">FAQ</a>
-    <a class="btn fill" href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp us</a>
   </div>
   <div class="nav-r">
     <button class="btn cart-btn" data-open-cart aria-label="Open cart">Cart<span class="badge" data-cart-count hidden>0</span></button>
@@ -67,8 +68,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
       <fieldset data-rv>
         <legend>Contact</legend>
         <label class="full">Full name<input name="name" autocomplete="name" required><span class="err"></span></label>
-        <label>Mobile (WhatsApp)<input name="phone" type="tel" inputmode="numeric" autocomplete="tel" required placeholder="10-digit number"><span class="err"></span></label>
-        <label>Email (optional)<input name="email" type="email" autocomplete="email"><span class="err"></span></label>
+        <label class="full">Mobile (WhatsApp)<input name="phone" type="tel" inputmode="numeric" autocomplete="tel" required placeholder="10-digit number"><span class="err"></span></label>
       </fieldset>
       <fieldset data-rv>
         <legend>Delivery address</legend>
@@ -76,8 +76,12 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
         <label>City / town<input name="city" autocomplete="address-level2" required><span class="err"></span></label>
         <label>PIN code<input name="pin" inputmode="numeric" autocomplete="postal-code" maxlength="6" required><span class="err"></span></label>
         <label>State<input name="state" autocomplete="address-level1" value="Kerala" required><span class="err"></span></label>
-        <label>Landmark (optional)<input name="landmark"></label>
-        <label class="full">Order notes (optional)<textarea name="notes" rows="2" placeholder="Gift message, delivery time, spice questions…"></textarea></label>
+        <details class="more full"><summary>+ Add email, landmark or notes (optional)</summary>
+          <div class="more-grid">
+            <label>Email<input name="email" type="email" autocomplete="email"><span class="err"></span></label>
+            <label>Landmark<input name="landmark"></label>
+            <label class="full">Order notes<textarea name="notes" rows="2" placeholder="Gift message, delivery time, spice questions…"></textarea></label>
+          </div></details>
       </fieldset>
       <fieldset data-rv>
         <legend>Payment</legend>
@@ -132,7 +136,7 @@ function payOptions(){
   opts.push(['upi-later','UPI after confirmation','We confirm your total including delivery on WhatsApp, then send our UPI details.']);
   if(SHOP.cod) opts.push(['cod','Cash on delivery','Pay when your jars arrive (where available for your PIN code).']);
   const pay=document.getElementById('pay'), cur=(form.pay||{}).value;
-  pay.innerHTML=opts.map(([v,b,d],i)=>`<label><input type="radio" name="pay" value="${v}" ${cur?cur===v?'checked':'':i===0?'checked':''}><span><b>${b}</b>${d}</span></label>`).join('');
+  pay.innerHTML=opts.map(([v,b,d],i)=>`<label><input type="radio" name="pay" value="${v}" ${cur?cur===v?'checked':'':i===0?'checked':''}><span><b>${b}${i===0?'<span class="rec">RECOMMENDED</span>':''}</b>${d}</span></label>`).join('');
 }
 Cart.on(items=>{
   if(!items.length&&document.getElementById('done').hidden){
@@ -162,7 +166,7 @@ form.addEventListener('submit',e=>{
   e.preventDefault();
   const bad=Object.keys(rules).map(n=>form[n]).filter(el=>!check(el));
   const agreed=form.agree.checked; document.getElementById('agree-err').textContent=agreed?'':'Please accept the terms to continue';
-  if(bad.length||!agreed){ (bad[0]||form.agree).focus(); if(SITE.gsap&&!SITE.reduced) SITE.gsap.fromTo('#place',{x:-8},{x:0,duration:.5,ease:'elastic.out(1,.3)'}); return; }
+  if(bad.length||!agreed){ if(bad.some(el=>el.name==='email')) form.querySelector('.more').open=true; (bad[0]||form.agree).focus(); if(SITE.gsap&&!SITE.reduced) SITE.gsap.fromTo('#place',{x:-8},{x:0,duration:.5,ease:'elastic.out(1,.3)'}); return; }
   if(!Cart.items.length)return;
   const d=Object.fromEntries(new FormData(form)), t=Cart.total(), now=new Date();
   const oid='BH-'+now.toISOString().slice(2,10).replace(/-/g,'')+'-'+Math.random().toString(36).slice(2,6).toUpperCase();

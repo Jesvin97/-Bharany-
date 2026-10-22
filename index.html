@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="css/site.css">
 <style>
 /* hero: an exploded view of the jar. Scrolling lifts the jute cover, the seal and the pickle out of the jar */
-.stage{height:380vh;position:relative}
+.stage{height:330vh;position:relative}
 .sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:1fr;align-items:center}
 .hero-copy{position:relative;z-index:3;padding:96px var(--margin) 0;align-self:start}
 .hero-copy h1{font:700 var(--t-display)/.85 var(--brand);text-transform:uppercase;color:var(--accent)}
@@ -584,18 +584,22 @@ function draw(p){
   for(const k in L){const y=g.closed[k]+(g.open[k]-g.closed[k])*k1; L[k].style.transform=`translateY(${y}px) rotate(${k==='cover'?-6*k1:0}deg)`;
     if(N[k]){const o=e((p-.35-.08*['cover','seal','pickle','jar'].indexOf(k))/.15); N[k].style.opacity=o; N[k].style.transform=`translateY(${g.open[k]+g.h(k)/2-24+(1-o)*16}px)`;}}
   // second beat: the copy (desktop) or the notes (phones) step aside and the ingredients arrive one by one
-  const out=e((p-.56)/.1);
+  const out=e((p-.5)/.08);
   if(g.wide){hc.style.opacity=1-out; hc.style.visibility=out>.99?'hidden':'';}
   else for(const k in N){N[k].style.opacity=Math.min(+N[k].style.opacity,1-out);}
   ing.style.opacity=out; ing.classList.toggle('on',out>.5);
-  ingLi.forEach((li,i)=>{const o=e((p-.64-i*.06)/.12); li.style.opacity=o; li.style.transform=`translateY(${(1-o)*24}px)`;});
+  ingLi.forEach((li,i)=>{const o=e((p-.54-i*.05)/.1); li.style.opacity=o; li.style.transform=`translateY(${(1-o)*24}px)`;});
   if(!g.wide){const z=g.zc+(1-g.zc)*k1; xv.style.transformOrigin=`${g.cx}px ${g.oy}px`; xv.style.transform=`translateX(${g.ox*(1-k1)}px) scale(${z})`;}
   else xv.style.transform='';
   // the pickle stays hidden inside the jar until it clears the rim
   L.pickle.style.opacity=k1>.05?1:0;
 }
 place();
-if(reduced||!G){ draw(1); addEventListener('resize',()=>{place();draw(1)}); }
+// reduced motion: a still, open jar with its notes, the copy kept on screen and the ingredients listed under the hero
+function still(){ draw(1); hc.style.opacity=''; hc.style.visibility='';
+  // desktop keeps the notes beside the open jar; phones show the ingredients in that column instead
+  if(g.wide){ing.style.display='none'; for(const k in N) N[k].style.opacity=1;} else {ing.style.display=''; for(const k in N) N[k].style.display='none';} }
+if(reduced||!G){ still(); addEventListener('resize',()=>{place();still()}); }
 else{
   const st=ScrollTrigger.create({trigger:stage,start:'top top',end:'bottom bottom',onUpdate:s=>draw(s.progress),onRefresh:s=>{place();draw(s.progress)}});
   draw(0);

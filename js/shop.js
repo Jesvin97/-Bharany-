@@ -10,7 +10,7 @@ const SHOP={
   currency:'₹'
 };
 // ---- EDIT HERE: products ----
-// kg: price for 1 kg in rupees (from Bharany's price list). 250g and 500g are worked out pro-rata, rounded up to ₹5;
+// kg: price for 1 kg in rupees (from Bharany's price list). 500g is exactly half and 250g exactly a quarter (nearest rupee);
 // give a product its own sizes:[[label,price],...] to override. kg:null = price confirmed on WhatsApp.
 // img/y: photo and its vertical crop (hides the Instagram UI baked into the screenshots). No img = drawn label jar.
 // ing lists the headline ingredients; the label carries the full list.
@@ -42,7 +42,7 @@ const BOXES=[
  {id:'abroad',name:'The overseas parcel box',line:'All veg, 500g jars, packed leak-proof so family can courier it to you abroad.',abroad:true,items:[['mango-red','500g'],['garlic','500g'],['dates-lemon','500g']]},
  {id:'maggi',name:'The late-night rescue box',line:'For instant noodles, plain dosa and 11pm rice. One spoon fixes it.',items:[['chemmeen-podi','250g'],['garlic','250g'],['lemon','250g']]}
 ];
-const part=(kg,f)=>kg==null?null:Math.ceil(kg*f/5)*5;
+const part=(kg,f)=>kg==null?null:Math.round(kg*f);
 // a simple drawn jar with the product name, for items without a photo yet
 const jarArt=p=>{const w=p.name.replace(/\s*\(.*\)/,'').toUpperCase().split(' '), l1=w.slice(0,Math.ceil(w.length/2)).join(' '), l2=w.slice(Math.ceil(w.length/2)).join(' ');
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"><rect width="300" height="400" fill="#1a120d"/><circle cx="150" cy="210" r="140" fill="${p.color}" opacity=".18"/>

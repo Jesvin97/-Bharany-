@@ -60,8 +60,10 @@ const jarArt=p=>{const w=p.name.replace(/\s*\(.*\)/,'').toUpperCase().split(' ')
   return 'data:image/svg+xml,'+encodeURIComponent(svg);};
 CATALOG.forEach(p=>{
   p.sizes=p.sizes||[["250g",part(p.kg,.25)],["500g",part(p.kg,.5)],["1kg",p.kg]];
-  p.src=p.img?`img/${p.img}.jpg`:jarArt(p); p.y=p.y??50;
+  p.src=p.img?`img/${p.img}.webp`:jarArt(p); p.y=p.y??50;
 });
+// a jar with no price on any weight stays off the shop until it has one
+for(let i=CATALOG.length-1;i>=0;i--) if(CATALOG[i].sizes.every(s=>s[1]==null)) CATALOG.splice(i,1);
 
 const Cart=(()=>{
   const KEY='bh-cart'; let items=[];
@@ -155,8 +157,8 @@ function closeCart(){
   if(G&&!SITE.reduced){G.to('.drawer-bg',{opacity:0,duration:.25}); G.to('.drawer-panel',{xPercent:100,duration:.35,ease:'power2.in',onComplete:done});} else done();
 }
 let toastT; function toast(msg){const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),2200);}
-function addToCart(id,size,btn){
-  Cart.add(id,size); toast(`${Cart.product(id).name} (${size}) added`);
+function addToCart(id,size,btn,qty=1){
+  Cart.add(id,size,qty); toast(`${qty>1?qty+' × ':''}${Cart.product(id).name} (${size}) added`);
   const G=SITE.gsap; if(G&&!SITE.reduced) G.fromTo('[data-cart-count]',{scale:1.8},{scale:1,duration:.5,ease:'back.out(3)'});
 }
 function addBox(id){

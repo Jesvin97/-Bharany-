@@ -25,6 +25,8 @@ a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
 p{max-width:62ch}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* the hidden attribute always wins, even over display rules on buttons */
+[hidden]{display:none!important}
 h1,h2,h3{font-family:var(--display);font-weight:500;color:var(--ink);letter-spacing:-.02em}
 h2{font-size:var(--t-h2);line-height:1;margin-bottom:clamp(28px,4vw,48px)}
 h3{font-size:var(--t-h3);line-height:1.12;letter-spacing:-.01em}
@@ -68,7 +70,7 @@ section{max-width:1440px;margin:auto;padding:var(--gap) var(--margin) 0}
 .w>span{display:inline-block;will-change:transform}
 
 .marquee{overflow:hidden;padding:22px 0;background:var(--accent);color:var(--deep)}
-.track{display:flex;gap:32px;width:max-content;font:700 clamp(28px,4vw,48px)/1 var(--brand);text-transform:uppercase;align-items:center;will-change:transform}
+.track{display:flex;gap:32px;width:max-content;font:500 clamp(26px,3.4vw,40px)/1 var(--display);align-items:center;will-change:transform}
 .track span{display:flex;align-items:center;gap:32px;white-space:nowrap}
 .track svg{height:.8em;width:auto}
 
@@ -87,7 +89,7 @@ section{max-width:1440px;margin:auto;padding:var(--gap) var(--margin) 0}
 /* FAQ: each question is its own filled block, no rules between rows */
 .faq-list{display:grid;gap:8px}
 .faq details{background:var(--surface);padding:22px 24px}
-.faq summary{font:500 var(--t-h3)/1.2 var(--display);cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary{font:500 var(--t-h3)/1.2 var(--display);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:44px}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";color:var(--accent);transition:transform .3s var(--ease)}
 .faq details[open] summary::after{transform:rotate(45deg)}
@@ -100,9 +102,10 @@ section{max-width:1440px;margin:auto;padding:var(--gap) var(--margin) 0}
 footer{background:var(--surface);padding:72px var(--margin) 28px}
 .foot{max-width:1440px;margin:auto;display:grid;gap:32px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
 footer h4{font:600 var(--t-small) var(--body);opacity:.7;margin-bottom:10px}
-footer ul{list-style:none;padding:0;display:grid;gap:8px}
+footer ul{list-style:none;padding:0;display:grid;gap:0}
+footer li a{display:inline-flex;align-items:center;min-height:44px}
 footer a:hover{color:var(--accent)}
-.foot-name{max-width:1440px;margin:56px auto 0;font:700 clamp(80px,21vw,320px)/.8 var(--brand);color:var(--accent);letter-spacing:-.02em}
+.foot-name{max-width:1440px;margin:48px auto 0;font:700 clamp(56px,12vw,180px)/.8 var(--brand);color:var(--accent);letter-spacing:-.02em}
 .legal{max-width:1440px;margin:24px auto 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:var(--t-small);opacity:.75}
 
 /* page-transition curtain */
@@ -136,7 +139,7 @@ footer a:hover{color:var(--accent)}
 .drawer-panel>header{flex-direction:row;justify-content:space-between;align-items:center}
 .drawer-panel>footer{background:var(--surface-2)}
 .drawer-panel h3{font-size:36px}
-.drawer-items{flex:1;overflow:auto;padding:4px 20px;overscroll-behavior:contain;display:grid;gap:8px;align-content:start}
+.drawer-items{flex:1;overflow:auto;padding:4px 20px 24px;overscroll-behavior:contain;display:grid;gap:8px;align-content:start}
 .line{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:10px;background:var(--surface-2)}
 .line img{width:64px;height:80px;object-fit:cover}
 .line b{font:600 18px/1.2 var(--display);display:block}
@@ -167,3 +170,8 @@ label{display:flex;flex-direction:column;gap:6px;font:600 var(--t-small) var(--b
 
 .has-sale .hero-copy{top:calc(13svh + 48px)}
 @media(max-width:560px){.has-sale .hero-copy{top:calc(13svh + 52px)}}
+
+/* home: the small wordmark waits until the big hero name has scrolled away */
+.home nav .brand{transition:opacity .3s}
+.home nav.at-top .brand{opacity:0;pointer-events:none}
+input[type=checkbox],input[type=radio]{width:22px!important;height:22px!important;flex:none}

@@ -27,16 +27,13 @@ document.addEventListener('click',e=>{
 });
 
 
-// marquee: endless GSAP loop that speeds up and skews with scroll velocity
+// marquee: one slow endless loop
 SITE.marquee=(track,html)=>{
   track.innerHTML=html+html+html+html;
   if(reduced||!G)return;
-  const loop=G.to(track,{xPercent:-50,duration:28,ease:'none',repeat:-1});
-  let dir=1, skew=0; const setSkew=G.quickSetter(track,'skewX','deg');
-  ST.create({onUpdate:s=>{const v=s.getVelocity()/300; dir=s.direction;
-    loop.timeScale(dir*(1+Math.min(4,Math.abs(v))*.5)); skew=G.utils.clamp(-8,8,-v); }});
-  // ease back to cruising speed and zero skew once scrolling stops
-  G.ticker.add(()=>{ loop.timeScale(loop.timeScale()*.95+dir*.05); skew*=.9; setSkew(skew); });
+  G.to(track,{xPercent:-50,duration:60,ease:'none',repeat:-1});
+  // a slow, steady loop: no speed-up or skew with scrolling
+
 };
 
 // split headings into words; each word rises out of its own clipped line
@@ -52,13 +49,13 @@ else{
   document.querySelectorAll('[data-split]').forEach(el=>G.from(SITE.split(el),{yPercent:115,rotate:4,duration:1,ease:'power4.out',stagger:.06,
     immediateRender:false,scrollTrigger:{trigger:el,start:'top bottom',once:true}}));
   // content is visible by default; it only rises in as it crosses the bottom edge, so nothing stays hidden if a trigger never fires
-  ST.batch('[data-rv]',{start:'top bottom',once:true,onEnter:els=>G.from(els,{opacity:0,y:28,duration:.8,ease:'power3.out',stagger:.08,clearProps:'transform,opacity'})});
+  ST.batch('[data-rv]',{start:'top bottom',once:true,onEnter:els=>G.from(els,{opacity:0,y:16,duration:.5,ease:'power3.out',stagger:.05,clearProps:'transform,opacity'})});
   // parallax on anything tagged data-speed (fraction of scroll distance)
   document.querySelectorAll('[data-speed]').forEach(el=>G.to(el,{yPercent:-100*el.dataset.speed,ease:'none',
     scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}}));
   if(bar) G.to(bar,{scaleX:1,ease:'none',scrollTrigger:{start:0,end:'max',scrub:.3}});
   if(nav) ST.create({start:0,end:'max',onUpdate:s=>{const y=s.scroll();
-    nav.classList.toggle('solid',y>40); nav.classList.toggle('away',s.direction===1&&y>300&&innerWidth>760); }}); // phones keep the bar, and the cart, in reach
+    nav.classList.toggle('solid',y>40); nav.classList.toggle('at-top',!!document.getElementById('title')&&y<innerHeight*.5); nav.classList.toggle('away',s.direction===1&&y>300&&innerWidth>760); }}); // phones keep the bar, and the cart, in reach
   // FAQ: animate open/close height instead of the native snap
   document.querySelectorAll('.faq details').forEach(d=>{
     const s=d.querySelector('summary'), a=d.querySelector('.a');

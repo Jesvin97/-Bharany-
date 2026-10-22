@@ -31,10 +31,16 @@
 <div class="progress"></div>
 <nav>
   <a class="brand" href="index.html">BHARANY</a>
-  <div>
-    <a class="btn" href="index.html#products">Pickles</a>
-    <a class="btn" aria-current="page" href="about.html">About</a>
-    <a class="btn fill" href="https://wa.me/919846020348" target="_blank" rel="noopener">Order now</a>
+  <div class="links" id="menu">
+    <a class="btn" href="index.html#products">Shop</a>
+    <a class="btn" href="index.html#story">Our process</a>
+    <a class="btn" href="about.html">About</a>
+    <a class="btn" href="index.html#faq">FAQ</a>
+    <a class="btn fill" href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp us</a>
+  </div>
+  <div class="nav-r">
+    <button class="btn cart-btn" data-open-cart aria-label="Open cart">Cart<span class="badge" data-cart-count hidden>0</span></button>
+    <button class="btn menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
   </div>
 </nav>
 
@@ -95,6 +101,7 @@
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/lenis.min.js"></script>
 <script src="js/motion.js"></script>
+<script src="js/shop.js"></script>
 <script>
 const {gsap:G,reduced}=SITE;
 if(G&&!reduced){

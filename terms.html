@@ -13,10 +13,16 @@
 <div class="progress"></div>
 <nav>
   <a class="brand" href="index.html">BHARANY</a>
-  <div>
-    <a class="btn" href="index.html#products">Pickles</a>
+  <div class="links" id="menu">
+    <a class="btn" href="index.html#products">Shop</a>
+    <a class="btn" href="index.html#story">Our process</a>
     <a class="btn" href="about.html">About</a>
-    <a class="btn fill" href="https://wa.me/919846020348" target="_blank" rel="noopener">Order now</a>
+    <a class="btn" href="index.html#faq">FAQ</a>
+    <a class="btn fill" href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp us</a>
+  </div>
+  <div class="nav-r">
+    <button class="btn cart-btn" data-open-cart aria-label="Open cart">Cart<span class="badge" data-cart-count hidden>0</span></button>
+    <button class="btn menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
   </div>
 </nav>
 <section class="page-head">
@@ -33,7 +39,7 @@
   <p data-rv>These terms apply to every order placed with Bharany ("we", "us") through WhatsApp, Instagram, our website or in person. By placing an order you agree to them.</p>
 
   <h2 id="orders" data-rv>1. Placing an order</h2>
-  <p data-rv>Orders are placed by message on WhatsApp (+91 98460 20348). An order is confirmed only once we reply to confirm the items, price and delivery details. We may decline or cancel an order if a product is unavailable, if we can't deliver to your address, or if there's an obvious pricing error; if you've already paid, you'll get a full refund.</p>
+  <p data-rv>Orders are placed through the checkout on our website, which sends your order to us on WhatsApp, or by messaging us directly on WhatsApp (+91 98460 20348). An order is confirmed only once we reply to confirm the items, price and delivery details. We may decline or cancel an order if a product is unavailable, if we can't deliver to your address, or if there's an obvious pricing error; if you've already paid, you'll get a full refund.</p>
 
   <h2 id="pricing" data-rv>2. Pricing &amp; payment</h2>
   <ul data-rv>
@@ -92,5 +98,6 @@
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/lenis.min.js"></script>
 <script src="js/motion.js"></script>
+<script src="js/shop.js"></script>
 </body>
 </html>

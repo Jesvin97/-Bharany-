@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Bharany — Kerala Pickles</title>
 <meta name="description" content="Home-made Kerala pickles for everyone living away from home: hostels, PGs and first flats. Small batches, nothing artificial.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -150,7 +152,11 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
   <a class="brand" href="#top">BHARANY</a>
   <div class="links" id="menu">
     <a class="btn" href="#products">Shop</a>
+    <a class="btn m-only" href="#missing-home">Starter boxes</a>
+    <a class="btn m-only" href="#care">Jar care</a>
     <a class="btn" href="about.html">About</a>
+    <a class="btn" href="#faq">FAQ</a>
+    <a class="m-only wa" href="https://wa.me/919846020348" target="_blank" rel="noopener">Questions? WhatsApp +91 98460 20348</a>
   </div>
   <div class="nav-r">
     <button class="btn cart-btn" data-open-cart aria-label="Open cart"><svg class="bag" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 13H6zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Cart<span class="badge" data-cart-count hidden>0</span></button>
@@ -484,8 +490,7 @@ else{
   G.timeline({defaults:{ease:'power4.out'}})
    .from('#title span',{yPercent:120,rotate:12,opacity:0,duration:1.1,stagger:.06})
    .from('.hero-copy .eyebrow',{y:20,opacity:0,duration:.6},'-=.7')
-   .from(burst,{scale:1.25,duration:1.8,ease:'power2.out'},0)
-   .from('nav',{y:-40,opacity:0,duration:.6},'-=.8');
+   .from(burst,{scale:1.25,duration:1.8,ease:'power2.out'},0);
   G.to('.hint',{y:8,duration:.8,ease:'sine.inOut',yoyo:true,repeat:-1});
   // title drifts up and spreads as you leave the top
   G.to('#title',{yPercent:innerWidth<761?-12:-40,letterSpacing:'.04em',ease:'none',scrollTrigger:{trigger:stage,start:'top top',end:'25% top',scrub:true}});

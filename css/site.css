@@ -93,7 +93,9 @@ footer a:hover{color:var(--accent)}
 
 /* ---- nav: links + cart; collapses to a full-screen menu on phones ---- */
 .nav-r{display:flex;gap:8px;align-items:center}
-.links{display:flex;gap:10px;flex-wrap:wrap}
+.links{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+.m-only{display:none}
+nav{justify-content:flex-start}
 .cart-btn{position:relative}
 .badge{position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;border-radius:10px;background:var(--chili);color:#fff;font:700 11px/20px var(--body);text-align:center;padding:0 5px}
 .badge[hidden]{display:none}
@@ -104,6 +106,10 @@ footer a:hover{color:var(--accent)}
   .links{position:fixed;inset:0;z-index:-1;background:var(--ink);flex-direction:column;justify-content:center;align-items:flex-start;gap:4px;padding:96px 24px 40px;
     visibility:hidden;clip-path:circle(0 at calc(100% - 40px) 34px);transition:clip-path .6s var(--ease),visibility 0s .6s}
   .links.open{visibility:visible;clip-path:circle(150% at calc(100% - 40px) 34px);transition:clip-path .6s var(--ease)}
+  .links .m-only{display:inline-block}
+  .links .wa{margin-top:28px;color:var(--cream);font-size:14px;text-decoration:underline}
+  .links{margin-left:0}
+  .nav-r{margin-left:auto}
   .links .btn{border:0;padding:4px 0;font-size:clamp(44px,13vw,64px);font-weight:700;background:none!important;color:var(--accent)!important}
   .links .btn.fill{margin-top:24px;font-size:16px;padding:14px 24px;border:1px solid var(--accent);background:var(--accent)!important;color:var(--deep)!important}
   nav.menu-open{transform:none!important;background:transparent;backdrop-filter:none}

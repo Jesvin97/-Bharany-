@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Bharany Checkout</title>
 <meta name="description" content="Check out your Bharany pickle order.">
 <meta name="robots" content="noindex">
@@ -57,7 +59,11 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
   <a class="brand" href="index.html">BHARANY</a>
   <div class="links" id="menu">
     <a class="btn" href="index.html#products">Shop</a>
+    <a class="btn m-only" href="index.html#missing-home">Starter boxes</a>
+    <a class="btn m-only" href="index.html#care">Jar care</a>
     <a class="btn" href="about.html">About</a>
+    <a class="btn" href="index.html#faq">FAQ</a>
+    <a class="m-only wa" href="https://wa.me/919846020348" target="_blank" rel="noopener">Questions? WhatsApp +91 98460 20348</a>
   </div>
   <div class="nav-r">
     <button class="btn cart-btn" data-open-cart aria-label="Open cart"><svg class="bag" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 13H6zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Cart<span class="badge" data-cart-count hidden>0</span></button>
@@ -69,28 +75,28 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
   <div class="co">
     <form id="form" novalidate>
       <h1 data-split>Checkout</h1>
-      <div class="steps" aria-hidden="true"><span class="on">1 · Details</span><span>→</span><span class="on">2 · Payment</span><span>→</span><span>3 · Confirm on WhatsApp</span></div>
+      <div class="steps" aria-hidden="true"><span class="on">1 · Details</span><span>→</span><span class="on">2 · Payment</span><span>→</span><span id="step3">3 · Confirm on WhatsApp</span></div>
       <fieldset data-rv>
         <legend>Contact</legend>
-        <label class="full">Full name<input name="name" autocomplete="name" required><span class="err"></span></label>
-        <label class="full">Your WhatsApp number<input name="phone" type="tel" autocomplete="tel" required placeholder="98460 20348, or +1 / +44… if you're abroad"><span class="err"></span></label>
+        <label class="full">Full name<input name="name" autocomplete="name" maxlength="80" required><span class="err"></span></label>
+        <label class="full">Your WhatsApp number<input name="phone" type="tel" autocomplete="tel" maxlength="20" required placeholder="98460 20348, or +1 / +44… if you're abroad"><span class="err"></span></label>
       </fieldset>
       <fieldset data-rv>
         <legend>Delivery address</legend>
-        <label class="full">House / street / area<textarea name="address" rows="2" autocomplete="street-address" required></textarea><span class="err"></span></label>
-        <label>City / town<input name="city" autocomplete="address-level2" required><span class="err"></span></label>
+        <label class="full">House / street / area<textarea name="address" rows="2" autocomplete="street-address" maxlength="300" required></textarea><span class="err"></span></label>
+        <label>City / town<input name="city" autocomplete="address-level2" maxlength="60" required><span class="err"></span></label>
         <label>PIN code<input name="pin" inputmode="numeric" autocomplete="postal-code" maxlength="6" required><span class="err"></span></label>
-        <label>State<input name="state" autocomplete="address-level1" value="Kerala" required><span class="err"></span></label>
+        <label>State<input name="state" autocomplete="address-level1" value="Kerala" maxlength="40" required><span class="err"></span></label>
         <details class="more full"><summary>+ Add email, landmark or notes (optional)</summary>
           <div class="more-grid">
-            <label>Email<input name="email" type="email" autocomplete="email"><span class="err"></span></label>
-            <label>Landmark<input name="landmark"></label>
-            <label class="full">Order notes<textarea name="notes" rows="2" placeholder="Gift message, delivery time, spice questions…"></textarea></label>
+            <label>Email<input name="email" type="email" autocomplete="email" maxlength="120"><span class="err"></span></label>
+            <label>Landmark<input name="landmark" maxlength="100"></label>
+            <label class="full">Order notes<textarea name="notes" rows="2" maxlength="400" placeholder="Gift message, delivery time, spice questions…"></textarea></label>
           </div></details>
         <label class="abroad-tick full"><input type="checkbox" name="abroad" id="abroad"> <span><b>Packing it for someone abroad?</b> We'll pack it leak-proof for an international courier, so family here can send it on to you.</span></label>
         <div class="abroad full" id="abroad-box" hidden>
-          <label>Final country<input name="country" list="countries" placeholder="e.g. Canada"><datalist id="countries"><option>Canada</option><option>United Kingdom</option><option>United States</option><option>Georgia</option><option>Australia</option><option>Ireland</option><option>Germany</option><option>UAE</option></datalist></label>
-          <label>Phone of the person receiving it in India<input name="rphone" type="tel" inputmode="numeric" placeholder="10-digit Indian number"><span class="err"></span></label>
+          <label>Final country<input name="country" list="countries" maxlength="40" placeholder="e.g. Canada"><datalist id="countries"><option>Canada</option><option>United Kingdom</option><option>United States</option><option>Georgia</option><option>Australia</option><option>Ireland</option><option>Germany</option><option>UAE</option></datalist></label>
+          <label>Phone of the person receiving it in India<input name="rphone" type="tel" inputmode="numeric" maxlength="16" placeholder="10-digit Indian number"><span class="err"></span></label>
           <p class="full note">Many countries don't allow meat in parcels (beef and chicken are usually refused by the UK, US and Canada). Veg pickles and chammanthi are the safest choice. Please check your country's customs rules.<br><b>Before couriering:</b> double-wrap every jar (taped lid, zip bag, then another wrap) so oil can't leak.</p>
         </div>
       </fieldset>
@@ -99,7 +105,8 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
         <div class="pay full" id="pay"></div>
       </fieldset>
       <label style="flex-direction:row;align-items:center;gap:10px;text-transform:none;letter-spacing:0;font:500 14px var(--body);color:var(--cream)" data-rv>
-        <input type="checkbox" name="agree" required style="width:auto;accent-color:var(--accent)"> I agree to the&nbsp;<a href="terms.html" target="_blank" style="text-decoration:underline">terms &amp; conditions</a></label>
+        <input type="checkbox" name="agree" required style="width:auto;accent-color:var(--accent)"> <span>I agree to the <a href="terms.html" target="_blank" style="text-decoration:underline">terms &amp; conditions</a></span></label>
+      <p class="note" style="margin-top:10px">We use your details only to process, deliver and talk to you about this order. See our <a href="terms.html#privacy" target="_blank" style="text-decoration:underline">privacy notice</a> for who handles them and how to have them deleted.</p>
       <span class="err" id="agree-err"></span>
     </form>
     <aside class="summary" data-rv>
@@ -110,7 +117,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
       <button class="btn fill place" form="form" type="submit" id="place">Place order</button>
       <div class="trust">
         <div>✓ We confirm every order personally on WhatsApp</div>
-        <div>✓ Nothing is charged until you approve the final total</div>
+        <div>✓ You see the final total, with delivery, before you pay</div>
         <div>✓ Damaged jar? Photo within 48h and we replace it</div>
       </div>
     </aside>
@@ -172,6 +179,7 @@ const rules={
   state:v=>v.trim().length>1||'Please enter your state'
 };
 function check(el){const r=rules[el.name]; if(!r)return true; const ok=r(el.value); el.setAttribute('aria-invalid',ok!==true); el.parentElement.querySelector('.err').textContent=ok===true?'':ok; return ok===true;}
+if(SHOP.orderHook) document.getElementById('step3').textContent='3 · We confirm on WhatsApp';
 const abroad=document.getElementById('abroad'), abroadBox=document.getElementById('abroad-box');
 abroad.addEventListener('change',()=>{abroadBox.hidden=!abroad.checked; if(abroad.checked&&SITE.gsap&&!SITE.reduced) SITE.gsap.from(abroadBox,{opacity:0,y:-10,duration:.4});});
 let abroadFlag=false; try{abroadFlag=localStorage.getItem('bh-abroad')==='1'}catch(e){}
@@ -200,7 +208,7 @@ form.addEventListener('submit',e=>{
   // background alert to the shop's WhatsApp; no-cors means we can't read the reply, so the WhatsApp button stays as a backup
   const hooked=!!SHOP.orderHook;
   if(hooked) fetch(SHOP.orderHook,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain'},
-    body:JSON.stringify({oid,msg,name:d.name,phone:d.phone,email:d.email||'',address:`${d.address}, ${d.city} ${d.pin}, ${d.state}`,pay:payLabel,total:t,lines})}).catch(()=>{});
+    body:JSON.stringify({oid,msg,name:d.name,phone:d.phone,email:d.email||'',address:`${d.address}, ${d.city} ${d.pin}, ${d.state}`,pay:payLabel,total:t,lines,abroad:!!d.abroad})}).catch(()=>{});
   Cart.clear(); try{localStorage.removeItem('bh-abroad')}catch(e){}
   document.getElementById('checkout').hidden=true; const done=document.getElementById('done'); done.hidden=false;
   document.getElementById('oid').textContent='Order '+oid;

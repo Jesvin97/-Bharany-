@@ -32,10 +32,16 @@ function doPost(e) {
 
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
     if (sheet.getLastRow() === 0) sheet.appendRow(['Time', 'Order', 'Name', 'Phone', 'Email', 'Address', 'Items', 'Subtotal', 'Payment', 'Status']);
-    var items = (o.lines || []).map(function (l) { return l.name + ' (' + l.size + ') x' + l.qty; }).join('\n');
-    sheet.appendRow([new Date(), o.oid, o.name, "'" + o.phone, o.email, o.address, items, o.total == null ? '' : o.total, o.pay, 'New']);
+    // text starting with = + - @ would run as a spreadsheet formula: force every customer value to plain text
+    var t = function (v) { v = String(v == null ? '' : v).slice(0, 400); return /^[=+\-@\t\r]/.test(v) ? "'" + v : v; };
+    var items = (o.lines || []).slice(0, 30).map(function (l) { return l.name + ' (' + l.size + ') x' + l.qty; }).join('\n');
+    sheet.appendRow([new Date(), t(o.oid), t(o.name), "'" + String(o.phone).slice(0, 20), t(o.email), t(o.address), t(items), typeof o.total === 'number' ? o.total : '', t(o.pay), 'New']);
 
-    sendWhatsApp(o.msg + '\n\nReply to customer: https://wa.me/' + String(o.phone).replace(/\D/g, '').replace(/^(?!91)(\d{10})$/, '91$1'));
+    // CallMeBot is a third party: send the order, not the customer's address (that stays in your Sheet)
+    var alert = '*New order ' + o.oid + '*\n' + items + '\nSubtotal: ' + (typeof o.total === 'number' ? '₹' + o.total : 'to confirm') +
+      '\nFrom: ' + String(o.name).slice(0, 80) + (o.abroad ? '\nPACK FOR OVERSEAS PARCEL' : '') +
+      '\nFull details are in your Bharany orders sheet.\nReply: https://wa.me/' + String(o.phone).replace(/\D/g, '').replace(/^(?!91)(\d{10})$/, '91$1');
+    sendWhatsApp(alert);
     return reply('ok');
   } catch (err) {
     return reply('error');

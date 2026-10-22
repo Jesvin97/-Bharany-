@@ -53,6 +53,15 @@
 .far .note{grid-column:1/-1;font-size:13px;opacity:.8;max-width:none}
 @media(min-width:900px){.far{grid-template-columns:3fr 2fr;padding:36px}}
 @media(max-width:560px){.far{padding:18px}}
+.tips{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.tips div{background:var(--card);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.tips svg{width:40px;height:40px;fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.tips b{font:700 24px/1.05 var(--display);text-transform:uppercase}
+.tips p{color:var(--cream);font-size:14px;line-height:1.5}
+.tips .warn{border:1px solid var(--chili)}
+.tips .warn svg{stroke:var(--chili)}.tips .warn b{color:var(--chili)}
+.care-note{margin-top:20px;color:var(--cream);font-size:15px;border-left:3px solid var(--accent);padding-left:14px}
+.care-note b{color:var(--accent)}
 /* storyboard: pinned, scrubbed sideways through five panels */
 .story{max-width:none;padding:0;overflow:hidden;position:relative}
 .story-head{position:absolute;top:96px;left:24px;z-index:2}
@@ -170,10 +179,10 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
 <section>
   <p class="eyebrow" data-rv>Why it feels like home</p>
   <div class="promise">
-    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#f5a524" stroke-width="2.5"><path d="M6 22 24 8l18 14v18H6z"/><path d="M19 40V28h10v12"/></svg><b>Made at home</b><p>Small batches from a Kerala home kitchen, cooked the way Kerala homes always have.</p></div>
-    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#5aa646" stroke-width="2.5"><path d="M24 4c14 12 14 30 0 40C10 34 10 16 24 4z"/><path d="M24 12v30"/></svg><b>Nothing artificial</b><p>Real spices, real oil, real produce. Nothing on the label you can't pronounce.</p></div>
-    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#e8561e" stroke-width="2.5"><rect x="12" y="14" width="24" height="28" rx="4"/><path d="M10 8h28v6H10z"/></svg><b>Shelf friendly</b><p>Sealed glass jars that travel well. Unopened jars are happy on a shelf; once open, non-veg goes in the fridge.</p></div>
-    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#f5a524" stroke-width="2.5"><path d="M6 16h28v20H6zM34 22h6l4 6v8H34"/><circle cx="14" cy="38" r="4"/><circle cx="38" cy="38" r="4"/></svg><b>Easy as texting home</b><p>Check out in a minute and we confirm on WhatsApp. Parents can order for you too.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#f5a524" stroke-width="2.5"><path d="M6 22 24 8l18 14v18H6z"/><path d="M19 40V28h10v12"/></svg><b>Made by Amma</b><p>Every batch is cooked by a Kerala mother in her own home kitchen, not on a factory line.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#5aa646" stroke-width="2.5"><path d="M24 4c14 12 14 30 0 40C10 34 10 16 24 4z"/><path d="M24 12v30"/></svg><b>No chemical preservatives</b><p>Unlike many commercial pickles, no sodium benzoate or artificial preservatives. Just salt, spice, oil and vinegar, the way pickle has always been kept.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#e8561e" stroke-width="2.5"><rect x="12" y="14" width="24" height="28" rx="4"/><path d="M10 8h28v6H10z"/></svg><b>Fresh meat &amp; fish</b><p>Meat, fish and prawns are bought fresh and cooked the same day, never from frozen stock.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" fill="none" stroke="#f5a524" stroke-width="2.5"><path d="M6 16h28v20H6zM34 22h6l4 6v8H34"/><circle cx="14" cy="38" r="4"/><circle cx="38" cy="38" r="4"/></svg><b>Made to keep</b><p>Cooked down slowly and sealed under oil so it lasts. Look after it (see below) and it stays good to the last spoon.</p></div>
   </div>
 </section>
 <hr>
@@ -193,7 +202,7 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
   <div class="far" data-rv>
     <div><p class="eyebrow">Canada, UK, US, Georgia…</p><h3>Living abroad? Home can still reach you.</h3>
       <p>A jar of pickle from home is the classic thing to squeeze into a suitcase or courier box. Order to your family's address in India, tick <b>"Packing it for someone abroad?"</b> at checkout, and we'll pack it leak-proof for the long trip.</p></div>
-    <ol><li><b>Order online</b>, paying from wherever you are.</li><li><b>We deliver</b> to your family in India, packed for an international courier.</li><li><b>They send it on</b> to you with their next parcel or courier.</li></ol>
+    <ol><li><b>Order online</b>, paying from wherever you are.</li><li><b>We deliver</b> to your family in India, packed for an international courier.</li><li><b>They send it on</b> to you with their next parcel or courier. <b>Double-wrap every jar</b>: tape the lid, seal it in a zip bag, then wrap again, so oil can't leak in transit.</li></ol>
     <p class="note">Customs rules differ by country. Meat (beef, chicken) is usually refused by the UK, US and Canada, so veg pickles and chammanthi are the safest choice. <a href="checkout.html?abroad=1" style="text-decoration:underline">Order for abroad →</a></p>
   </div>
 </section>
@@ -255,14 +264,27 @@ dialog::backdrop{background:#000b;backdrop-filter:blur(4px)}
 </section>
 <hr>
 
+<section class="care" id="care">
+  <p class="eyebrow" data-rv>Jar care</p>
+  <h2 data-split>Look after your jar</h2>
+  <div class="tips">
+    <div data-rv class="warn"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M30 6c-8 0-10 8-10 14v22"/><path d="M20 20c-6 0-8-4-8-8"/><path d="M36 30l6 6M42 30l-6 6"/></svg><b>Never a wet spoon</b><p>Water is the enemy of pickle. Even one wet spoon can bring mould into the whole jar. Use a clean, completely dry spoon every time.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="16" width="24" height="26" rx="4"/><path d="M10 10h28v6H10z"/></svg><b>Lid on tight</b><p>Close it straight after use. Air and moisture shorten its life, especially in humid hostel rooms.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 30c6-4 10 4 16 0s10-4 16 0"/><path d="M14 18h20v24H14z"/></svg><b>Keep it under oil</b><p>The layer of oil on top protects the pickle. Press pieces down so they stay covered.</p></div>
+    <div data-rv><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="14" y="4" width="20" height="40" rx="3"/><path d="M14 18h20M19 10v4M19 24v6"/></svg><b>Non-veg: fridge after opening</b><p>Meat, fish and prawn pickles go in the fridge once opened. Veg pickles keep in a cool, dry cupboard.</p></div>
+  </div>
+  <p class="care-note" data-rv>Sending a jar abroad? <b>Double-wrap it</b>: tape the lid, seal it in a zip bag, then wrap it again to stop oil leaking in transit.</p>
+</section>
+<hr>
+
 <section class="faq" id="faq">
   <h2 data-split>Good questions</h2>
   <details data-rv><summary>How do I order?</summary><div class="a"><p>Tap "Add" on the jars you want, open your cart and check out. Your order comes to us on WhatsApp and we confirm the total and delivery with you before you pay. Prefer to just chat? Message +91 98460 20348.</p></div></details>
-  <details data-rv><summary>How long does a jar keep?</summary><div class="a"><p>Our pickles are naturally preserved. The best-before date is printed on every jar. Once open, keep it closed tightly, refrigerate non-veg pickles, and always use a clean, dry spoon.</p></div></details>
+  <details data-rv><summary>How long does a jar keep?</summary><div class="a"><p>Our pickles are naturally preserved. The best-before date is printed on every jar. Once open, never use a wet spoon, keep the lid tight and refrigerate non-veg pickles. See <a href="#care" style="text-decoration:underline">jar care</a>.</p></div></details>
   <details data-rv><summary>Can I keep it in a hostel room without a fridge?</summary><div class="a"><p>Sealed jars are fine on a shelf. Once opened, veg pickles keep well in a cool, dry cupboard if you use a clean, dry spoon. Non-veg pickles need a fridge after opening, so if you don't have one, start with veg jars or a 250g size you'll finish quickly.</p></div></details>
   <details data-rv><summary>Can my parents order and send it to my hostel?</summary><div class="a"><p>Yes. They can check out with your hostel or PG address and your phone number, and add a note for you in "Order notes".</p></div></details>
   <details data-rv><summary>Do you deliver outside Kerala?</summary><div class="a"><p>Ask us on WhatsApp with your PIN code and we'll tell you what's possible and what delivery will cost.</p></div></details>
-  <details data-rv><summary>I live abroad. Can I still get it?</summary><div class="a"><p>We deliver within India, so the usual way is to order to your family's address here and tick "Packing it for someone abroad?" at checkout. We pack it leak-proof and they courier it on to you. Customs rules vary: meat pickles are usually refused by the UK, US and Canada, so stick to veg pickles and chammanthi, and check your country's rules before sending.</p></div></details>
+  <details data-rv><summary>I live abroad. Can I still get it?</summary><div class="a"><p>We deliver within India, so the usual way is to order to your family's address here and tick "Packing it for someone abroad?" at checkout. We pack it leak-proof; before couriering it on, they should double-wrap each jar (taped lid, zip bag, then another wrap) so oil can't leak. Customs rules vary: meat pickles are usually refused by the UK, US and Canada, so stick to veg pickles and chammanthi, and check your country's rules before sending.</p></div></details>
   <details data-rv><summary>What's in each pickle?</summary><div class="a"><p>Tap "More sizes &amp; details" on any jar to see its key ingredients. The full ingredient list, including allergens like mustard, is printed on the label. Ask us if you have an allergy and we'll help.</p></div></details>
   <details data-rv><summary>My jar arrived damaged. What now?</summary><div class="a"><p>Send us a photo on WhatsApp within 48 hours of delivery and we'll make it right. See our <a href="terms.html#returns" style="text-decoration:underline">terms</a> for details.</p></div></details>
 </section>
@@ -335,7 +357,7 @@ function openSheet(k){
       <h3 id="sheet-title">${p.name}</h3><p>${p.desc}</p>
       <div><h4>Key ingredients</h4><div class="chips" style="margin-top:8px">${p.ing.map(x=>`<span>${x}</span>`).join("")}</div></div>
       <div><h4>Enjoy it with</h4><p>${p.pair}</p></div>
-      <div><h4>Storage</h4><ul><li>Always use a clean, dry spoon.</li><li>Keep the lid tightly closed${p.cat=="Non-veg"?"; refrigerate after opening":" in a cool, dry place"}.</li><li>Best before: printed on the jar.</li></ul></div>
+      <div><h4>Storage</h4><ul><li><b>Never use a wet spoon.</b> Even a drop of water can spoil the whole jar.</li><li>Keep the lid tightly closed${p.cat=="Non-veg"?"; refrigerate after opening":" in a cool, dry place"}.</li><li>Best before: printed on the jar.</li></ul></div>
       <small>Full ingredients and allergen information (e.g. mustard) are printed on the jar label.</small>
       <div class="buy">${sizeSel(p)}<button class="btn fill" data-add>Add to cart</button></div>
     </div></div>`;

@@ -11,7 +11,7 @@ const SHOP={
   cookingVideo:'',
   currency:'₹',
   // delivery per order, by PIN code: Kerala PINs start 67, 68 or 69
-  delivery:{kerala:80,india:120}
+  delivery:{kerala:80,india:120,freeFrom:1500}   // freeFrom: subtotal (₹) from which delivery is free
 };
 // ---- EDIT HERE: products ----
 // kg: price for 1 kg in rupees (from Bharany's price list). 500g is exactly half and 250g exactly a quarter (nearest rupee);
@@ -96,7 +96,7 @@ const Cart=(()=>{
   };
 })();
 // delivery charge for a 6-digit PIN code, or null until a valid PIN is entered
-const deliveryFor=pin=>/^[1-9]\d{5}$/.test(pin||'')?(/^6[789]/.test(pin)?SHOP.delivery.kerala:SHOP.delivery.india):null;
+const deliveryFor=(pin,sub)=>!/^[1-9]\d{5}$/.test(pin||'')?null:sub!=null&&sub>=SHOP.delivery.freeFrom?0:/^6[789]/.test(pin)?SHOP.delivery.kerala:SHOP.delivery.india;
 const money=v=>v==null?'—':SHOP.currency+v.toLocaleString('en-IN');
 
 // ---- cart drawer (injected on every page) ----
@@ -129,7 +129,9 @@ Cart.on(items=>{
   dItems.innerHTML=items.length?items.map(lineHTML).join(''):'<p class="empty">Your cart is empty. Time for a jar or two.'+(lastN?`<br><br><button class="btn fill" data-reorder>Reorder your last order (${lastN} jar${lastN>1?'s':''})</button>`:'')+'</p>';
   const t=Cart.total();
   document.getElementById('drawer-total').textContent=items.length?(t==null?'Confirmed on WhatsApp':money(t)):money(0);
-  document.getElementById('drawer-note').textContent=items.length?`Delivery: ${money(SHOP.delivery.kerala)} in Kerala, ${money(SHOP.delivery.india)} rest of India.`:'';
+  const sub=Cart.total(), gap=sub==null?null:SHOP.delivery.freeFrom-sub;
+  document.getElementById('drawer-note').textContent=!items.length?'':gap!=null&&gap<=0?'🎉 You get free delivery!':
+    (gap!=null?`Add ${money(gap)} more for free delivery. `:'')+`Delivery: ${money(SHOP.delivery.kerala)} in Kerala, ${money(SHOP.delivery.india)} rest of India, free from ${money(SHOP.delivery.freeFrom)}.`;
   document.getElementById('drawer-go').hidden=!items.length;
 });
 document.addEventListener('click',e=>{

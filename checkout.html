@@ -128,7 +128,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
       <div class="sum sm"><span>Subtotal</span><b id="sub"></b></div>
       <div class="sum sm"><span>Delivery</span><b id="ship"></b></div>
       <div class="sum"><span>Total</span><b id="grand"></b></div>
-      <p class="note" style="margin-top:6px">Delivery: ₹80 anywhere in Kerala, ₹120 to the rest of India, per order.</p>
+      <p class="note" style="margin-top:6px">Delivery: ₹80 anywhere in Kerala, ₹120 to the rest of India, per order. <b>Free on orders of ₹1,500 or more.</b></p>
       <button class="btn fill place" form="form" type="submit" id="place">Place order</button>
       <div class="trust">
         <div>✓ We confirm every order personally on WhatsApp</div>
@@ -164,12 +164,12 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#ff8a65}
 <script>
 const form=document.getElementById('form');
 // subtotal + delivery (delivery known once a valid PIN is typed); null while anything is unknown
-const ship=()=>Shop.deliveryFor(form.pin.value.trim());
+const ship=()=>Shop.deliveryFor(form.pin.value.trim(),Cart.total());
 function grandTotal(){const t=Cart.total(), d=ship(); return t==null||d==null?null:t+d;}
 function totals(){
   const t=Cart.total(), d=ship(), g=grandTotal();
   document.getElementById('sub').textContent=t==null?'Confirmed on WhatsApp':money(t);
-  document.getElementById('ship').textContent=d==null?'Enter PIN code':money(d)+(d===SHOP.delivery.kerala?' · Kerala':' · India');
+  document.getElementById('ship').textContent=d==null?'Enter PIN code':d===0?'Free':money(d)+(d===SHOP.delivery.kerala?' · Kerala':' · India');
   document.getElementById('grand').textContent=g==null?(t==null?'Confirmed on WhatsApp':'—'):money(g);
   payOptions();
 }
@@ -221,7 +221,7 @@ form.addEventListener('submit',e=>{
   const payLabel={'upi-now':'UPI (paid now)','upi-later':'UPI after confirmation','cod':'Cash on delivery'}[d.pay];
   const msg=[`*New order ${oid}*`,'',
     ...Cart.items.map(i=>{const p=Cart.product(i.id),pr=Cart.price(i); return `• ${p.name} (${i.size}) × ${i.qty}${pr==null?'':' = '+money(pr*i.qty)}`;}),
-    '',`Subtotal: ${t==null?'please confirm':money(t)}`,`Delivery: ${money(dl)}`,`Total: ${g==null?'please confirm':money(g)}`,`Payment: ${payLabel}`,'',
+    '',`Subtotal: ${t==null?'please confirm':money(t)}`,`Delivery: ${dl===0?'Free':money(dl)}`,`Total: ${g==null?'please confirm':money(g)}`,`Payment: ${payLabel}`,'',
     `*Deliver to*`,d.name,d.phone+(d.email?' · '+d.email:''),d.address,`${d.city} ${d.pin}, ${d.state}`,d.landmark?'Landmark: '+d.landmark:'',
     d.abroad?`\n*PACK FOR OVERSEAS PARCEL* → ${d.country||'country not given'}\nReceiver in India: ${d.rphone}`:'',
     d.notes?'\nNotes: '+d.notes:''].filter(x=>x!=='').join('\n');

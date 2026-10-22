@@ -142,3 +142,4 @@ footer a:hover{color:var(--accent)}
 select,input,textarea{font:500 15px var(--body);color:var(--cream);background:var(--deep);border:1px solid #f5a52466;border-radius:6px;padding:12px;width:100%}
 select:focus,input:focus,textarea:focus{border-color:var(--accent);outline:none}
 label{display:flex;flex-direction:column;gap:6px;font:500 12px var(--display);letter-spacing:.1em;text-transform:uppercase}
+.bag{width:14px;height:14px;vertical-align:-2px;margin-right:6px}

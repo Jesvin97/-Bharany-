@@ -21,10 +21,11 @@
 <meta name="theme-color" content="#0c0907">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Manjari:wght@700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add("js")</script>
 <link rel="stylesheet" href="css/site.css">
 <style>
 /* hero: an exploded view of the jar. Scrolling lifts the jute cover, the seal and the pickle out of the jar */
-.stage{height:300vh;position:relative}
+.stage{height:330vh;position:relative}
 .sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:1fr;align-items:center}
 .hero-copy{position:relative;z-index:3;padding:96px var(--margin) 0;align-self:start}
 .hero-copy h1{font:700 var(--t-display)/.85 var(--brand);text-transform:uppercase;color:var(--accent)}
@@ -34,10 +35,24 @@
 .hero-copy .small{margin-top:14px}
 .ml{font:700 clamp(22px,3vw,32px)/1.3 'Manjari',sans-serif;color:var(--accent)}
 .xv{position:absolute;inset:0;z-index:2;pointer-events:none}
+html.js .xv:not(.ready){visibility:hidden}
 .xv img{position:absolute;left:0;top:0;will-change:transform;user-select:none}
 .xv .note{position:absolute;left:0;top:0;width:min(30vw,300px);opacity:0;will-change:transform,opacity}
 .xv .note b{display:block;font:500 var(--t-h3)/1.1 var(--display);color:var(--ink);margin-bottom:4px}
 .xv .note span{font-size:var(--t-small);line-height:1.45;display:block}
+/* what goes into it: the four ingredients arrive after the jar opens */
+.ing{position:absolute;z-index:3;opacity:0;pointer-events:none}
+.ing.on{pointer-events:auto}
+.ing h2{font-size:clamp(30px,3.2vw,48px);margin-bottom:20px}
+.ing ul{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+.ing li{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center;will-change:transform,opacity}
+.ing img{width:96px;height:96px;object-fit:cover}
+.ing b{display:block;font:500 20px/1.15 var(--display);margin-bottom:2px}
+.ing span{font-size:var(--t-small);line-height:1.4;display:block}
+.ing .btn{margin-top:24px}
+@media(min-width:900px){.ing{left:var(--margin);top:50%;transform:translateY(-50%);width:44%}}
+@media(max-width:899px){.ing{right:var(--margin);top:12svh;width:42vw}.ing h2{font-size:22px;margin-bottom:12px}.ing ul{grid-template-columns:1fr;gap:10px}
+  .ing li{grid-template-columns:56px 1fr;gap:10px}.ing img{width:56px;height:56px}.ing b{font-size:16px}.ing span,.ing .btn{display:none}}
 @media(min-width:900px){
   .hero-copy{position:absolute;left:0;top:50%;transform:translateY(-50%);padding:0 var(--margin);width:46%}
   .hero-copy h1{font-size:clamp(110px,13vw,220px)}
@@ -213,6 +228,16 @@ dialog::backdrop{background:#000c}
       <p class="note" data-n="seal"><b>Inner seal</b><span>Keeps every jar clean, fresh and leak-proof on the way to you.</span></p>
       <p class="note" data-n="pickle"><b>The pickle</b><span>Tender beef slow-roasted with red chillies, spices, garlic, shallots and coconut oil.</span></p>
       <p class="note" data-n="jar"><b>Glass jar</b><span>Clean glass that keeps the taste true. No chemical preservatives inside.</span></p>
+    </div>
+    <div class="ing" id="ing">
+      <h2>What goes into it</h2>
+      <ul>
+        <li><img src="img/xv/chillies.webp" width="320" height="320" alt="A bowl of dried red chillies"><div><b>Red chillies</b><span>Adds the heat and the colour</span></div></li>
+        <li><img src="img/xv/spices.webp" width="320" height="320" alt="A bowl of black pepper and fenugreek"><div><b>Spices</b><span>Real flavour and aroma</span></div></li>
+        <li><img src="img/xv/garlic.webp" width="320" height="320" alt="Garlic and shallots"><div><b>Garlic and shallots</b><span>Natural taste and richness</span></div></li>
+        <li><img src="img/xv/oil.webp" width="320" height="320" alt="A bowl of coconut oil"><div><b>Coconut oil</b><span>Keeps it fresh and rounds out the flavour</span></div></li>
+      </ul>
+      <a class="btn fill" href="#products">Shop the beef pickle</a>
     </div>
   </div>
 </header>
@@ -530,6 +555,7 @@ if(G&&!reduced) G.matchMedia().add({wide:'(min-width:900px)',narrow:'(max-width:
 
 // ---------- hero: exploded view. p = scroll progress through .stage; 0 = closed jar, 1 = every layer apart ----------
 const stage=document.querySelector('.stage'), xv=document.getElementById('xv');
+const hc=document.querySelector('.hero-copy'), ing=document.getElementById('ing'), ingLi=[...ing.querySelectorAll('li')];
 const L={}, N={}; xv.querySelectorAll('img').forEach(i=>L[i.dataset.l]=i); xv.querySelectorAll('.note').forEach(n=>N[n.dataset.n]=n);
 const H0={cover:206,seal:82,pickle:227,jar:631}, W0={cover:451,seal:381,pickle:417,jar:450};
 // where every layer sits, closed and apart, for the current screen
@@ -551,19 +577,29 @@ function geometry(){
   return {s,x,w,h,open,closed,wide,cx,zc,ox,oy};
 }
 let g=geometry();
-function place(){ g=geometry(); for(const k in L){L[k].style.width=g.w(k)+'px'; L[k].style.height='auto'; L[k].style.left=g.x(k)+'px';}
+function place(){ xv.classList.add('ready'); g=geometry(); for(const k in L){L[k].style.width=g.w(k)+'px'; L[k].style.height='auto'; L[k].style.left=g.x(k)+'px';}
   for(const k in N){N[k].style.left=(g.cx+g.w('jar')/2+(g.wide?28:10))+'px';} }
 function draw(p){
   const e=t=>t<0?0:t>1?1:t*t*(3-2*t), k1=e((p-.08)/.6);
   for(const k in L){const y=g.closed[k]+(g.open[k]-g.closed[k])*k1; L[k].style.transform=`translateY(${y}px) rotate(${k==='cover'?-6*k1:0}deg)`;
     if(N[k]){const o=e((p-.35-.08*['cover','seal','pickle','jar'].indexOf(k))/.15); N[k].style.opacity=o; N[k].style.transform=`translateY(${g.open[k]+g.h(k)/2-24+(1-o)*16}px)`;}}
+  // second beat: the copy (desktop) or the notes (phones) step aside and the ingredients arrive one by one
+  const out=e((p-.5)/.08);
+  if(g.wide){hc.style.opacity=1-out; hc.style.visibility=out>.99?'hidden':'';}
+  else for(const k in N){N[k].style.opacity=Math.min(+N[k].style.opacity,1-out);}
+  ing.style.opacity=out; ing.classList.toggle('on',out>.5);
+  ingLi.forEach((li,i)=>{const o=e((p-.54-i*.05)/.1); li.style.opacity=o; li.style.transform=`translateY(${(1-o)*24}px)`;});
   if(!g.wide){const z=g.zc+(1-g.zc)*k1; xv.style.transformOrigin=`${g.cx}px ${g.oy}px`; xv.style.transform=`translateX(${g.ox*(1-k1)}px) scale(${z})`;}
   else xv.style.transform='';
   // the pickle stays hidden inside the jar until it clears the rim
   L.pickle.style.opacity=k1>.05?1:0;
 }
 place();
-if(reduced||!G){ draw(1); addEventListener('resize',()=>{place();draw(1)}); }
+// reduced motion: a still, open jar with its notes, the copy kept on screen and the ingredients listed under the hero
+function still(){ draw(1); hc.style.opacity=''; hc.style.visibility='';
+  // desktop keeps the notes beside the open jar; phones show the ingredients in that column instead
+  if(g.wide){ing.style.display='none'; for(const k in N) N[k].style.opacity=1;} else {ing.style.display=''; for(const k in N) N[k].style.display='none';} }
+if(reduced||!G){ still(); addEventListener('resize',()=>{place();still()}); }
 else{
   const st=ScrollTrigger.create({trigger:stage,start:'top top',end:'bottom bottom',onUpdate:s=>draw(s.progress),onRefresh:s=>{place();draw(s.progress)}});
   draw(0);

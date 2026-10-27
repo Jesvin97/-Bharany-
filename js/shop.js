@@ -11,7 +11,8 @@ const SHOP={
   cookingVideo:'',
   currency:'₹',
   // delivery per order, by PIN code: Kerala PINs start 67, 68 or 69
-  delivery:{kerala:80,india:120,freeFrom:1500}   // freeFrom: subtotal (₹) from which delivery is free
+  delivery:{kerala:80,india:120,freeFrom:1500},  // freeFrom: subtotal (₹), after any discount, from which delivery is free
+  multibuy:[[5,10],[3,5]]   // [jars, % off], biggest first: 3 jars save 5%, 5 or more save 10%. Any weight counts; starter boxes don't
 };
 // ---- EDIT HERE: products ----
 // kg: price for 1 kg in rupees (from Bharany's price list). 500g is exactly half and 250g exactly a quarter (nearest rupee);
@@ -65,25 +66,28 @@ CATALOG.forEach(p=>{
 // a jar with no price on any weight stays off the shop until it has one
 for(let i=CATALOG.length-1;i>=0;i--) if(CATALOG[i].sizes.every(s=>s[1]==null)) CATALOG.splice(i,1);
 
+const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
 const Cart=(()=>{
   const KEY='bh-cart'; let items=[];
   try{items=JSON.parse(localStorage.getItem(KEY))||[]}catch(e){}
   // the stored cart is user-editable: keep only known products, real sizes and sane quantities
   const MAXQ=20;
   items=(Array.isArray(items)?items:[]).filter(i=>{const p=CATALOG.find(p=>p.id===i?.id); return p&&p.sizes.some(s=>s[0]===i.size)&&Number.isInteger(i.qty)&&i.qty>0;})
-    .map(i=>({id:i.id,size:i.size,qty:Math.min(i.qty,MAXQ)}));
+    .map(i=>({id:i.id,size:i.size,qty:Math.min(i.qty,MAXQ),...(BOXES.some(b=>b.id===i.box)?{box:i.box}:{})}));
   const subs=new Set(), save=()=>{try{localStorage.setItem(KEY,JSON.stringify(items))}catch(e){} subs.forEach(f=>f(items));};
-  const find=(id,size)=>items.find(i=>i.id===id&&i.size===size);
+  // box jars sit on their own lines (box: the box id) because boxes keep their set price and never get the multi-buy discount
+  const find=(id,size,box)=>items.find(i=>i.id===id&&i.size===size&&(i.box||'')===(box||''));
   return {
     get items(){return items},
     product:id=>CATALOG.find(p=>p.id===id),
     price(i){const p=this.product(i.id), s=p.sizes.find(s=>s[0]===i.size); return s?s[1]:null},
-    add(id,size,qty=1){const f=find(id,size); f?f.qty=Math.min(f.qty+qty,MAXQ):items.push({id,size,qty}); save();},
-    set(id,size,qty){const f=find(id,size); if(!f)return; f.qty=Math.min(qty,MAXQ); if(qty<1)items=items.filter(i=>i!==f); save();},
+    add(id,size,qty=1,box){const f=find(id,size,box); f?f.qty=Math.min(f.qty+qty,MAXQ):items.push(box?{id,size,qty,box}:{id,size,qty}); save();},
+    set(id,size,qty,box){const f=find(id,size,box); if(!f)return; f.qty=Math.min(qty,MAXQ); if(qty<1)items=items.filter(i=>i!==f); save();},
     clear(){items=[]; save();},
     // switch a line to another size, merging into an existing line of that size
-    resize(id,from,to){const f=find(id,from), p=this.product(id); if(!f||from===to||!p.sizes.some(s=>s[0]===to))return;
-      const g=find(id,to); if(g){g.qty=Math.min(g.qty+f.qty,MAXQ); items=items.filter(i=>i!==f);} else f.size=to; save();},
+    resize(id,from,to,box){const f=find(id,from,box), p=this.product(id); if(!f||from===to||!p.sizes.some(s=>s[0]===to))return;
+      const g=find(id,to,box); if(g){g.qty=Math.min(g.qty+f.qty,MAXQ); items=items.filter(i=>i!==f);} else f.size=to; save();},
     // 'id:size:qty,...' for reorder links; add() ignores anything not in the catalogue
     code(list=items){return list.map(i=>`${i.id}:${i.size}:${i.qty}`).join(',')},
     addCode(c){let n=0; String(c).split(',').slice(0,30).forEach(x=>{const [id,size,q]=x.split(':'), p=this.product(id), qty=parseInt(q,10);
@@ -93,6 +97,13 @@ const Cart=(()=>{
     count(){return items.reduce((a,i)=>a+i.qty,0)},
     // total is null when any item has no price yet
     total(){let t=0; for(const i of items){const p=this.price(i); if(p==null)return null; t+=p*i.qty;} return t},
+    // multi-buy: loose jars only. pct and amt are 0 below the first tier; next is the tier still to reach, if any
+    discount(){const loose=items.filter(i=>!i.box), jars=loose.reduce((a,i)=>a+i.qty,0), tiers=SHOP.multibuy;
+      const t=tiers.find(([n])=>jars>=n), next=[...tiers].reverse().find(([n])=>jars<n);
+      let base=0; for(const i of loose){const p=this.price(i); if(p==null){base=null;break;} base+=p*i.qty;}
+      const pct=t?t[1]:0; return {jars,pct,amt:base==null||!pct?0:Math.round(base*pct/100),known:base!=null,next:next?{need:next[0]-jars,pct:next[1]}:null};},
+    // what the customer pays for the jars: subtotal less the multi-buy discount (null while a price is unknown)
+    net(){const t=this.total(); return t==null?null:t-this.discount().amt},
     on(f){subs.add(f); f(items);}
   };
 })();
@@ -108,7 +119,10 @@ document.body.insertAdjacentHTML('beforeend',`
     <header><h3>Your cart</h3><button class="btn" data-close>Close</button></header>
     <div class="drawer-items" id="drawer-items"></div>
     <footer>
-      <div class="sum"><span>Subtotal</span><b id="drawer-total"></b></div>
+      <div class="nudge" id="drawer-nudge" hidden><p></p><div class="meter" aria-hidden="true"><i></i></div></div>
+      <div class="sum sm" id="drawer-sub-row" hidden><span>Subtotal</span><b id="drawer-sub"></b></div>
+      <div class="sum sm save" id="drawer-off-row" hidden><span id="drawer-off-l"></span><b id="drawer-off"></b></div>
+      <div class="sum"><span id="drawer-total-l">Subtotal</span><b id="drawer-total"></b></div>
       <p class="note" id="drawer-note"></p>
       <a class="btn fill block" href="checkout.html" id="drawer-go">Checkout</a>
       <button class="btn block" data-close>Keep shopping</button>
@@ -118,31 +132,40 @@ document.body.insertAdjacentHTML('beforeend',`
 <div class="toast" id="toast" role="status" aria-live="polite"></div>`);
 const drawer=document.getElementById('drawer'), dItems=document.getElementById('drawer-items');
 function lineHTML(i){
-  const p=Cart.product(i.id), pr=Cart.price(i);
+  const p=Cart.product(i.id), pr=Cart.price(i), bx=i.box?BOXES.find(b=>b.id===i.box):null, db=i.box?` data-box="${i.box}"`:'';
   return `<div class="line"><img src="${p.src}" alt="" style="object-position:50% ${p.y}%">
-    <div><b>${p.name}</b><small>${p.sizes.length>1?`<select class="resize" data-id="${i.id}" data-size="${i.size}" aria-label="Size">${p.sizes.map(([s])=>`<option${s===i.size?' selected':''}>${s}</option>`).join('')}</select>`:i.size} · ${pr==null?'price on confirmation':money(pr)}</small>
-    <div class="qty" data-id="${i.id}" data-size="${i.size}"><button type="button" aria-label="Fewer" data-d="-1">−</button><span>${i.qty}</span><button type="button" aria-label="More" data-d="1">+</button></div></div>
+    <div><b>${p.name}</b><small>${p.sizes.length>1?`<select class="resize" data-id="${i.id}" data-size="${i.size}"${db} aria-label="Size">${p.sizes.map(([s])=>`<option${s===i.size?' selected':''}>${s}</option>`).join('')}</select>`:i.size} · ${pr==null?'price on confirmation':money(pr)}${bx?` · ${esc(bx.name)}`:''}</small>
+    <div class="qty" data-id="${i.id}" data-size="${i.size}"${db}><button type="button" aria-label="Fewer" data-d="-1">−</button><span>${i.qty}</span><button type="button" aria-label="More" data-d="1">+</button></div></div>
     <b>${pr==null?'':money(pr*i.qty)}</b></div>`;
 }
 Cart.on(items=>{
   document.querySelectorAll('[data-cart-count]').forEach(e=>{e.textContent=Cart.count(); e.hidden=!Cart.count();});
   const last=Cart.last(), lastN=last?last.split(',').reduce((a,x)=>a+(parseInt(x.split(':')[2],10)||0),0):0;
-  dItems.innerHTML=items.length?items.map(lineHTML).join(''):'<p class="empty">Your cart is empty. Time for a jar or two.'+(lastN?`<br><br><button class="btn fill" data-reorder>Reorder your last order (${lastN} jar${lastN>1?'s':''})</button>`:'')+'</p>';
-  const t=Cart.total();
-  document.getElementById('drawer-total').textContent=items.length?(t==null?'Confirmed on WhatsApp':money(t)):money(0);
-  const sub=Cart.total(), gap=sub==null?null:SHOP.delivery.freeFrom-sub;
-  document.getElementById('drawer-note').textContent=!items.length?'':gap!=null&&gap<=0?'You get free delivery.':
+  dItems.innerHTML=items.length?items.map(lineHTML).join('')+'<div class="pairs" id="drawer-pairs" hidden></div>':'<p class="empty">Your cart is empty. Time for a jar or two.'+(lastN?`<br><br><button class="btn fill" data-reorder>Reorder your last order (${lastN} jar${lastN>1?'s':''})</button>`:'')+'</p>';
+  const t=Cart.total(), dc=Cart.discount(), net=Cart.net(), $=id=>document.getElementById(id);
+  // Subtotal, then the discount in green, then what's due: the order every shop uses
+  $('drawer-sub-row').hidden=$('drawer-off-row').hidden=!dc.amt;
+  $('drawer-sub').textContent=money(t); $('drawer-off-l').textContent=`Multi-buy ${dc.pct}% off`; $('drawer-off').textContent='−'+money(dc.amt);
+  $('drawer-total-l').textContent=dc.amt?'You pay':'Subtotal';
+  $('drawer-total').textContent=items.length?(net==null?'Confirmed on WhatsApp':money(net)):money(0);
+  // one nudge line: the next jar deal and free delivery, with a meter towards the biggest tier
+  const top=SHOP.multibuy[0][0], gap=net==null?null:SHOP.delivery.freeFrom-net, nd=$('drawer-nudge');
+  nd.hidden=!items.length;
+  nd.querySelector('p').textContent=offerLine(dc)+(gap!=null&&gap<=0?' Free delivery.':'');
+  nd.querySelector('i').style.width=Math.min(100,dc.jars/top*100)+'%';
+  $('drawer-note').textContent=!items.length||gap!=null&&gap<=0?'':
     (gap!=null?`Add ${money(gap)} more for free delivery. `:'')+`Delivery: ${money(SHOP.delivery.kerala)} in Kerala, ${money(SHOP.delivery.india)} rest of India, free from ${money(SHOP.delivery.freeFrom)}.`;
+  pairs(items);
   document.getElementById('drawer-go').hidden=!items.length;
 });
 document.addEventListener('click',e=>{
   const q=e.target.closest('.qty button');
-  if(q){const w=q.parentElement, cur=Cart.items.find(i=>i.id===w.dataset.id&&i.size===w.dataset.size); if(cur)Cart.set(cur.id,cur.size,cur.qty+ +q.dataset.d); return;}
+  if(q){const w=q.parentElement, cur=Cart.items.find(i=>i.id===w.dataset.id&&i.size===w.dataset.size&&(i.box||'')===(w.dataset.box||'')); if(cur)Cart.set(cur.id,cur.size,cur.qty+ +q.dataset.d,cur.box); return;}
   if(e.target.closest('[data-open-cart]')){e.preventDefault(); openCart();}
   else if(e.target.closest('#drawer [data-close]')) closeCart();
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!drawer.hidden)closeCart()});
-document.addEventListener('change',e=>{const r=e.target.closest('select.resize'); if(r) Cart.resize(r.dataset.id,r.dataset.size,r.value);});
+document.addEventListener('change',e=>{const r=e.target.closest('select.resize'); if(r) Cart.resize(r.dataset.id,r.dataset.size,r.value,r.dataset.box);});
 document.addEventListener('click',e=>{if(e.target.closest('[data-reorder]')){Cart.addCode(Cart.last()); toast('Your last order is back in the cart');}});
 // reorder links (?reorder=id:size:qty,...) fill the cart and open it
 {const m=location.search.match(/[?&]reorder=([^&]+)/); if(m){const n=Cart.addCode(decodeURIComponent(m[1]));
@@ -157,12 +180,35 @@ function closeCart(){
   if(G&&!SITE.reduced){G.to('.drawer-bg',{opacity:0,duration:.25}); G.to('.drawer-panel',{xPercent:100,duration:.35,ease:'power2.in',onComplete:done});} else done();
 }
 let toastT; function toast(msg){const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),2200);}
+// the multi-buy state in a few words, used by the drawer and the toast
+function offerLine(dc){
+  const jar=n=>n+' more jar'+(n>1?'s':'');
+  if(!dc.pct) return dc.next?`Add ${jar(dc.next.need)} for ${dc.next.pct}% off.`:'';
+  return `${dc.pct}% off applied.`+(dc.next?` ${jar(dc.next.need)} for ${dc.next.pct}% off.`:'');
+}
+// "Goes well with": at most two jars, by a simple rule, never already in the cart.
+// sweet jars suggest a spicy one, spicy suggests a sweet one, and anything suggests the chammanthi to finish the plate
+function pairs(items){
+  const el=document.getElementById('drawer-pairs'), have=new Set(items.map(i=>i.id)), loose=items.filter(i=>!i.box);
+  if(!el)return; if(!loose.length){el.hidden=true; return;}
+  const priced=p=>!have.has(p.id)&&p.sizes.some(s=>s[1]!=null), hot=loose.some(i=>Cart.product(i.id).heat>=3), mild=loose.some(i=>Cart.product(i.id).heat<=1);
+  const pick=[];
+  if(hot&&!mild) pick.push(CATALOG.find(p=>p.heat<=1&&p.cat==='Veg'&&priced(p)));
+  if(mild&&!hot) pick.push(CATALOG.find(p=>p.heat>=3&&priced(p)));
+  pick.push(CATALOG.find(p=>p.id==='chutney'&&priced(p)), CATALOG.find(p=>p.cat==='Veg'&&priced(p)&&!pick.includes(p)));
+  const list=[...new Set(pick.filter(Boolean))].slice(0,2);
+  el.hidden=!list.length;
+  el.innerHTML='<p>Goes well with</p>'+list.map(p=>{const s=p.sizes.find(s=>s[0]==='250g'&&s[1]!=null)||p.sizes.find(s=>s[1]!=null);
+    return `<div class="pair"><img src="${p.src}" alt="" style="object-position:50% ${p.y}%"><span><b>${p.name}</b><small>${s[0]} · ${money(s[1])}</small></span><button class="btn" data-pair="${p.id}" data-size="${s[0]}" aria-label="Add ${esc(p.name)} ${s[0]}">Add</button></div>`;}).join('');
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-pair]'); if(b) addToCart(b.dataset.pair,b.dataset.size,b);});
 function addToCart(id,size,btn,qty=1){
-  Cart.add(id,size,qty); toast(`${qty>1?qty+' × ':''}${Cart.product(id).name} (${size}) added`);
+  Cart.add(id,size,qty); const o=offerLine(Cart.discount());
+  toast(`${qty>1?qty+' × ':''}${Cart.product(id).name} (${size}) added.${o?' '+o:''}`);
   const G=SITE.gsap; if(G&&!SITE.reduced) G.fromTo('[data-cart-count]',{scale:1.8},{scale:1,duration:.5,ease:'back.out(3)'});
 }
 function addBox(id){
-  const b=BOXES.find(x=>x.id===id); b.items.forEach(([pid,size])=>Cart.add(pid,size)); if(b.abroad) try{localStorage.setItem('bh-abroad','1')}catch(e){} toast(`${b.name} added (${b.items.length} jars)`);
+  const b=BOXES.find(x=>x.id===id); b.items.forEach(([pid,size])=>Cart.add(pid,size,1,b.id)); if(b.abroad) try{localStorage.setItem('bh-abroad','1')}catch(e){} toast(`${b.name} added (${b.items.length} jars)`);
   const G=SITE.gsap; if(G&&!SITE.reduced) G.fromTo('[data-cart-count]',{scale:1.8},{scale:1,duration:.5,ease:'back.out(3)'});
 }
 // ---- EDIT HERE: real customer reviews only, shared with the customer's permission ----
@@ -203,7 +249,6 @@ function loadSettings(){
   return fetch(SHOP.orderHook+'?settings=1',{signal:ctl.signal}).then(r=>r.json()).then(s=>{try{sessionStorage.setItem('bh-settings',JSON.stringify({t:Date.now(),s}))}catch(e){} return done(s);})
     .catch(()=>done({}));
 }
-const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 Cart.on(()=>document.querySelectorAll('[data-cart-count]').forEach(e=>{e.textContent=Cart.count(); e.hidden=!Cart.count();}));
 
@@ -222,4 +267,4 @@ function saleBar(st){
   tick();
 }
 const settingsReady=loadSettings(); settingsReady.then(saleBar);
-window.Shop={settingsReady,posterSrc,esc,CRAVINGS,deliveryFor,SHOP,CATALOG,BOXES,REVIEWS,season,lineHTML,addBox,Cart,money,openCart,closeCart,addToCart,toast};
+window.Shop={offerLine,settingsReady,posterSrc,esc,CRAVINGS,deliveryFor,SHOP,CATALOG,BOXES,REVIEWS,season,lineHTML,addBox,Cart,money,openCart,closeCart,addToCart,toast};

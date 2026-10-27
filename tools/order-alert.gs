@@ -81,7 +81,7 @@ function doPost(e) {
     sheet.appendRow([new Date(), t(o.oid), t(o.name), "'" + String(o.phone).slice(0, 20), t(o.email), t(o.address), t(items), typeof o.total === 'number' ? o.total : '', t(o.pay), 'New']);
 
     // CallMeBot is a third party: send the order, not the customer's address (that stays in your Sheet)
-    var alert = '*New order ' + o.oid + '*\n' + items + '\nSubtotal: ' + (typeof o.total === 'number' ? '₹' + o.total : 'to confirm') +
+    var alert = '*New order ' + o.oid + '*\n' + items + (o.discount ? '\nMulti-buy ' + o.discountPct + '% off: -₹' + o.discount : '') + '\nTotal: ' + (typeof o.total === 'number' ? '₹' + o.total : 'to confirm') +
       '\nFrom: ' + String(o.name).slice(0, 80) + (o.abroad ? '\nPACK FOR OVERSEAS PARCEL' : '') +
       '\nFull details are in your Bharany orders sheet.\nReply: https://wa.me/' + String(o.phone).replace(/\D/g, '').replace(/^(?!91)(\d{10})$/, '91$1');
     sendWhatsApp(alert);

@@ -76,7 +76,7 @@ const Cart=(()=>{
   items=(Array.isArray(items)?items:[]).filter(i=>{const p=CATALOG.find(p=>p.id===i?.id); return p&&p.sizes.some(s=>s[0]===i.size)&&Number.isInteger(i.qty)&&i.qty>0;})
     .map(i=>({id:i.id,size:i.size,qty:Math.min(i.qty,MAXQ),...(BOXES.some(b=>b.id===i.box)?{box:i.box}:{})}));
   const subs=new Set(), save=()=>{try{localStorage.setItem(KEY,JSON.stringify(items))}catch(e){} subs.forEach(f=>f(items));};
-  // box jars sit on their own lines (box: the box id) because boxes keep their set price and never get the multi-buy discount
+  // box jars sit on their own lines (box: the box id) so the cart and the order message can say which box they came from
   const find=(id,size,box)=>items.find(i=>i.id===id&&i.size===size&&(i.box||'')===(box||''));
   return {
     get items(){return items},
@@ -97,8 +97,8 @@ const Cart=(()=>{
     count(){return items.reduce((a,i)=>a+i.qty,0)},
     // total is null when any item has no price yet
     total(){let t=0; for(const i of items){const p=this.price(i); if(p==null)return null; t+=p*i.qty;} return t},
-    // multi-buy: loose jars only. pct and amt are 0 below the first tier; next is the tier still to reach, if any
-    discount(){const loose=items.filter(i=>!i.box), jars=loose.reduce((a,i)=>a+i.qty,0), tiers=SHOP.multibuy;
+    // multi-buy: every jar counts, boxed or not. pct and amt are 0 below the first tier; next is the tier still to reach, if any
+    discount(){const loose=items, jars=loose.reduce((a,i)=>a+i.qty,0), tiers=SHOP.multibuy;
       const t=tiers.find(([n])=>jars>=n), next=[...tiers].reverse().find(([n])=>jars<n);
       let base=0; for(const i of loose){const p=this.price(i); if(p==null){base=null;break;} base+=p*i.qty;}
       const pct=t?t[1]:0; return {jars,pct,amt:base==null||!pct?0:Math.round(base*pct/100),known:base!=null,next:next?{need:next[0]-jars,pct:next[1]}:null};},

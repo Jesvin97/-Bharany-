@@ -75,6 +75,7 @@ html.js .xv:not(.ready){visibility:hidden}
 .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
 @media(min-width:1100px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .card .add{margin-top:auto;min-height:48px;width:100%}
+.box-was{font-size:var(--t-small);opacity:.75;margin-top:8px;text-align:center}
 .hero-acts{display:flex;gap:12px;flex-wrap:wrap}
 .box-sub{margin:-12px 0 24px;font-size:18px}
 .why-more{margin-top:32px}.why-more a{color:var(--accent);text-decoration:underline;text-underline-offset:4px;font-weight:600}
@@ -169,6 +170,9 @@ html.js .xv:not(.ready){visibility:hidden}
 .panel h3{font-size:clamp(40px,5vw,68px);line-height:1;margin-bottom:16px}
 .panel figure{overflow:hidden;aspect-ratio:4/3;max-height:46vh;background:var(--surface);color:var(--ink)}
 .panel figure img,#cook-fig video{width:100%;height:100%;object-fit:cover}
+/* desktop: the heading takes its own row above the sliding panels, so a two-line heading can never sit on a photo */
+@media(min-width:900px){.story{height:100svh;display:flex;flex-direction:column}.story-head{position:static;padding:112px var(--edge) 0}
+  .story-track{flex:1;height:auto;min-height:0}.panel{padding-top:40px;padding-bottom:64px}}
 @media(min-width:900px){.panel figure{order:-1;max-height:56vh}.panel{padding-inline:48px;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;gap:56px}}
 .story-bar{position:absolute;left:var(--edge);right:var(--edge);bottom:24px;height:3px;background:var(--surface-2)}
 .story-bar i{display:block;height:100%;background:var(--accent);transform-origin:0;transform:scaleX(0)}
@@ -287,7 +291,7 @@ dialog::backdrop{background:var(--scrim)}
       <button class="btn" role="tab" aria-selected="false" aria-pressed="false" aria-controls="tab-build" id="t-build">Build your own</button>
     </div></div>
   <div id="tab-ready" role="tabpanel" aria-labelledby="t-ready">
-  <p class="box-sub">Three jars picked for you, at a set price.</p>
+  <p class="box-sub">Three jars picked for you. Every box gets the multi-buy discount, like any 3 jars.</p>
   <div class="boxes" id="boxes"></div>
   <div class="see-all"><button class="btn" id="more-boxes" type="button">See all boxes</button></div>
   </div>
@@ -372,7 +376,7 @@ dialog::backdrop{background:var(--scrim)}
   <details><summary>Can I keep it in a hostel room without a fridge?</summary><div class="a"><p>Sealed jars are fine on a shelf. Once opened, veg pickles keep well in a cool, dry cupboard if you use a clean, dry spoon. Non-veg pickles need a fridge after opening, so if you don’t have one, start with veg jars or a 250g size you’ll finish quickly.</p></div></details>
   <details><summary>Can my parents order and send it to my hostel?</summary><div class="a"><p>Yes. They can check out with your hostel or PG address and your phone number, and add a note for you in “Order notes”.</p></div></details>
   <details><summary>How much is delivery?</summary><div class="a"><p>₹80 per order anywhere in Kerala, and ₹120 per order to the rest of India. Orders of ₹1,500 or more ship free. Checkout works it out from your PIN code and shows it before you pay.</p></div></details>
-  <details><summary>Is there a discount for buying more?</summary><div class="a"><p>Yes. Any 3 jars in one order save 5%, and 5 or more save 10%, whatever the size. It comes off at checkout automatically. Starter boxes keep their set price and don’t count towards it.</p></div></details>
+  <details><summary>Is there a discount for buying more?</summary><div class="a"><p>Yes. Any 3 jars in one order save 5%, and 5 or more save 10%, whatever the size. It comes off at checkout automatically. Jars in starter boxes count too.</p></div></details>
   <details><summary>I live abroad. Can I still get it?</summary><div class="a"><p>We deliver within India, so the usual way is to order to your family’s address here and tick “Packing it for someone abroad?” at checkout. We pack it leak-proof; before couriering it on, they should double-wrap each jar (taped lid, zip bag, then another wrap) so oil can’t leak. Customs rules vary: meat pickles are usually refused by the UK, US and Canada, so stick to veg pickles and chammanthi, and check your country’s rules before sending.</p></div></details>
   <details><summary>What’s in each pickle?</summary><div class="a"><p>Tap “Ingredients and details” on any jar to see its key ingredients. The full ingredient list, including allergens like mustard, is printed on the label. Ask us if you have an allergy and we’ll help.</p></div></details>
   <details><summary>My jar arrived damaged. What now?</summary><div class="a"><p>Send us a photo on WhatsApp within 48 hours of delivery and we’ll make it right. Our returns terms have the details.</p></div></details>
@@ -412,12 +416,14 @@ const cardHTML=(p,k,best)=>`
   ${p.sizes.length>1?`<button class="btn fill add" data-k="${k}">Choose size</button>`:`<button class="btn fill add" data-add>Add to cart</button>`}
 </article>`;
 document.getElementById("grid").innerHTML=CATALOG.map((p,k)=>cardHTML(p,k,false)).join("");
+// a box gets the multi-buy discount like any jars; the cart may give more if other jars push it into a higher tier
+const boxPct=n=>(SHOP.multibuy.find(([k])=>n>=k)||[0,0])[1], boxPrice=(sum,n)=>sum-Math.round(sum*boxPct(n)/100);
 // boxes in their festival season move to the front and get a badge
 document.getElementById("boxes").innerHTML=[...Shop.BOXES].sort((a,b)=>!!Shop.season(b)-!!Shop.season(a)).map(b=>{
   const its=b.items.map(([id,size])=>({p:Cart.product(id),size})), sum=its.reduce((a,{p,size})=>{const pr=p.sizes.find(s=>s[0]===size)[1]; return a==null||pr==null?null:a+pr},0);
   return `<article class="box" data-rv><div class="thumbs">${its.map(({p})=>`<img src="${p.src}" alt="" loading="lazy" style="object-position:50% ${p.y}%">`).join('')}</div>
     <h3>${b.name}</h3>${Shop.season(b)?`<p class="price">In season for ${Shop.season(b)}</p>`:""}<p>${b.line}</p><ul>${its.map(({p,size})=>`<li>${p.name}, ${size}</li>`).join('')}</ul>
-    <button class="btn fill block" data-box="${b.id}">Add box${sum==null?'':', '+money(sum)}</button></article>`}).join('');
+    <button class="btn fill block" data-box="${b.id}">Add box${sum==null?'':` for ${money(boxPrice(sum,its.length))}`}</button>${sum==null?'':`<p class="box-was">${money(sum)} before the ${boxPct(its.length)}% multi-buy discount</p>`}</article>`}).join('');
 {const bx=[...document.querySelectorAll('#boxes .box')], mb=document.getElementById('more-boxes'); bx.forEach((b,i)=>b.hidden=i>=3); mb.parentElement.hidden=bx.length<=3;
  mb.addEventListener('click',()=>{bx.forEach(b=>b.hidden=false); mb.parentElement.hidden=true; if(window.ScrollTrigger) ScrollTrigger.refresh();});}
 document.getElementById("boxes").addEventListener('click',e=>{const b=e.target.closest('[data-box]'); if(!b)return; Shop.addBox(b.dataset.box);
@@ -439,7 +445,7 @@ Shop.settingsReady.then(st=>{
   } else if(fest){
     const its=fest.items.map(([id,size])=>({p:Cart.product(id),size})), sum=its.reduce((a,{p,size})=>{const pr=p.sizes.find(s=>s[0]===size)[1]; return a==null||pr==null?null:a+pr},0);
     el.innerHTML=`<div class="fest"><div><h2>${E(b.title||(Shop.season(fest)?Shop.season(fest)+' is here':fest.name))}</h2>
-      <p class="lede">${E(b.text||fest.line)}</p><button class="btn" data-box="${fest.id}">Add the ${E(fest.name.replace(/^The /,''))}${sum==null?'':', '+money(sum)}</button></div>
+      <p class="lede">${E(b.text||fest.line)}</p><button class="btn" data-box="${fest.id}">Add the ${E(fest.name.replace(/^The /,''))}${sum==null?'':' for '+money(boxPrice(sum,its.length))}</button></div>
       <div class="thumbs">${its.map(({p})=>`<img src="${p.src}" alt="${E(p.name)}" style="object-position:50% ${p.y}%">`).join('')}</div></div>`;
     el.querySelector('[data-box]').addEventListener('click',e=>{Shop.addBox(fest.id); e.target.textContent='Added'; });
   }
@@ -609,7 +615,7 @@ else{
 }
 
 // ---- build your box: any jars, any number, one size at a time. They go in as loose jars, so the multi-buy discount applies,
-// counted together with loose jars already in the cart. Names are prefixed so nothing here shadows the hero's functions.
+// counted together with every jar already in the cart. Names are prefixed so nothing here shadows the hero's functions.
 {
   const bxList=document.getElementById('build-jars'), bxStatus=document.getElementById('build-status'), bxAdd=document.getElementById('build-add'), bxW=document.getElementById('build-w'), bxItems=document.getElementById('build-items');
   const bxPick=new Map(); // 'id|size' -> qty
@@ -627,7 +633,7 @@ else{
     const n=bxCount();
     let sub=0; bxPick.forEach((q,k)=>{const [id,sz]=k.split('|'); sub+=bxPrice(Shop.CATALOG.find(p=>p.id===id),sz)*q;});
     // the discount the whole cart would get once this box is in, and how much more that saves than the cart saves today
-    const now=Cart.discount(), loose=Cart.items.filter(i=>!i.box);
+    const now=Cart.discount(), loose=Cart.items;
     let base=0, known=true; loose.forEach(i=>{const pr=Cart.price(i); if(pr==null)known=false; else base+=pr*i.qty;});
     const jars=now.jars+n, tier=SHOP.multibuy.find(([k])=>jars>=k), pct=tier?tier[1]:0;
     const save=known?Math.round((base+sub)*pct/100)-now.amt:0, next=[...SHOP.multibuy].reverse().find(([k])=>jars<k);
@@ -636,7 +642,7 @@ else{
       :`${n} jar${n>1?'s':''}, ${money(sub)}.`+(pct?` ${pct}% off: you save ${money(save)}.`:'')+(next?` Add ${next[0]-jars} more for ${next[1]}% off.`:'')+inCart;
     bxItems.textContent=n?'In your box: '+[...bxPick].map(([k,q])=>{const [id,sz]=k.split('|'); return `${Shop.CATALOG.find(p=>p.id===id).name} ${sz} × ${q}`;}).join(', '):'';
     bxItems.hidden=!n;
-    bxAdd.disabled=!n; bxAdd.textContent=n?`Add ${n} jar${n>1?'s':''}, ${money(sub-save)}`:'Add to cart';
+    bxAdd.disabled=!n; bxAdd.textContent=n?`Add ${n} jar${n>1?'s':''} for ${money(sub-save)}`:'Add to cart';
   }
   document.getElementById('tab-build').addEventListener('click',e=>{
     const r=e.target.closest('#build-w [role=radio]');

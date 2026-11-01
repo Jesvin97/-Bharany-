@@ -7,8 +7,6 @@ const SHOP={
   cod:false,                 // offer cash on delivery
   // Google Apps Script web-app URL that alerts you on WhatsApp in the background (see tools/order-alert.gs). Empty = off
   orderHook:'',              // also serves the site settings from the Google Sheet (see SETTINGS below)
-  // your own phone video of the cooking, e.g. 'img/cooking.mp4' (10-20s, muted, portrait or square). Empty = line drawing
-  cookingVideo:'',
   currency:'₹',
   // delivery per order, by PIN code: Kerala PINs start 67, 68 or 69
   delivery:{kerala:80,india:120,freeFrom:1500},  // freeFrom: subtotal (₹), after any discount, from which delivery is free

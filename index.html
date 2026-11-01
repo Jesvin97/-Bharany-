@@ -161,30 +161,6 @@ html.js .xv:not(.ready){visibility:hidden}
 @media(min-width:900px){.why{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}}
 @media(max-width:899px){.why figure{order:2}}
 
-/* storyboard: pinned and scrubbed sideways on desktop, stacked on phones */
-.story{container-type:inline-size;max-width:none;padding:0;margin-top:var(--gap);overflow:hidden;position:relative}
-.story-head{position:absolute;top:96px;left:0;right:0;padding-inline:var(--edge);z-index:2}
-.story-head h2{margin:0}
-.story-track{display:flex;height:100svh;width:max-content;will-change:transform;list-style:none;padding:0}
-.panel{width:min(100cqw,1100px);height:100%;flex:none;display:grid;grid-template-columns:minmax(0,1fr);align-content:center;gap:24px;padding:200px var(--margin) 56px;position:relative;overflow:hidden}
-.panel h3{font-size:clamp(40px,5vw,68px);line-height:1;margin-bottom:16px}
-.panel figure{overflow:hidden;aspect-ratio:4/3;max-height:46vh;background:var(--surface);color:var(--ink)}
-.panel figure img,#cook-fig video{width:100%;height:100%;object-fit:cover}
-/* desktop: the heading takes its own row above the sliding panels, so a two-line heading can never sit on a photo */
-@media(min-width:900px){.story{height:100svh;display:flex;flex-direction:column}.story-head{position:static;padding:112px var(--edge) 0}
-  .story-track{flex:1;height:auto;min-height:0}.panel{padding-top:40px;padding-bottom:64px}}
-@media(min-width:900px){.panel figure{order:-1;max-height:56vh}.panel{padding-inline:48px;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;gap:56px}}
-.story-bar{position:absolute;left:var(--edge);right:var(--edge);bottom:24px;height:3px;background:var(--surface-2)}
-.story-bar i{display:block;height:100%;background:var(--accent);transform-origin:0;transform:scaleX(0)}
-@media(max-width:899px){
-  .story-head{position:static;padding:0 var(--margin)}
-  .story-track{flex-direction:column;width:auto;height:auto}
-  .panel{width:auto;height:auto;padding:40px var(--margin) 0;gap:20px}
-  .panel figure{max-height:none;aspect-ratio:4/3}
-  .panel h3{font-size:clamp(36px,10vw,48px)}
-  .story-bar{display:none}
-}
-@media(prefers-reduced-motion:reduce){.story-track{width:auto;height:auto;overflow-x:auto;scroll-snap-type:x mandatory}.panel{scroll-snap-align:start}}
 
 
 /* about teaser */
@@ -334,28 +310,6 @@ dialog::backdrop{background:var(--scrim)}
 
 
 
-<section class="story" id="story" aria-labelledby="story-h">
-  <div class="story-head"><h2 id="story-h" data-split>From Amma’s kitchen to your table</h2></div>
-  <ol class="story-track">
-    <li class="panel">
-      <div><h3>Picked fresh</h3><p>Prawns, fish, Kerala dates, garlic, curry leaf and chilli, bought fresh the morning we cook. If it isn’t good enough to eat, it doesn’t go in.</p></div>
-      <figure><img src="img/xv/chillies.webp" alt="Dried red chillies, bought fresh for the masala" loading="lazy"></figure>
-    </li>
-    <li class="panel">
-      <div><h3>Cleaned and cut by hand</h3><p>Every piece is washed, cleaned and cut by hand, the way it’s always been done at home.</p></div>
-      <figure><img src="img/6.webp" alt="Bharany prawns pickle, every piece cut by hand" loading="lazy" style="object-position:50% 30%"></figure>
-    </li>
-    <li class="panel">
-      <div><h3>Slow-roasted in spice</h3><p>Chilli, pepper, mustard and curry leaf roasted in oil, then cooked low and slow in small batches until the masala clings.</p></div>
-      <figure id="cook-fig"><img src="img/14.webp" alt="Masala-coated pickle in an open jar" loading="lazy" style="object-position:50% 45%"></figure>
-    </li>
-    <li class="panel">
-      <div><h3>Sealed under hessian</h3><p>Packed warm into clean glass jars, sealed, and finished with the hessian cap you’ll recognise on your shelf.</p></div>
-      <figure><img src="img/12.webp" alt="Bharany jar finished with a hessian cap" loading="lazy" style="object-position:50% 24%"></figure>
-    </li>
-  </ol>
-  <div class="story-bar"><i></i></div>
-</section>
 
 
 
@@ -387,7 +341,7 @@ dialog::backdrop{background:var(--scrim)}
 <footer>
   <div class="foot">
     <div><p>Home-made Kerala pickles, made by Amma, for every Malayali away from home.</p></div>
-    <div><h3>Shop</h3><ul><li><a href="#products">All jars</a></li><li><a href="#box-shop">Starter boxes</a></li><li><a href="#story">How it’s made</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+    <div><h3>Shop</h3><ul><li><a href="#products">All jars</a></li><li><a href="#box-shop">Starter boxes</a></li><li><a href="#faq">FAQ</a></li></ul></div>
     <div><h3>Company</h3><ul><li><a href="about.html">About us</a></li><li><a href="terms.html">Terms and conditions</a></li><li><a href="privacy.html">Privacy</a></li></ul></div>
     <div><h3>Say hello</h3><ul><li><a href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp +91 98460 20348</a></li><li><a href="https://www.instagram.com/bharany_kerala">@bharany_kerala</a></li></ul></div>
   </div>
@@ -467,7 +421,6 @@ if(Shop.REVIEWS.length){
     <q>${esc(r.text)}</q><span>${esc(r.name)}${r.place?', '+esc(r.place):''}</span></figure>`).join('');
   document.getElementById('reviews').hidden=false;
 }
-if(Shop.SHOP.cookingVideo) document.getElementById('cook-fig').innerHTML=`<video src="${Shop.SHOP.cookingVideo}" autoplay muted loop playsinline aria-label="Amma cooking a batch of pickle"></video>`;
 </script>
 <script src="js/motion.js"></script>
 <script>
@@ -530,26 +483,6 @@ document.addEventListener('click',e=>{const t=e.target.closest('.card [data-k]')
  tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>{const on=x===t; x.setAttribute('aria-selected',on); x.setAttribute('aria-pressed',on); document.getElementById(x.getAttribute('aria-controls')).hidden=!on;}); if(window.ScrollTrigger) ScrollTrigger.refresh();}));
  if(location.hash==='#build') tabs[1].click();}
 document.addEventListener('keydown',e=>{const t=e.target.closest('.ph'); if(t&&(e.key=='Enter'||e.key==' ')){e.preventDefault();openSheet(+t.dataset.k)}});
-
-// ---------- storyboard: pin and scrub sideways on desktop ----------
-const story=document.querySelector('.story'), strack=document.querySelector('.story-track');
-// phones get a plain vertical stack: sideways pinning fights thumb scrolling on a narrow screen
-if(G&&!reduced) G.matchMedia().add({wide:'(min-width:900px)',narrow:'(max-width:899px)'},ctx=>{
-  let side=null;
-  if(ctx.conditions.wide){
-    const dist=()=>strack.scrollWidth-innerWidth;
-    side=G.to(strack,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:story,start:'top top',end:()=>'+='+dist(),pin:true,scrub:1,invalidateOnRefresh:true}});
-    G.to('.story-bar i',{scaleX:1,ease:'none',scrollTrigger:{trigger:story,start:'top top',end:()=>'+='+dist(),scrub:true}});
-  }
-  const at=(p,x,y)=>side?{trigger:p,containerAnimation:side,start:'left '+x}:{trigger:p,start:'top '+y};
-  document.querySelectorAll('.panel').forEach((p,i)=>{
-    const st={...at(p,'75%','80%'),toggleActions:'play none none reverse'};
-    if(i||!side) G.from(p.querySelectorAll('h3,p'),{opacity:0,[side?'x':'y']:40,stagger:.08,duration:.7,ease:'power3.out',scrollTrigger:st});
-    G.from(p.querySelector('figure'),{clipPath:side?'inset(0 100% 0 0)':'inset(100% 0 0 0)',duration:1,ease:'power4.inOut',scrollTrigger:{...st,...at(p,'85%','85%')}});
-    const img=p.querySelector('figure img'); if(img) G.fromTo(img,{scale:1.25},{scale:1,ease:'none',
-      scrollTrigger:side?{trigger:p,containerAnimation:side,start:'left right',end:'right left',scrub:true}:{trigger:p,start:'top bottom',end:'bottom top',scrub:true}});
-  });
-});
 
 // ---------- hero: exploded view. p = scroll progress through .stage; 0 = closed jar, 1 = every layer apart ----------
 const stage=document.querySelector('.stage'), xv=document.getElementById('xv');

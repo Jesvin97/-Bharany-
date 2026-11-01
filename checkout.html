@@ -97,7 +97,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:var(--error)}
   <div class="co">
     <form id="form" novalidate>
       <h1 data-split>Checkout</h1>
-      <p class="lede" id="steps" style="margin-bottom:20px">Your details, then payment. We confirm on WhatsApp before you pay.</p>
+      <p class="lede" id="steps" style="margin-bottom:20px">Your details, then payment. We send your tracking ID on WhatsApp.</p>
       <details class="mini-sum" id="mini-sum"><summary><span id="mini-count">Your order</span><b id="mini-total"></b></summary><div id="mini-lines"></div></details>
       <fieldset>
         <legend>Contact</legend>
@@ -144,7 +144,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:var(--error)}
       <p class="note" style="margin-top:6px">Delivery: ₹80 anywhere in Kerala, ₹120 to the rest of India, per order. <b>Free on orders of ₹1,500 or more.</b></p>
       <button class="btn fill place" form="form" type="submit" id="place">Place order</button>
       <ul class="trust">
-        <li>We confirm every order personally on WhatsApp</li>
+        <li>Pay by UPI at checkout, no account needed</li>
         <li>You see the final total, with delivery, before you pay</li>
         <li>Damaged jar? Send a photo within 48 hours and we replace it</li>
       </ul>
@@ -156,7 +156,7 @@ input[aria-invalid=true],textarea[aria-invalid=true]{border-color:var(--error)}
 <section class="done" id="done" hidden>
   <h2 class="done-h">Thank you!</h2>
   <p class="oid" id="oid"></p>
-  <p id="done-msg">Your order has been prepared as a WhatsApp message to us. <b>Please press send in WhatsApp</b> so we receive it. We’ll reply to confirm your order and payment.</p>
+  <p id="done-msg">Your order has been prepared as a WhatsApp message to us. <b>Please press send in WhatsApp</b> so we receive it. Once your payment is in, we pack your jars and send the tracking ID on WhatsApp.</p>
   <div class="btns" id="done-btns"></div>
   <p class="note" style="margin-top:28px">When your jars arrive: <b>never use a wet spoon</b>, keep the lid tight, and put non-veg pickles in the fridge once opened.</p>
 </section>
@@ -199,11 +199,11 @@ function totals(){
   payOptions();
 }
 form.pin.addEventListener('input',totals);
-// payment choices: UPI now (needs a UPI ID and full prices), UPI after confirmation, cash on delivery
+// payment choices: UPI now (needs a UPI ID and full prices), UPI details on WhatsApp until a UPI ID is set, cash on delivery
 function payOptions(){
   const t=grandTotal(), opts=[];
   if(SHOP.upi&&t!=null) opts.push(['upi-now','Pay now by UPI',`Opens your UPI app (GPay, PhonePe, Paytm) for ${money(t)}, delivery included.`]);
-  opts.push(['upi-later','UPI after confirmation','We confirm your order on WhatsApp, then send our UPI details.']);
+  opts.push(['upi-later','Pay by UPI','Our UPI ID comes to you on WhatsApp straight after you place the order.']);
   if(SHOP.cod) opts.push(['cod','Cash on delivery','Pay when your jars arrive (where available for your PIN code).']);
   const pay=document.getElementById('pay'), cur=(form.pay||{}).value;
   // one way to pay: say it plainly instead of showing a radio button with nothing to choose
@@ -247,7 +247,7 @@ form.addEventListener('submit',e=>{
   if(!Cart.items.length)return;
   const d=Object.fromEntries(new FormData(form)), t=Cart.total(), dc=Cart.discount(), dl=ship(), g=grandTotal(), now=new Date();
   const oid='BH-'+now.toISOString().slice(2,10).replace(/-/g,'')+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
-  const payLabel={'upi-now':'UPI (paid now)','upi-later':'UPI after confirmation','cod':'Cash on delivery'}[d.pay];
+  const payLabel={'upi-now':'UPI (paid now)','upi-later':'UPI (details sent on WhatsApp)','cod':'Cash on delivery'}[d.pay];
   const msg=[`*New order ${oid}*`,'',
     ...Cart.items.map(i=>{const p=Cart.product(i.id),pr=Cart.price(i),bx=i.box&&Shop.BOXES.find(b=>b.id===i.box); return `• ${p.name} (${i.size}) × ${i.qty}${pr==null?'':' = '+money(pr*i.qty)}${bx?' ['+bx.name+']':''}`;}),
     '',`Subtotal: ${t==null?'please confirm':money(t)}`,dc.amt?`Multi-buy ${dc.pct}% off (${dc.jars} jars): −${money(dc.amt)}`:'',`Delivery: ${dl===0?'Free':money(dl)}`,`Total: ${g==null?'please confirm':money(g)}`,`Payment: ${payLabel}`,'',
@@ -268,7 +268,7 @@ form.addEventListener('submit',e=>{
   document.getElementById('done-btns').innerHTML=(upi?`<a class="btn fill" href="${upi}">Pay ${money(g)} by UPI</a>`:'')+
     `<a class="btn ${upi||hooked?'':'fill'}" href="${wa}" target="_blank" rel="noopener">${hooked?'Message us on WhatsApp':'Open WhatsApp to send order'}</a><a class="btn" href="index.html">Back to the shop</a>`+
     `<p class="note" style="flex-basis:100%;margin-top:14px">Running low later? <a href="${reorder}" style="text-decoration:underline">Bookmark this link</a> to order the same jars again in one tap.</p>`;
-  if(hooked) document.getElementById('done-msg').innerHTML=`We've received your order. We'll message you on WhatsApp at <b>${d.phone.replace(/[<>&]/g,'')}</b> shortly to confirm your order and payment.`;
+  if(hooked) document.getElementById('done-msg').innerHTML=`We've received your order. We'll message you on WhatsApp at <b>${d.phone.replace(/[<>&]/g,'')}</b> with your tracking ID once your jars ship.`;
   scrollTo(0,0); SITE.lenis&&SITE.lenis.scrollTo(0,{immediate:true});
   const G=SITE.gsap; if(G&&!SITE.reduced){ G.from('.tick circle',{strokeDasharray:280,strokeDashoffset:280,duration:.8});
     G.from('.tick path',{strokeDasharray:80,strokeDashoffset:80,duration:.5,delay:.6}); G.from('.done>*:not(.tick)',{y:30,opacity:0,stagger:.08,delay:.4}); }

@@ -20,7 +20,9 @@
   --ease:cubic-bezier(.2,.7,.2,1);
   /* five sizes do the work */
   --t-display:clamp(88px,22vw,300px); --t-h2:clamp(44px,7vw,96px); --t-h3:clamp(24px,2.4vw,32px); --t-body:17px; --t-small:15px;
-  --gap:clamp(72px,8vw,128px); --margin:clamp(16px,3vw,32px);
+  --gap:clamp(72px,8vw,128px);
+  /* one left and right edge for everything full-bleed: lines up with the 1280px content column */
+  --edge:max(var(--margin),calc((100% - 1280px) / 2 + var(--margin))); --margin:clamp(16px,3vw,32px);
 }
 *{box-sizing:border-box;margin:0}
 html.lenis,html.lenis body{height:auto}
@@ -55,7 +57,7 @@ input:disabled,select:disabled,textarea:disabled{opacity:.5;cursor:not-allowed}
 .tag{font:600 14px/1 var(--body);color:var(--ink);background:var(--surface-2);padding:8px 12px;border-radius:9999px;width:fit-content;display:inline-flex;align-items:center}
 
 /* nav: one line, wordmark + a few links + cart. Hides on scroll down (motion.js) */
-nav{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;gap:12px;align-items:center;padding:16px var(--margin);height:72px;transition:transform .4s var(--ease),background .3s}
+nav{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;gap:12px;align-items:center;padding:16px var(--margin);height:72px;padding-inline:var(--edge);transition:transform .4s var(--ease),background .3s}
 nav.solid{background:var(--ground)}
 nav.away{transform:translateY(-110%)}
 .brand{font:700 26px/1 var(--brand);letter-spacing:.02em;color:var(--accent)}
@@ -110,14 +112,14 @@ section{max-width:1280px;margin:auto;padding:var(--gap) var(--margin) 0}
 .cta{text-align:center;padding-bottom:var(--gap)}
 .cta h2{margin-bottom:28px}
 .cta p{margin:20px auto 0}
-footer{background:var(--surface);color:var(--ink);padding:72px var(--margin) 28px}
-.foot{max-width:1440px;margin:auto;display:grid;gap:32px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+footer{background:var(--surface);color:var(--ink);padding:72px var(--edge) 28px}
+.foot{display:grid;gap:32px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
 footer h3{font:600 var(--t-small) var(--body);letter-spacing:0;text-wrap:wrap;color:var(--ink);opacity:.7;margin-bottom:12px}
 footer ul{list-style:none;padding:0;display:grid;gap:0}
 footer li a{display:inline-flex;align-items:center;min-height:44px}
 footer a:hover{color:var(--accent)}
-.foot-name{max-width:1440px;margin:48px auto 0;font-family:var(--brand);font-weight:700;font-size:clamp(56px,12vw,180px);line-height:.8;color:var(--accent);letter-spacing:-.02em}
-.legal{max-width:1440px;margin:24px auto 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:var(--t-small);opacity:.75}
+.foot-name{margin:48px 0 0;font-family:var(--brand);font-weight:700;font-size:clamp(56px,12vw,180px);line-height:.8;color:var(--accent);letter-spacing:-.02em}
+.legal{margin:24px 0 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:var(--t-small);opacity:.75}
 
 /* page-transition curtain */
 .curtain{position:fixed;inset:0;background:var(--accent);z-index:50;transform:scaleY(0);transform-origin:50% 100%;pointer-events:none;
@@ -208,6 +210,6 @@ input[type=checkbox],input[type=radio]{width:22px!important;height:22px!importan
 .wa-float svg{width:22px;height:22px}
 @media(max-width:560px){.wa-float span{display:none}.wa-float{padding:0 16px}}
 @media(max-width:899px){.cobar:not([hidden])~.wa-float{display:none}}
-.ob-short{display:none}
+.ob-short{display:none}.offerbar p{max-width:none}
 @media(max-width:560px){.ob-more{display:none}.ob-short{display:inline}}
 @media(max-width:899px){.hero-acts{justify-content:center}}

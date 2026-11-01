@@ -269,7 +269,7 @@ function saleBar(st){
 // the standing offers, in one line at the top of every page
 function offerBar(){
   const [[n2,p2],[n1,p1]]=SHOP.multibuy;
-  document.body.insertAdjacentHTML('afterbegin',`<div class="offerbar" role="region" aria-label="Offers">Free delivery over ${money(SHOP.delivery.freeFrom)}.<span class="ob-more"> Buy ${n1} jars, save ${p1}%. Buy ${n2}, save ${p2}%.</span><span class="ob-short"> ${n1} jars save ${p1}%.</span></div>`);
+  document.body.insertAdjacentHTML('afterbegin',`<div class="offerbar" role="region" aria-label="Offers"><p>Free delivery over ${money(SHOP.delivery.freeFrom)}.<span class="ob-more"> Buy ${n1} jars, save ${p1}%. Buy ${n2}, save ${p2}%.</span><span class="ob-short"> ${n1} jars save ${p1}%.</span></p></div>`);
   document.body.classList.add('has-offer');
 }
 document.body.insertAdjacentHTML('beforeend',`<a class="wa-float" href="https://wa.me/${SHOP.whatsapp}" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2s-1 .3-3.4-.7a11.6 11.6 0 0 1-4.5-4c-.4-.5-1-1.7-1-2.8s.6-1.7.8-1.9a.9.9 0 0 1 .6-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .6l-.3.5-.4.4c-.1.2-.3.3-.1.6a8.6 8.6 0 0 0 1.6 2 7.8 7.8 0 0 0 2.3 1.4c.3.2.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.8.8c.3.2.4.2.5.4s0 .9-.1 1.4Z"/></svg><span>WhatsApp</span></a>`);

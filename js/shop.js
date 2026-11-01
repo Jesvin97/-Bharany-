@@ -152,7 +152,7 @@ Cart.on(items=>{
   const top=SHOP.multibuy[0][0], gap=net==null?null:SHOP.delivery.freeFrom-net, nd=$('drawer-nudge');
   nd.hidden=!items.length;
   nd.querySelector('p').textContent=offerLine(dc)+(gap!=null&&gap<=0?' Free delivery.':'');
-  nd.querySelector('i').style.width=Math.min(100,dc.jars/top*100)+'%';
+  nd.querySelector('i').style.transform=`scaleX(${Math.min(1,dc.jars/top)})`;
   $('drawer-note').textContent=!items.length||gap!=null&&gap<=0?'':
     (gap!=null?`Add ${money(gap)} more for free delivery. `:'')+`Delivery: ${money(SHOP.delivery.kerala)} in Kerala, ${money(SHOP.delivery.india)} rest of India, free from ${money(SHOP.delivery.freeFrom)}.`;
   pairs(items);

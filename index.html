@@ -25,13 +25,13 @@
 <link rel="stylesheet" href="css/site.css">
 <style>
 /* hero: an exploded view of the jar. Scrolling lifts the jute cover, the seal and the pickle out of the jar */
-.stage{height:330vh;position:relative}
-.sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:1fr;align-items:center}
+.stage{height:330svh;position:relative}
+.sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr);align-items:center}
 .hero-copy{position:relative;z-index:3;padding:96px var(--margin) 0;align-self:start}
 .hero-copy h1{font:700 var(--t-display)/.85 var(--brand);text-transform:uppercase;color:var(--accent)}
 .hero-copy h1 span{display:inline-block}
 .hero-copy .ml{margin-top:20px}
-.hero-copy .lede{margin:14px 0 24px;max-width:26ch;font-size:clamp(19px,1.8vw,24px)}
+.hero-copy .lede{margin:16px 0 24px;max-width:30ch;font-size:clamp(19px,1.8vw,24px)}
 .hero-copy .small{margin-top:16px}
 .ml{font:700 clamp(22px,3vw,32px)/1.3 var(--body);color:var(--accent)}
 .xv{position:absolute;inset:0;z-index:2;pointer-events:none}
@@ -44,19 +44,19 @@ html.js .xv:not(.ready){visibility:hidden}
 .ing{position:absolute;z-index:3;opacity:0;pointer-events:none}
 .ing.on{pointer-events:auto}
 .ing h2{font-size:clamp(30px,3.2vw,48px);margin-bottom:20px}
-.ing ul{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
-.ing li{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center;will-change:transform,opacity}
+.ing ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 20px}
+.ing li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;align-items:center;will-change:transform,opacity}
 .ing img{width:96px;height:96px;object-fit:cover;border-radius:50%}
 .ing b{display:block;font:500 20px/1.15 var(--display);margin-bottom:2px}
 .ing span{font-size:var(--t-small);line-height:1.4;display:block}
 @media(min-width:900px){.ing{left:var(--margin);top:50%;transform:translateY(-50%);width:44%}}
-@media(max-width:899px){.ing{left:var(--margin);right:var(--margin);top:96px}.ing h2{font-size:clamp(30px,8vw,40px);margin-bottom:18px}.ing ul{grid-template-columns:1fr;gap:14px}
-  .ing li{grid-template-columns:72px 1fr;gap:14px}.ing img{width:72px;height:72px}.ing b{font-size:20px}}
+@media(max-width:899px){.ing{left:var(--margin);right:var(--margin);top:96px}.ing h2{font-size:clamp(30px,8vw,40px);margin-bottom:20px}.ing ul{grid-template-columns:minmax(0,1fr);gap:16px}
+  .ing li{grid-template-columns:72px minmax(0,1fr);gap:16px}.ing img{width:72px;height:72px}.ing b{font-size:20px}}
 @media(min-width:900px){
   /* sized by width and height together, so the name stays on one line and the copy clears the nav on short laptop screens */
   .hero-copy{position:absolute;left:0;top:calc(50% + 36px);transform:translateY(-50%);padding:0 var(--margin);width:50%}
   .hero-copy h1{font-size:clamp(84px,min(10.5vw,21svh),200px);white-space:nowrap}
-  .hero-copy .lede{margin:12px 0 22px}
+  .hero-copy .lede{margin:12px 0 24px}
 }
 @media(max-width:899px){
   .hero-copy{text-align:center}
@@ -71,12 +71,12 @@ html.js .xv:not(.ready){visibility:hidden}
 .shop-top h2{margin:0}
 .filters{display:flex;gap:8px;flex-wrap:wrap}
 .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
-.card{background:var(--surface);padding:12px;display:flex;flex-direction:column;gap:10px;transition:background .2s}
+.card{background:var(--surface);color:var(--ink);padding:12px;display:flex;flex-direction:column;gap:12px;transition:background .2s}
 .card:hover{background:var(--surface-2)}
 .card[hidden]{display:none}
 .ph{overflow:hidden;cursor:pointer;transition:transform .15s ease-out}
 .ph img{width:100%;aspect-ratio:4/5;object-fit:cover;transition:transform .6s var(--ease)}
-.meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .card h3{font-size:clamp(22px,2vw,26px);min-height:2.3em}
 .price{font:600 18px var(--body);color:var(--accent)}
 .price span{font-weight:400;color:var(--ink);opacity:.75;font-size:var(--t-small)}
@@ -86,18 +86,18 @@ html.js .xv:not(.ready){visibility:hidden}
 .cqty button{background:none;border:0;color:var(--ink);font:600 20px var(--body);width:40px;height:48px;cursor:pointer}
 .cqty span{min-width:18px;text-align:center;font-weight:600}
 .heat-t{font-size:14px;opacity:.8;margin-left:4px}
-.tag .dot{margin-right:6px}
+.tag .dot{margin-right:8px}
 .see-all{display:flex;justify-content:center;margin-top:24px}
 .see-all .btn{min-width:220px;min-height:48px}
 .trust{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px 24px;margin:0 0 28px;font-size:15px}
 .trust li::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:2px}
 /* weights on the card: pick one, Add to cart uses it */
-.wts{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:6px}
+.wts{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px}
 .wts button{background:var(--surface-2);color:var(--ink);border:0;border-radius:9999px;padding:8px 4px;min-height:48px;cursor:pointer;font:600 15px/1.15 var(--body);display:grid;gap:1px}
 .wts button span{font-weight:400;font-size:14px;opacity:.85}
 .wts button[aria-checked=true]{background:var(--ink);color:var(--ground)}
 .build-sub{margin:-16px 0 24px;max-width:60ch}
-.build-ctl{display:grid;gap:10px;grid-template-columns:1fr;max-width:640px;margin-bottom:20px}
+.build-ctl{display:grid;gap:12px;grid-template-columns:1fr;max-width:640px;margin-bottom:20px}
 @media(min-width:700px){.build-ctl{grid-template-columns:1fr 1.4fr}}
 .build-jars{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
 .bj{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center;text-align:left;padding:8px;background:var(--surface);color:var(--ink);border:2px solid transparent;cursor:pointer;font:inherit;min-height:72px}
@@ -106,16 +106,16 @@ html.js .xv:not(.ready){visibility:hidden}
 .build-sum{position:sticky;bottom:0;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;padding:16px 0;margin-top:16px;background:var(--ground)}
 .build-sum p{font-weight:600}
 .wts button[aria-checked=true] span{opacity:1}
-@media(max-width:560px){.wts{grid-template-columns:repeat(3,1fr);gap:4px}.wts button{font-size:14px;padding:6px 2px}.wts button span{font-size:13px}}
+@media(max-width:560px){.wts{grid-template-columns:repeat(3,1fr);gap:4px}.wts button{font-size:14px;padding:8px 2px}.wts button span{font-size:13px}}
 .more-link{background:none;border:0;color:var(--ink);font:500 15px var(--body);text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:44px;padding:0;align-self:flex-start;opacity:.85}
 .more-link:hover{opacity:1}
 .buy{display:flex;gap:8px;align-items:center}
 .buy select{max-width:220px}
 .one-size{font-size:var(--t-small)}
-.dot{width:14px;height:14px;border:2px solid currentColor;display:inline-grid;place-items:center;margin-right:6px}
+.dot{width:14px;height:14px;border:2px solid currentColor;display:inline-grid;place-items:center;margin-right:8px}
 .dot::after{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 .veg{color:var(--veg)}.nonveg{color:var(--nonveg)}
-@media(max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:8px}.card{padding:8px;gap:8px}.card h3{font-size:19px}.price{font-size:16px}.card .btn{padding:12px 8px}.tag{padding:5px 8px}
+@media(max-width:560px){.grid{grid-template-columns:1fr 1fr;gap:8px}.card{padding:8px;gap:8px}.card h3{font-size:19px}.price{font-size:16px}.card .btn{padding:12px 8px}.tag{padding:4px 8px}
   .buyrow{flex-direction:column}.cqty{justify-content:space-between}.cqty button{width:48px;height:44px}}
 
 /* banner: the owner's poster, or the in-season festival box, in a field of the accent colour */
@@ -126,7 +126,7 @@ html.js .xv:not(.ready){visibility:hidden}
 .fest{background:var(--accent);color:var(--deep);display:grid;gap:24px;grid-template-columns:1fr;padding:clamp(24px,4vw,56px);align-items:center}
 .fest h2{color:var(--deep);margin-bottom:12px}
 .fest p{color:var(--deep)}
-.fest .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.fest .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .fest .thumbs img{width:100%;aspect-ratio:3/4;object-fit:cover}
 .fest .btn{background:var(--deep);color:var(--accent);margin-top:20px}
 @media(min-width:900px){.fest{grid-template-columns:1fr 1fr}}
@@ -134,11 +134,11 @@ html.js .xv:not(.ready){visibility:hidden}
 /* missing home: four moments in large type, then the boxes in a snap row */
 .ml-sub{margin:-12px 0 clamp(32px,4vw,56px)}
 .moments{display:grid;gap:40px 48px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-bottom:clamp(64px,8vw,120px)}
-.moments h3{margin-bottom:10px}
+.moments h3{margin-bottom:12px}
 .boxes-h{margin-bottom:20px}
 .boxes{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
 @media(min-width:900px){.boxes{grid-template-columns:repeat(3,1fr)}}
-.box{background:var(--surface);padding:14px;display:flex;flex-direction:column;gap:12px;scroll-snap-align:start}
+.box{background:var(--surface);padding:16px;display:flex;flex-direction:column;gap:12px;scroll-snap-align:start}
 .box .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
 .box .thumbs img{width:100%;aspect-ratio:3/4;object-fit:cover}
 .box h3{font-size:24px}
@@ -146,29 +146,29 @@ html.js .xv:not(.ready){visibility:hidden}
 .box .btn{margin-top:auto}
 
 /* why it tastes like home: picture on one side, the four promises in large type on the other */
-.why{display:grid;gap:clamp(32px,5vw,80px);grid-template-columns:1fr}
+.why{display:grid;gap:clamp(32px,5vw,80px);grid-template-columns:minmax(0,1fr)}
 .why figure img{width:100%;aspect-ratio:4/5;object-fit:cover}
 .why ul{list-style:none;padding:0;display:grid;gap:clamp(28px,3.5vw,44px);align-content:center}
 .why h3{margin-bottom:8px}
-@media(min-width:900px){.why{grid-template-columns:5fr 6fr}}
+@media(min-width:900px){.why{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}}
 @media(max-width:899px){.why figure{order:2}}
 
 /* storyboard: pinned and scrubbed sideways on desktop, stacked on phones */
-.story{max-width:none;padding:0;margin-top:var(--gap);overflow:hidden;position:relative}
+.story{container-type:inline-size;max-width:none;padding:0;margin-top:var(--gap);overflow:hidden;position:relative}
 .story-head{position:absolute;top:96px;left:var(--margin);right:var(--margin);z-index:2}
 .story-head h2{margin:0}
 .story-track{display:flex;height:100svh;width:max-content;will-change:transform;list-style:none;padding:0}
-.panel{width:min(100vw,1100px);height:100%;flex:none;display:grid;grid-template-columns:1fr;align-content:center;gap:24px;padding:200px var(--margin) 56px;position:relative;overflow:hidden}
-.panel h3{font-size:clamp(40px,5vw,68px);line-height:1;margin-bottom:14px}
-.panel figure{overflow:hidden;aspect-ratio:4/3;max-height:46vh;background:var(--surface)}
+.panel{width:min(100cqw,1100px);height:100%;flex:none;display:grid;grid-template-columns:minmax(0,1fr);align-content:center;gap:24px;padding:200px var(--margin) 56px;position:relative;overflow:hidden}
+.panel h3{font-size:clamp(40px,5vw,68px);line-height:1;margin-bottom:16px}
+.panel figure{overflow:hidden;aspect-ratio:4/3;max-height:46vh;background:var(--surface);color:var(--ink)}
 .panel figure img,#cook-fig video{width:100%;height:100%;object-fit:cover}
-@media(min-width:900px){.panel figure{order:-1;max-height:56vh}.panel{padding-inline:48px;grid-template-columns:1fr 1fr;align-items:center;gap:56px}}
+@media(min-width:900px){.panel figure{order:-1;max-height:56vh}.panel{padding-inline:48px;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;gap:56px}}
 .story-bar{position:absolute;left:var(--margin);right:var(--margin);bottom:24px;height:3px;background:var(--surface-2)}
 .story-bar i{display:block;height:100%;background:var(--accent);transform-origin:0;transform:scaleX(0)}
 @media(max-width:899px){
   .story-head{position:static;padding:0 var(--margin)}
   .story-track{flex-direction:column;width:auto;height:auto}
-  .panel{width:auto;height:auto;padding:40px var(--margin) 0;gap:18px}
+  .panel{width:auto;height:auto;padding:40px var(--margin) 0;gap:20px}
   .panel figure{max-height:none;aspect-ratio:4/3}
   .panel h3{font-size:clamp(36px,10vw,48px)}
   .story-bar{display:none}
@@ -192,20 +192,20 @@ html.js .xv:not(.ready){visibility:hidden}
 @media(min-width:900px){.faq-s{grid-template-columns:4fr 7fr}}
 /* jar care: the one rule large, the rest beside it */
 .care-s{display:grid;gap:clamp(32px,5vw,80px);grid-template-columns:1fr}
-.care-s .big{font:500 clamp(36px,4.6vw,64px)/1.02 var(--display);color:var(--accent);max-width:14ch;margin-bottom:18px}
+.care-s .big{font:500 clamp(36px,4.6vw,64px)/1.02 var(--display);color:var(--accent);max-width:14ch;margin-bottom:20px}
 .care-s ul{list-style:none;padding:0;display:grid;gap:32px;align-content:center}
 .care-s h3{margin-bottom:8px}
 @media(min-width:900px){.care-s{grid-template-columns:1fr 1fr}}
 
 /* product detail sheet */
-dialog{margin:auto;border:0;padding:0;background:none;color:var(--ink);width:min(960px,calc(100vw - 32px));max-height:calc(100svh - 32px);overflow:auto}
-dialog::backdrop{background:#000c}
+dialog{margin:auto;border:0;padding:0;background:none;color:var(--ink);width:min(960px,calc(100% - 32px));max-height:calc(100svh - 32px);overflow:auto}
+dialog::backdrop{background:var(--scrim)}
 .sheet{display:grid;grid-template-columns:1fr;background:var(--surface);position:relative}
 .sheet img{width:100%;height:100%;max-height:48svh;object-fit:cover}
 .sheet .body{padding:28px;display:flex;flex-direction:column;gap:16px}
 .sheet h3{font-size:clamp(34px,4.4vw,52px);line-height:1}
 .sheet h4{font:600 var(--t-body) var(--body);margin-bottom:4px}
-.sheet ul{padding-left:18px}
+.sheet ul{padding-left:20px}
 .sheet .x{position:absolute;top:12px;right:12px}
 @media(min-width:760px){.sheet{grid-template-columns:5fr 6fr}.sheet img{max-height:none}}
 </style>
@@ -307,9 +307,9 @@ dialog::backdrop{background:#000c}
   <p class="ml ml-sub" data-rv>വീട് മിസ്സ് ചെയ്യുന്നുണ്ടോ?</p>
   <div class="moments">
     <div data-rv><h3>The mess served dal. Again.</h3><p>A spoon of prawn pickle and plain rice turns it into Sunday lunch at home.</p></div>
-    <div data-rv><h3>The hostel gate shuts at 9. The cravings don't.</h3><p>Hot rice from the rice cooker and a spoon of chemmeen podi. Five minutes, and you're home.</p></div>
-    <div data-rv><h3>Canteen lunch at the office. Again.</h3><p>Pack a little mango pickle in your lunch box. Someone at the next desk will ask where it's from.</p></div>
-    <div data-rv><h3>Onam in Bengaluru. Vishu in Pune.</h3><p>A sadya isn't a sadya without pickle on the leaf. Bring that bit of home to the table.</p></div>
+    <div data-rv><h3>The hostel gate shuts at 9. The cravings don’t.</h3><p>Hot rice from the rice cooker and a spoon of chemmeen podi. Five minutes, and you’re home.</p></div>
+    <div data-rv><h3>Canteen lunch at the office. Again.</h3><p>Pack a little mango pickle in your lunch box. Someone at the next desk will ask where it’s from.</p></div>
+    <div data-rv><h3>Onam in Bengaluru. Vishu in Pune.</h3><p>A sadya isn’t a sadya without pickle on the leaf. Bring that bit of home to the table.</p></div>
   </div>
   <h2 class="boxes-h" data-split>Starter boxes</h2>
   <p data-rv style="margin:-16px 0 24px">Not sure where to start? Three jars, picked for you, in one tap. Boxes keep their set price, so the multi-buy discount is for jars you pick yourself.</p>
@@ -321,14 +321,14 @@ dialog::backdrop{background:#000c}
 
 
 <section class="story" id="story" aria-labelledby="story-h">
-  <div class="story-head"><h2 id="story-h" data-split>From Amma's kitchen to your table</h2></div>
+  <div class="story-head"><h2 id="story-h" data-split>From Amma’s kitchen to your table</h2></div>
   <ol class="story-track">
     <li class="panel">
-      <div><h3>Picked fresh</h3><p>Prawns, fish, Kerala dates, garlic, curry leaf and chilli, bought fresh the morning we cook. If it isn't good enough to eat, it doesn't go in.</p></div>
+      <div><h3>Picked fresh</h3><p>Prawns, fish, Kerala dates, garlic, curry leaf and chilli, bought fresh the morning we cook. If it isn’t good enough to eat, it doesn’t go in.</p></div>
       <figure><img src="img/xv/chillies.webp" alt="Dried red chillies, bought fresh for the masala" loading="lazy"></figure>
     </li>
     <li class="panel">
-      <div><h3>Cleaned and cut by hand</h3><p>Every piece is washed, cleaned and cut by hand, the way it's always been done at home.</p></div>
+      <div><h3>Cleaned and cut by hand</h3><p>Every piece is washed, cleaned and cut by hand, the way it’s always been done at home.</p></div>
       <figure><img src="img/6.webp" alt="Bharany prawns pickle, every piece cut by hand" loading="lazy" style="object-position:50% 30%"></figure>
     </li>
     <li class="panel">
@@ -336,11 +336,11 @@ dialog::backdrop{background:#000c}
       <figure id="cook-fig"><img src="img/14.webp" alt="Masala-coated pickle in an open jar" loading="lazy" style="object-position:50% 45%"></figure>
     </li>
     <li class="panel">
-      <div><h3>Sealed under hessian</h3><p>Packed warm into clean glass jars, sealed, and finished with the hessian cap you'll recognise on your shelf.</p></div>
+      <div><h3>Sealed under hessian</h3><p>Packed warm into clean glass jars, sealed, and finished with the hessian cap you’ll recognise on your shelf.</p></div>
       <figure><img src="img/12.webp" alt="Bharany jar finished with a hessian cap" loading="lazy" style="object-position:50% 24%"></figure>
     </li>
     <li class="panel">
-      <div><h3>Wherever you've landed</h3><p>Add your jars to the cart and check out; we confirm your order personally on WhatsApp, then pack your jars to travel safely to you.</p>
+      <div><h3>Wherever you’ve landed</h3><p>Add your jars to the cart and check out; we confirm your order personally on WhatsApp, then pack your jars to travel safely to you.</p>
 </div>
       <figure><img src="img/7.webp" alt="Two Bharany jars ready to send" loading="lazy" style="object-position:50% 52%"></figure>
     </li>
@@ -351,9 +351,9 @@ dialog::backdrop{background:#000c}
 
 
 <section class="about">
-  <h2 data-split>Rice, a spoon of pickle, and you're home</h2>
+  <h2 data-split>Rice, a spoon of pickle, and you’re home</h2>
   <div>
-    <p class="lede" data-rv>We make it for the people who left: for college, for the first job, for a city that doesn't cook like Amma or Ammachi does. Same recipes, same small batches, in a hessian-topped jar that looks like it came from a Kerala kitchen, because it did. <a href="about.html" style="color:var(--accent);text-decoration:underline">Read our story</a>.</p>
+    <p class="lede" data-rv>We make it for the people who left: for college, for the first job, for a city that doesn’t cook like Amma or Ammachi does. Same recipes, same small batches, in a hessian-topped jar that looks like it came from a Kerala kitchen, because it did. <a href="about.html" style="color:var(--accent);text-decoration:underline">Read our story</a>.</p>
   </div>
 </section>
 
@@ -382,15 +382,15 @@ dialog::backdrop{background:#000c}
   <div class="faq-s">
   <div><h2 data-split>Good questions</h2><p data-rv>Anything else? Message us on <a href="https://wa.me/919846020348" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline">WhatsApp, +91 98460 20348</a>. A real person answers.</p></div>
   <div class="faq-list">
-  <details><summary>How do I order?</summary><div class="a"><p>Tap "Add to cart" on the jars you want, open your cart and check out. Delivery (₹80 in Kerala, ₹120 rest of India, free from ₹1,500) is added at checkout, and your order comes to us on WhatsApp to confirm before you pay. Prefer to just chat? Message +91 98460 20348.</p></div></details>
+  <details><summary>How do I order?</summary><div class="a"><p>Tap “Add to cart” on the jars you want, open your cart and check out. Delivery (₹80 in Kerala, ₹120 rest of India, free from ₹1,500) is added at checkout, and your order comes to us on WhatsApp to confirm before you pay. Prefer to just chat? Message +91 98460 20348.</p></div></details>
   <details><summary>How long does a jar keep?</summary><div class="a"><p>Our pickles are naturally preserved. The best-before date is printed on every jar. Once open, never use a wet spoon, keep the lid tight and refrigerate non-veg pickles. See <a href="#care" style="text-decoration:underline">jar care</a>.</p></div></details>
-  <details><summary>Can I keep it in a hostel room without a fridge?</summary><div class="a"><p>Sealed jars are fine on a shelf. Once opened, veg pickles keep well in a cool, dry cupboard if you use a clean, dry spoon. Non-veg pickles need a fridge after opening, so if you don't have one, start with veg jars or a 250g size you'll finish quickly.</p></div></details>
-  <details><summary>Can my parents order and send it to my hostel?</summary><div class="a"><p>Yes. They can check out with your hostel or PG address and your phone number, and add a note for you in "Order notes".</p></div></details>
+  <details><summary>Can I keep it in a hostel room without a fridge?</summary><div class="a"><p>Sealed jars are fine on a shelf. Once opened, veg pickles keep well in a cool, dry cupboard if you use a clean, dry spoon. Non-veg pickles need a fridge after opening, so if you don’t have one, start with veg jars or a 250g size you’ll finish quickly.</p></div></details>
+  <details><summary>Can my parents order and send it to my hostel?</summary><div class="a"><p>Yes. They can check out with your hostel or PG address and your phone number, and add a note for you in “Order notes”.</p></div></details>
   <details><summary>How much is delivery?</summary><div class="a"><p>₹80 per order anywhere in Kerala, and ₹120 per order to the rest of India. Orders of ₹1,500 or more ship free. Checkout works it out from your PIN code and shows it before you pay.</p></div></details>
-  <details><summary>Is there a discount for buying more?</summary><div class="a"><p>Yes. Any 3 jars in one order save 5%, and 5 or more save 10%, whatever the size. It comes off at checkout automatically. Starter boxes keep their set price and don't count towards it.</p></div></details>
-  <details><summary>I live abroad. Can I still get it?</summary><div class="a"><p>We deliver within India, so the usual way is to order to your family's address here and tick "Packing it for someone abroad?" at checkout. We pack it leak-proof; before couriering it on, they should double-wrap each jar (taped lid, zip bag, then another wrap) so oil can't leak. Customs rules vary: meat pickles are usually refused by the UK, US and Canada, so stick to veg pickles and chammanthi, and check your country's rules before sending.</p></div></details>
-  <details><summary>What's in each pickle?</summary><div class="a"><p>Tap "Ingredients and details" on any jar to see its key ingredients. The full ingredient list, including allergens like mustard, is printed on the label. Ask us if you have an allergy and we'll help.</p></div></details>
-  <details><summary>My jar arrived damaged. What now?</summary><div class="a"><p>Send us a photo on WhatsApp within 48 hours of delivery and we'll make it right. Our returns terms have the details.</p></div></details>
+  <details><summary>Is there a discount for buying more?</summary><div class="a"><p>Yes. Any 3 jars in one order save 5%, and 5 or more save 10%, whatever the size. It comes off at checkout automatically. Starter boxes keep their set price and don’t count towards it.</p></div></details>
+  <details><summary>I live abroad. Can I still get it?</summary><div class="a"><p>We deliver within India, so the usual way is to order to your family’s address here and tick “Packing it for someone abroad?” at checkout. We pack it leak-proof; before couriering it on, they should double-wrap each jar (taped lid, zip bag, then another wrap) so oil can’t leak. Customs rules vary: meat pickles are usually refused by the UK, US and Canada, so stick to veg pickles and chammanthi, and check your country’s rules before sending.</p></div></details>
+  <details><summary>What’s in each pickle?</summary><div class="a"><p>Tap “Ingredients and details” on any jar to see its key ingredients. The full ingredient list, including allergens like mustard, is printed on the label. Ask us if you have an allergy and we’ll help.</p></div></details>
+  <details><summary>My jar arrived damaged. What now?</summary><div class="a"><p>Send us a photo on WhatsApp within 48 hours of delivery and we’ll make it right. Our returns terms have the details.</p></div></details>
   </div>
   </div>
 </section>
@@ -398,11 +398,11 @@ dialog::backdrop{background:#000c}
 <footer>
   <div class="foot">
     <div><p>Home-made Kerala pickles, made by Amma, for every Malayali away from home.</p></div>
-    <div><h4>Shop</h4><ul><li><a href="#products">All jars</a></li><li><a href="#missing-home">Starter boxes</a></li><li><a href="#story">How it's made</a></li><li><a href="#faq">FAQ</a></li></ul></div>
-    <div><h4>Company</h4><ul><li><a href="about.html">About us</a></li><li><a href="terms.html">Terms and conditions</a></li><li><a href="privacy.html">Privacy</a></li></ul></div>
-    <div><h4>Say hello</h4><ul><li><a href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp +91 98460 20348</a></li><li><a href="https://www.instagram.com/bharany_kerala">@bharany_kerala</a></li></ul></div>
+    <div><h3>Shop</h3><ul><li><a href="#products">All jars</a></li><li><a href="#missing-home">Starter boxes</a></li><li><a href="#story">How it’s made</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+    <div><h3>Company</h3><ul><li><a href="about.html">About us</a></li><li><a href="terms.html">Terms and conditions</a></li><li><a href="privacy.html">Privacy</a></li></ul></div>
+    <div><h3>Say hello</h3><ul><li><a href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp +91 98460 20348</a></li><li><a href="https://www.instagram.com/bharany_kerala">@bharany_kerala</a></li></ul></div>
   </div>
-  <p class="foot-name" aria-hidden="true">BHARANY</p>
+  <p class="foot-name wordmark" aria-hidden="true">BHARANY</p>
   <div class="legal"><span>© <span data-year></span> Bharany</span><span>Made in Kerala</span></div>
 </footer>
 <div class="curtain" aria-hidden="true">BHARANY</div>
@@ -501,9 +501,9 @@ function openSheet(k){
     <div class="body"><button class="btn x">Close</button>
       <div class="meta"><span class="tag">${dot(p.cat)}${p.cat}</span>${heat(p.heat)}</div>
       <h3 id="sheet-title">${p.name}</h3><p>${p.desc}</p>
-      <div><h4>Key ingredients</h4><p>${p.ing.join(', ')}</p></div>
-      <div><h4>Enjoy it with</h4><p>${p.pair}</p></div>
-      <div><h4>Storage</h4><ul><li><b>Never use a wet spoon.</b> Even a drop of water can spoil the whole jar.</li><li>Keep the lid tightly closed${p.cat=="Non-veg"?"; refrigerate after opening":" in a cool, dry place"}.</li><li>Best before: printed on the jar.</li></ul></div>
+      <div><h3>Key ingredients</h3><p>${p.ing.join(', ')}</p></div>
+      <div><h3>Enjoy it with</h3><p>${p.pair}</p></div>
+      <div><h3>Storage</h3><ul><li><b>Never use a wet spoon.</b> Even a drop of water can spoil the whole jar.</li><li>Keep the lid tightly closed${p.cat=="Non-veg"?"; refrigerate after opening":" in a cool, dry place"}.</li><li>Best before: printed on the jar.</li></ul></div>
       <p class="small">Full ingredients and allergen information (for example mustard) are printed on the jar label.</p>
       <div class="wts" role="radiogroup" aria-label="Weight">${p.sizes.map(([s,pr],i)=>`<button type="button" role="radio" aria-checked="${!i}" data-w="${s}"><b>${s}</b><span>${pr==null?'Ask':money(pr)}</span></button>`).join('')}</div>
       <div class="buyrow"><div class="cqty" aria-label="Quantity"><button type="button" data-q="-1" aria-label="One fewer">−</button><span>1</span><button type="button" data-q="1" aria-label="One more">+</button></div><button class="btn fill add" data-add>Add to cart</button></div>

@@ -97,12 +97,12 @@ html.js .xv:not(.ready){visibility:hidden}
 .wts button span{font-weight:400;font-size:14px;opacity:.85}
 .wts button[aria-checked=true]{background:var(--ink);color:var(--ground)}
 .build-sub{margin:-16px 0 24px;max-width:60ch}
-.build-ctl{display:grid;gap:12px;grid-template-columns:1fr;max-width:640px;margin-bottom:20px}
-@media(min-width:700px){.build-ctl{grid-template-columns:1fr 1.4fr}}
+.build-ctl{max-width:400px;margin-bottom:20px}
 .build-jars{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
-.bj{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center;text-align:left;padding:8px;background:var(--surface);color:var(--ink);border:2px solid transparent;cursor:pointer;font:inherit;min-height:72px}
+.bj{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px;background:var(--surface);color:var(--ink);border:2px solid transparent;min-height:72px}
 .bj img{width:48px;height:56px;object-fit:cover}.bj b{display:block;font:600 15px/1.2 var(--body)}.bj small{font-size:var(--t-small);opacity:.8}
-.bj[aria-pressed=true]{border-color:var(--accent);background:var(--surface-2)}
+.bj.on{border-color:var(--accent);background:var(--surface-2)}
+.bj .qty button{width:44px;height:44px}
 .build-sum{position:sticky;bottom:0;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;padding:16px 0;margin-top:16px;background:var(--ground)}
 .build-sum p{font-weight:600}
 .wts button[aria-checked=true] span{opacity:1}
@@ -292,13 +292,12 @@ dialog::backdrop{background:var(--scrim)}
 </section>
 <section id="build" class="build">
   <h2 data-split>Build your box</h2>
-  <p data-rv class="build-sub">Pick a size, then tap the jars you want. Three jars save 5%, five save 10%.</p>
+  <p data-rv class="build-sub">Mix any jars and sizes, as many of each as you like. 3 jars save 5%, 5 or more save 10%, counted with what’s already in your cart.</p>
   <div class="build-ctl" data-rv>
-    <div class="wts" role="radiogroup" aria-label="Jars in the box" id="build-n"><button type="button" role="radio" aria-checked="false" data-n="3">3 jars</button><button type="button" role="radio" aria-checked="true" data-n="5">5 jars</button></div>
     <div class="wts" role="radiogroup" aria-label="Jar size" id="build-w"><button type="button" role="radio" aria-checked="true">250g</button><button type="button" role="radio" aria-checked="false">500g</button><button type="button" role="radio" aria-checked="false">1kg</button></div>
   </div>
   <div class="build-jars" id="build-jars" role="group" aria-label="Choose jars"></div>
-  <div class="build-sum"><p id="build-status" aria-live="polite"></p><button class="btn fill" id="build-add" type="button" disabled>Add box to cart</button></div>
+  <div class="build-sum"><div><p class="note" id="build-items" hidden></p><p id="build-status" aria-live="polite"></p></div><button class="btn fill" id="build-add" type="button" disabled>Add to cart</button></div>
 </section>
 <dialog id="sheet" aria-labelledby="sheet-title"></dialog>
 
@@ -618,33 +617,49 @@ else{
   if(innerWidth<900) G.to('.hero-copy',{yPercent:-40,opacity:0,ease:'none',scrollTrigger:{trigger:stage,start:'top top',end:'18% top',scrub:true}});
 }
 
-// ---- build your box: pick 3 or 5 jars of one size; they go in as loose jars, so the multi-buy discount applies ----
+// ---- build your box: any jars, any number, one size at a time. They go in as loose jars, so the multi-buy discount applies,
+// counted together with loose jars already in the cart. Names are prefixed so nothing here shadows the hero's functions.
 {
-  const jarsEl=document.getElementById('build-jars'), st=document.getElementById('build-status'), add=document.getElementById('build-add');
-  const radio=g=>g.querySelector('[aria-checked=true]'), picked=new Set();
-  const want=()=>+radio(document.getElementById('build-n')).dataset.n, size=()=>radio(document.getElementById('build-w')).textContent;
-  const price=p=>(p.sizes.find(s=>s[0]===size())||[])[1];
-  function draw(){
-    const list=Shop.CATALOG.filter(p=>price(p)!=null);
-    [...picked].forEach(id=>{if(!list.some(p=>p.id===id))picked.delete(id)});
-    while(picked.size>want()) picked.delete([...picked].pop());
-    jarsEl.innerHTML=list.map(p=>`<button type="button" class="bj" aria-pressed="${picked.has(p.id)}" data-j="${p.id}"><img src="${p.src}" alt="" loading="lazy" style="object-position:50% ${p.y}%"><span><b>${p.name}</b><small>${money(price(p))}</small></span></button>`).join('');
-    const n=picked.size, w=want(), sub=[...picked].reduce((a,id)=>a+price(Shop.CATALOG.find(p=>p.id===id)),0);
-    const pct=(SHOP.multibuy.find(([k])=>w>=k)||[0,0])[1], off=Math.round(sub*pct/100);
-    st.textContent=n<w?`${n} of ${w} picked. ${w-n} to go.`:`${w} jars, ${money(sub-off)} after ${pct}% off. You save ${money(off)}.`;
-    add.disabled=n<w; add.textContent=n<w?'Add box to cart':`Add ${w} jars, ${money(sub-off)}`;
+  const bxList=document.getElementById('build-jars'), bxStatus=document.getElementById('build-status'), bxAdd=document.getElementById('build-add'), bxW=document.getElementById('build-w'), bxItems=document.getElementById('build-items');
+  const bxPick=new Map(); // 'id|size' -> qty
+  const bxSize=()=>bxW.querySelector('[aria-checked=true]').textContent;
+  const bxPrice=(p,sz)=>(p.sizes.find(s=>s[0]===sz)||[])[1];
+  const bxCount=()=>[...bxPick.values()].reduce((a,q)=>a+q,0);
+  function bxRender(){
+    const sz=bxSize(), list=Shop.CATALOG.filter(p=>bxPrice(p,sz)!=null);
+    bxList.innerHTML=list.map(p=>{const q=bxPick.get(p.id+'|'+sz)||0;
+      return `<div class="bj${q?' on':''}"><img src="${p.src}" alt="" loading="lazy" style="object-position:50% ${p.y}%"><span><b>${p.name}</b><small>${sz} · ${money(bxPrice(p,sz))}</small></span>
+      <div class="qty" data-j="${p.id}"><button type="button" data-bd="-1" aria-label="One fewer ${Shop.esc(p.name)}"${q?'':' disabled'}>−</button><span>${q}</span><button type="button" data-bd="1" aria-label="One more ${Shop.esc(p.name)}">+</button></div></div>`;}).join('');
+    bxSummary();
+  }
+  function bxSummary(){
+    const n=bxCount();
+    let sub=0; bxPick.forEach((q,k)=>{const [id,sz]=k.split('|'); sub+=bxPrice(Shop.CATALOG.find(p=>p.id===id),sz)*q;});
+    // the discount the whole cart would get once this box is in, and how much more that saves than the cart saves today
+    const now=Cart.discount(), loose=Cart.items.filter(i=>!i.box);
+    let base=0, known=true; loose.forEach(i=>{const pr=Cart.price(i); if(pr==null)known=false; else base+=pr*i.qty;});
+    const jars=now.jars+n, tier=SHOP.multibuy.find(([k])=>jars>=k), pct=tier?tier[1]:0;
+    const save=known?Math.round((base+sub)*pct/100)-now.amt:0, next=[...SHOP.multibuy].reverse().find(([k])=>jars<k);
+    const inCart=now.jars?` Counting the ${now.jars} jar${now.jars>1?'s':''} already in your cart.`:'';
+    bxStatus.textContent=!n?`Tap + on the jars you want.${now.jars?inCart:''}`
+      :`${n} jar${n>1?'s':''}, ${money(sub)}.`+(pct?` ${pct}% off: you save ${money(save)}.`:'')+(next?` Add ${next[0]-jars} more for ${next[1]}% off.`:'')+inCart;
+    bxItems.textContent=n?'In your box: '+[...bxPick].map(([k,q])=>{const [id,sz]=k.split('|'); return `${Shop.CATALOG.find(p=>p.id===id).name} ${sz} × ${q}`;}).join(', '):'';
+    bxItems.hidden=!n;
+    bxAdd.disabled=!n; bxAdd.textContent=n?`Add ${n} jar${n>1?'s':''}, ${money(sub-save)}`:'Add to cart';
   }
   document.getElementById('build').addEventListener('click',e=>{
-    const r=e.target.closest('.wts [role=radio]');
-    if(r){r.parentElement.querySelectorAll('[role=radio]').forEach(x=>x.setAttribute('aria-checked',x===r)); draw(); return;}
-    const j=e.target.closest('[data-j]');
-    if(j){const id=j.dataset.j; if(picked.has(id))picked.delete(id); else if(picked.size<want())picked.add(id); else{Shop.toast(`Your box is full. Remove one or switch to ${want()===3?5:'more'} jars.`); return;} draw(); return;}
-    if(e.target.closest('#build-add')&&picked.size===want()){
-      picked.forEach(id=>Cart.add(id,size())); picked.clear(); draw();
-      Shop.toast(`${want()} jars added. ${Shop.offerLine(Cart.discount())}`); Shop.openCart();
+    const r=e.target.closest('#build-w [role=radio]');
+    if(r){bxW.querySelectorAll('[role=radio]').forEach(x=>x.setAttribute('aria-checked',x===r)); bxRender(); return;}
+    const q=e.target.closest('[data-bd]');
+    if(q){const k=q.parentElement.dataset.j+'|'+bxSize(), v=Math.max(0,Math.min(20,(bxPick.get(k)||0)+ +q.dataset.bd));
+      v?bxPick.set(k,v):bxPick.delete(k); bxRender(); bxList.querySelector(`[data-j="${q.parentElement.dataset.j}"] [data-bd="${q.dataset.bd}"]`)?.focus(); return;}
+    if(e.target.closest('#build-add')&&bxCount()){
+      const n=bxCount(); bxPick.forEach((v,k)=>{const [id,sz]=k.split('|'); Cart.add(id,sz,v);}); bxPick.clear(); bxRender();
+      Shop.toast(`${n} jar${n>1?'s':''} added. ${Shop.offerLine(Cart.discount())}`); Shop.openCart();
     }
   });
-  draw();
+  Cart.on(bxSummary); // the discount depends on what's already in the cart
+  bxRender();
 }
 </script>
 </body>

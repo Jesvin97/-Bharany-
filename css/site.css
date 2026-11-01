@@ -112,7 +112,7 @@ section{max-width:1280px;margin:auto;padding:var(--gap) var(--margin) 0}
 .cta{text-align:center;padding-bottom:var(--gap)}
 .cta h2{margin-bottom:28px}
 .cta p{margin:20px auto 0}
-footer{background:var(--surface);color:var(--ink);padding:72px var(--edge) 28px}
+footer{background:var(--surface);color:var(--ink);padding:72px var(--edge) 96px}
 .foot{display:grid;gap:32px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
 footer h3{font:600 var(--t-small) var(--body);letter-spacing:0;text-wrap:wrap;color:var(--ink);opacity:.7;margin-bottom:12px}
 footer ul{list-style:none;padding:0;display:grid;gap:0}

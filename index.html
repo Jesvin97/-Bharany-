@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="css/site.css">
 <style>
 /* hero: an exploded view of the jar. Scrolling lifts the jute cover, the seal and the pickle out of the jar */
-.stage{height:330svh;position:relative}
+.stage{height:210svh;position:relative}
 .sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr);align-items:center}
 .hero-copy{position:relative;z-index:3;padding:96px var(--margin) 0;align-self:start}
 .hero-copy h1{font:700 var(--t-display)/.85 var(--brand);text-transform:uppercase;color:var(--accent)}
@@ -70,7 +70,12 @@ html.js .xv:not(.ready){visibility:hidden}
 .shop-top{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:28px}
 .shop-top h2{margin:0}
 .filters{display:flex;gap:8px;flex-wrap:wrap}
-.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+@media(min-width:1100px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.card .add{margin-top:auto;min-height:48px;width:100%}
+.hero-acts{display:flex;gap:12px;flex-wrap:wrap}
+.box-sub{margin:-12px 0 24px;font-size:18px}
+.why-more{margin-top:32px}.why-more a{color:var(--accent);text-decoration:underline;text-underline-offset:4px;font-weight:600}
 .card{background:var(--surface);color:var(--ink);padding:12px;display:flex;flex-direction:column;gap:12px;transition:background .2s}
 .card:hover{background:var(--surface-2)}
 .card[hidden]{display:none}
@@ -98,7 +103,7 @@ html.js .xv:not(.ready){visibility:hidden}
 .wts button[aria-checked=true]{background:var(--ink);color:var(--ground)}
 .build-sub{margin:-16px 0 24px;max-width:60ch}
 .build-ctl{max-width:400px;margin-bottom:20px}
-.build-jars{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.build-jars{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
 .bj{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px;background:var(--surface);color:var(--ink);border:2px solid transparent;min-height:72px}
 .bj img{width:48px;height:56px;object-fit:cover}.bj b{display:block;font:600 15px/1.2 var(--body)}.bj small{font-size:var(--t-small);opacity:.8}
 .bj.on{border-color:var(--accent);background:var(--surface-2)}
@@ -133,7 +138,7 @@ html.js .xv:not(.ready){visibility:hidden}
 .best{background:var(--accent);color:var(--deep)}
 /* missing home: four moments in large type, then the boxes in a snap row */
 .ml-sub{margin:-12px 0 clamp(32px,4vw,56px)}
-.moments{display:grid;gap:40px 48px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-bottom:clamp(64px,8vw,120px)}
+.moments{display:grid;gap:40px 48px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
 .moments h3{margin-bottom:12px}
 .boxes-h{margin-bottom:20px}
 .boxes{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
@@ -212,12 +217,11 @@ dialog::backdrop{background:var(--scrim)}
 </head>
 <body class="home">
 <div class="progress"></div>
-<nav class="at-top">
+<nav>
   <a class="brand" href="#top">BHARANY</a>
   <div class="links" id="menu">
     <a class="btn" href="#products">Shop</a>
-    <a class="btn m-only" href="#missing-home">Starter boxes</a>
-    <a class="btn m-only" href="#care">Jar care</a>
+    <a class="btn" href="#box-shop">Boxes</a>
     <a class="btn" href="about.html">About</a>
     <a class="btn" href="#faq">FAQ</a>
     <a class="m-only wa" href="https://wa.me/919846020348" target="_blank" rel="noopener">Questions? WhatsApp +91 98460 20348</a>
@@ -233,8 +237,7 @@ dialog::backdrop{background:var(--scrim)}
       <h1 id="title">Bharany</h1>
       <p class="ml">വീട്ടിലെ രുചി</p>
       <p class="lede">Home-made Kerala pickles for every Malayali away from home.</p>
-      <a class="btn fill" href="#products">Shop the jars</a>
-      <p class="small">Free delivery on orders of ₹1,500 and above</p>
+      <div class="hero-acts"><a class="btn fill" href="#products">Shop the jars</a><a class="btn ghost" href="#box-shop">Starter boxes</a></div>
     </div>
     <div class="xv" id="xv" aria-label="What's inside a Bharany jar">
       <img data-l="pickle" src="img/xv/pickle.webp" width="417" height="227" alt="Beef pickle">
@@ -257,22 +260,7 @@ dialog::backdrop{background:var(--scrim)}
     </div>
   </div>
 </header>
-<div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
 <section class="promo" id="promo" hidden aria-label="Offer"></section>
-<div class="band why-band"><section>
-  <div class="why">
-    <figure data-rv><img src="img/5.webp" alt="A jar of Bharany garlic pickle with its hessian cap" loading="lazy" style="object-position:50% 44%"></figure>
-    <div>
-      <h2 data-split>Why it tastes like home</h2>
-      <ul>
-        <li data-rv><h3>Made by Amma</h3><p>Every batch is cooked by a Kerala mother in her own home kitchen, a few jars at a time.</p></li>
-        <li data-rv><h3>No chemical preservatives</h3><p>Salt, spice, oil and vinegar keep it, the way pickle has always been kept. No sodium benzoate, nothing artificial.</p></li>
-        <li data-rv><h3>Fresh meat and fish</h3><p>Meat, fish and prawns are bought fresh in the morning and cooked the same day.</p></li>
-        <li data-rv><h3>Made to keep</h3><p>Cooked down slowly and sealed under oil so it lasts. Look after it and it stays good to the last spoon.</p></li>
-      </ul>
-    </div>
-  </div>
-</section></div>
 
 <section id="products">
   <div class="shop-top">
@@ -285,22 +273,46 @@ dialog::backdrop{background:var(--scrim)}
       <button class="btn" aria-pressed="false" data-f="Pantry">Pantry</button>
     </div>
   </div>
-  <ul class="trust"><li>Made by Amma in Kerala</li><li>No chemical preservatives</li><li>Free delivery from ₹1,500</li><li>Order help on WhatsApp</li></ul>
-  <p class="offer" data-rv><span>Buy any 3 jars, save 5%. Buy 5 or more, save 10%.</span><a href="#build">Build your own box</a></p>
+  <p class="offer" data-rv><span>Buy any 3 jars, save 5%. Buy 5 or more, save 10%.</span><a href="#box-shop">See the boxes</a></p>
   <div class="grid" id="grid"></div>
   <div class="see-all"><button class="btn" id="see-all" type="button">See all jars</button></div>
 </section>
-<section id="build" class="build">
-  <h2 data-split>Build your box</h2>
-  <p data-rv class="build-sub">Mix any jars and sizes, as many of each as you like. 3 jars save 5%, 5 or more save 10%, counted with what’s already in your cart.</p>
+<dialog id="sheet" aria-labelledby="sheet-title"></dialog>
+<section id="box-shop" class="box-shop">
+  <div class="shop-top"><h2 data-split>Boxes</h2>
+    <div class="filters" role="tablist" aria-label="Boxes">
+      <button class="btn" role="tab" aria-selected="true" aria-pressed="true" aria-controls="tab-ready" id="t-ready">Ready-made</button>
+      <button class="btn" role="tab" aria-selected="false" aria-pressed="false" aria-controls="tab-build" id="t-build">Build your own</button>
+    </div></div>
+  <div id="tab-ready" role="tabpanel" aria-labelledby="t-ready">
+  <p class="box-sub">Three jars picked for you, at a set price.</p>
+  <div class="boxes" id="boxes"></div>
+  <div class="see-all"><button class="btn" id="more-boxes" type="button">See all boxes</button></div>
+  </div>
+  <div id="tab-build" role="tabpanel" aria-labelledby="t-build" hidden>
+  <p class="box-sub">Mix any jars and sizes. 3 jars save 5%, 5 or more save 10%, counted with your cart.</p>
   <div class="build-ctl" data-rv>
     <div class="wts" role="radiogroup" aria-label="Jar size" id="build-w"><button type="button" role="radio" aria-checked="true">250g</button><button type="button" role="radio" aria-checked="false">500g</button><button type="button" role="radio" aria-checked="false">1kg</button></div>
   </div>
   <div class="build-jars" id="build-jars" role="group" aria-label="Choose jars"></div>
   <div class="build-sum"><div><p class="note" id="build-items" hidden></p><p id="build-status" aria-live="polite"></p></div><button class="btn fill" id="build-add" type="button" disabled>Add to cart</button></div>
+  </div>
 </section>
-<dialog id="sheet" aria-labelledby="sheet-title"></dialog>
-
+<div class="band why-band"><section>
+  <div class="why">
+    <figure data-rv><img src="img/5.webp" alt="A jar of Bharany garlic pickle with its hessian cap" loading="lazy" style="object-position:50% 44%"></figure>
+    <div>
+      <h2 data-split>Why it tastes like home</h2>
+      <ul>
+        <li data-rv><h3>Made by Amma</h3><p>Every batch is cooked by a Kerala mother in her own home kitchen, a few jars at a time.</p></li>
+        <li data-rv><h3>No chemical preservatives</h3><p>Salt, spice, oil and vinegar keep it, the way pickle has always been kept. No sodium benzoate, nothing artificial.</p></li>
+        <li data-rv><h3>Fresh meat and fish</h3><p>Meat, fish and prawns are bought fresh in the morning and cooked the same day.</p></li>
+        <li data-rv><h3>Made to keep</h3><p>Cooked down slowly and sealed under oil so it lasts. Look after it and it stays good to the last spoon.</p></li>
+      </ul>
+      <p class="why-more"><a href="about.html">Read our story</a></p>
+    </div>
+  </div>
+</section></div>
 <section class="miss" id="missing-home">
   <h2 data-split>Missing home?</h2>
   <p class="ml ml-sub" data-rv>വീട് മിസ്സ് ചെയ്യുന്നുണ്ടോ?</p>
@@ -310,11 +322,8 @@ dialog::backdrop{background:var(--scrim)}
     <div data-rv><h3>Canteen lunch at the office. Again.</h3><p>Pack a little mango pickle in your lunch box. Someone at the next desk will ask where it’s from.</p></div>
     <div data-rv><h3>Onam in Bengaluru. Vishu in Pune.</h3><p>A sadya isn’t a sadya without pickle on the leaf. Bring that bit of home to the table.</p></div>
   </div>
-  <h2 class="boxes-h" data-split>Starter boxes</h2>
-  <p data-rv style="margin:-16px 0 24px">Not sure where to start? Three jars, picked for you, in one tap. Boxes keep their set price, so the multi-buy discount is for jars you pick yourself.</p>
-  <div class="boxes" id="boxes"></div>
-  <div class="see-all"><button class="btn" id="more-boxes" type="button">See all boxes</button></div>
 </section>
+
 
 
 
@@ -338,51 +347,26 @@ dialog::backdrop{background:var(--scrim)}
       <div><h3>Sealed under hessian</h3><p>Packed warm into clean glass jars, sealed, and finished with the hessian cap you’ll recognise on your shelf.</p></div>
       <figure><img src="img/12.webp" alt="Bharany jar finished with a hessian cap" loading="lazy" style="object-position:50% 24%"></figure>
     </li>
-    <li class="panel">
-      <div><h3>Wherever you’ve landed</h3><p>Add your jars to the cart and pay by UPI at checkout; we pack your jars to travel safely to you.</p>
-</div>
-      <figure><img src="img/7.webp" alt="Two Bharany jars ready to send" loading="lazy" style="object-position:50% 52%"></figure>
-    </li>
   </ol>
   <div class="story-bar"><i></i></div>
 </section>
 
 
 
-<section class="about">
-  <h2 data-split>Rice, a spoon of pickle, and you’re home</h2>
-  <div>
-    <p class="lede" data-rv>We make it for the people who left: for college, for the first job, for a city that doesn’t cook like Amma or Ammachi does. Same recipes, same small batches, in a hessian-topped jar that looks like it came from a Kerala kitchen, because it did. <a href="about.html" style="color:var(--accent);text-decoration:underline">Read our story</a>.</p>
-  </div>
-</section>
 
 <section class="reviews" id="reviews" hidden>
   <h2 data-split>What people who miss home say</h2>
   <div class="rev-grid" id="rev-grid"></div>
 </section>
 
-<section class="care" id="care">
-  <div class="care-s">
-    <div>
-      <h2 data-split>Look after your jar</h2>
-      <p class="big" data-rv>Never use a wet spoon.</p>
-      <p data-rv>Water is the enemy of pickle. Even one wet spoon can bring mould into the whole jar. Use a clean, completely dry spoon every time.</p>
-    </div>
-    <ul>
-      <li data-rv><h3>Lid on tight</h3><p>Close it straight after use. Air and moisture shorten its life, especially in humid hostel rooms.</p></li>
-      <li data-rv><h3>Keep it under oil</h3><p>The layer of oil on top protects the pickle. Press the pieces down so they stay covered.</p></li>
-      <li data-rv><h3>Non-veg goes in the fridge</h3><p>Meat, fish and prawn pickles go in the fridge once opened. Veg pickles keep in a cool, dry cupboard.</p></li>
-      <li data-rv><h3>Sending it abroad?</h3><p>Double-wrap it: tape the lid, seal it in a zip bag, then wrap it again to stop oil leaking in transit.</p></li>
-    </ul>
-  </div>
-</section>
 
 <section class="faq" id="faq">
   <div class="faq-s">
   <div><h2 data-split>Good questions</h2><p data-rv>Anything else? Message us on <a href="https://wa.me/919846020348" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline">WhatsApp, +91 98460 20348</a>. A real person answers.</p></div>
   <div class="faq-list">
   <details><summary>How do I order?</summary><div class="a"><p>Tap “Add to cart” on the jars you want, open your cart and check out. Delivery (₹80 in Kerala, ₹120 rest of India, free from ₹1,500) is added at checkout, you pay by UPI, and we send your tracking ID on WhatsApp once it ships. Prefer to just chat? Message +91 98460 20348.</p></div></details>
-  <details><summary>How long does a jar keep?</summary><div class="a"><p>Our pickles are naturally preserved. The best-before date is printed on every jar. Once open, never use a wet spoon, keep the lid tight and refrigerate non-veg pickles. See <a href="#care" style="text-decoration:underline">jar care</a>.</p></div></details>
+  <details><summary>How long does a jar keep?</summary><div class="a"><p>Our pickles are naturally preserved. The best-before date is printed on every jar. Once open, never use a wet spoon, keep the lid tight and refrigerate non-veg pickles. </p></div></details>
+  <details><summary>How do I look after an open jar?</summary><div class="a"><p><b>Never use a wet spoon</b>: even one drop can bring mould into the whole jar. Close the lid straight after use, keep the pieces pressed under the oil, and put meat, fish and prawn pickles in the fridge once opened. Veg pickles keep in a cool, dry cupboard.</p></div></details>
   <details><summary>Can I keep it in a hostel room without a fridge?</summary><div class="a"><p>Sealed jars are fine on a shelf. Once opened, veg pickles keep well in a cool, dry cupboard if you use a clean, dry spoon. Non-veg pickles need a fridge after opening, so if you don’t have one, start with veg jars or a 250g size you’ll finish quickly.</p></div></details>
   <details><summary>Can my parents order and send it to my hostel?</summary><div class="a"><p>Yes. They can check out with your hostel or PG address and your phone number, and add a note for you in “Order notes”.</p></div></details>
   <details><summary>How much is delivery?</summary><div class="a"><p>₹80 per order anywhere in Kerala, and ₹120 per order to the rest of India. Orders of ₹1,500 or more ship free. Checkout works it out from your PIN code and shows it before you pay.</p></div></details>
@@ -397,7 +381,7 @@ dialog::backdrop{background:var(--scrim)}
 <footer>
   <div class="foot">
     <div><p>Home-made Kerala pickles, made by Amma, for every Malayali away from home.</p></div>
-    <div><h3>Shop</h3><ul><li><a href="#products">All jars</a></li><li><a href="#missing-home">Starter boxes</a></li><li><a href="#story">How it’s made</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+    <div><h3>Shop</h3><ul><li><a href="#products">All jars</a></li><li><a href="#box-shop">Starter boxes</a></li><li><a href="#story">How it’s made</a></li><li><a href="#faq">FAQ</a></li></ul></div>
     <div><h3>Company</h3><ul><li><a href="about.html">About us</a></li><li><a href="terms.html">Terms and conditions</a></li><li><a href="privacy.html">Privacy</a></li></ul></div>
     <div><h3>Say hello</h3><ul><li><a href="https://wa.me/919846020348" target="_blank" rel="noopener">WhatsApp +91 98460 20348</a></li><li><a href="https://www.instagram.com/bharany_kerala">@bharany_kerala</a></li></ul></div>
   </div>
@@ -415,14 +399,15 @@ dialog::backdrop{background:var(--scrim)}
 // CATALOG, Cart and money are globals from shop.js
 const heat=h=>h?`<span class="heat-t">${['','Mild','Medium','Hot'][h]}</span>`:'';
 const dot=c=>c==="Pantry"?"":`<span class="dot ${c=="Veg"?"veg":"nonveg"}" aria-hidden="true"></span>`;
+// one price line and one button per card: sizes and quantity are chosen in the detail sheet
+const priceRange=p=>{const v=p.sizes.map(s=>s[1]).filter(x=>x!=null); return !v.length?'Price on WhatsApp':v.length===1?money(v[0]):`${money(Math.min(...v))} <span>to ${money(Math.max(...v))}</span>`;};
 const cardHTML=(p,k,best)=>`
 <article class="card" data-rv data-cat="${p.cat}" data-id="${p.id}"${best?' data-best':''}>
   <div class="ph" data-k="${k}" role="button" tabindex="0" aria-label="Details for ${p.name}"><img src="${p.src}" alt="${p.name}" loading="lazy" style="object-position:50% ${p.y}%"></div>
   <div class="meta">${best?'<span class="tag best">Best seller</span>':''}<span class="tag">${dot(p.cat)}${p.cat}</span>${heat(p.heat)}</div>
   <h3>${p.name}</h3>
-  <div class="wts" role="radiogroup" aria-label="Weight">${p.sizes.map(([s,pr],i)=>`<button type="button" role="radio" aria-checked="${!i}" data-w="${s}"><b>${s}</b><span>${pr==null?'Ask':money(pr)}</span></button>`).join('')}</div>
-  <div class="buyrow"><div class="cqty" aria-label="Quantity"><button type="button" data-q="-1" aria-label="One fewer">−</button><span>1</span><button type="button" data-q="1" aria-label="One more">+</button></div><button class="btn fill add" data-add>Add to cart</button></div>
-  <button class="more-link" data-k="${k}">Ingredients and details</button>
+  <p class="price">${priceRange(p)}</p>
+  ${p.sizes.length>1?`<button class="btn fill add" data-k="${k}">Choose size</button>`:`<button class="btn fill add" data-add>Add to cart</button>`}
 </article>`;
 document.getElementById("grid").innerHTML=CATALOG.map((p,k)=>cardHTML(p,k,false)).join("");
 // boxes in their festival season move to the front and get a badge
@@ -446,7 +431,7 @@ Shop.settingsReady.then(st=>{
   const b=st.banner, el=document.getElementById('promo'), poster=Shop.posterSrc(b.image);
   const fest=Shop.BOXES.find(x=>x.id===b.box)||Shop.BOXES.find(x=>Shop.season(x));
   if(b.mode==='off'||(b.mode==='auto'&&!poster&&!(fest&&Shop.season(fest)))) return;
-  const link=/^(#|index\.html#|checkout\.html)/.test(b.link)?b.link:'#missing-home', E=Shop.esc;
+  const link=/^(#|index\.html#|checkout\.html)/.test(b.link)?b.link:'#box-shop', E=Shop.esc;
   if(poster){
     el.innerHTML=`<a class="poster" href="${E(link)}"><img src="${E(poster)}" alt="${E(b.title||'Bharany offer')}"></a>${b.title||b.text?`<p class="cap"><b>${E(b.title)}</b> ${E(b.text)}</p>`:''}`;
   } else if(fest){
@@ -482,7 +467,7 @@ const {gsap:G,reduced,fine,SVG}=SITE;
 // ---------- product filter + detail sheet ----------
 const cards=[...document.querySelectorAll('#grid .card')], sheet=document.getElementById('sheet');
 // show the first 8 jars; the rest open with "See all", or with any filter
-const FIRST=8, seeAll=document.getElementById('see-all');
+const FIRST=innerWidth>=900?Infinity:8, seeAll=document.getElementById('see-all');
 const collapse=()=>{cards.forEach((c,i)=>c.hidden=i>=FIRST); seeAll.parentElement.hidden=cards.length<=FIRST; seeAll.textContent=`See all ${cards.length} jars`;};
 collapse();
 seeAll.addEventListener('click',()=>{cards.forEach(c=>c.hidden=false); seeAll.parentElement.hidden=true; if(window.ScrollTrigger) ScrollTrigger.refresh();});
@@ -532,6 +517,10 @@ document.addEventListener('click',e=>{
 });
 // details open from the shop grid and the craving row alike
 document.addEventListener('click',e=>{const t=e.target.closest('.card [data-k]'); if(t)openSheet(+t.dataset.k)});
+// boxes: ready-made or build your own, one view at a time
+{const tabs=[...document.querySelectorAll('#box-shop [role=tab]')];
+ tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>{const on=x===t; x.setAttribute('aria-selected',on); x.setAttribute('aria-pressed',on); document.getElementById(x.getAttribute('aria-controls')).hidden=!on;}); if(window.ScrollTrigger) ScrollTrigger.refresh();}));
+ if(location.hash==='#build') tabs[1].click();}
 document.addEventListener('keydown',e=>{const t=e.target.closest('.ph'); if(t&&(e.key=='Enter'||e.key==' ')){e.preventDefault();openSheet(+t.dataset.k)}});
 
 // ---------- storyboard: pin and scrub sideways on desktop ----------
@@ -647,7 +636,7 @@ else{
     bxItems.hidden=!n;
     bxAdd.disabled=!n; bxAdd.textContent=n?`Add ${n} jar${n>1?'s':''}, ${money(sub-save)}`:'Add to cart';
   }
-  document.getElementById('build').addEventListener('click',e=>{
+  document.getElementById('tab-build').addEventListener('click',e=>{
     const r=e.target.closest('#build-w [role=radio]');
     if(r){bxW.querySelectorAll('[role=radio]').forEach(x=>x.setAttribute('aria-checked',x===r)); bxRender(); return;}
     const q=e.target.closest('[data-bd]');
